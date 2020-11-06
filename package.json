@@ -1,6 +1,6 @@
 {
-  "name": "electron-webpack-react-quick-start",
-  "version": "0.0.0",
+  "name": "jhove2020",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -9,19 +9,24 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
-    "source-map-support": "^0.5.9",
-    "@babel/preset-react": "^7.0.0",
-    "electron": "2.0.9",
-    "electron-builder": "^20.28.1",
-    "electron-webpack": "^2.1.2",
-    "electron-webpack-eslint": "^3.0.0",
-    "less": "^3.8.1",
-    "less-loader": "^4.1.0",
-    "webpack": "^4.16.5"
+    "less": "3.8.1",
+    "less-loader": "4.1.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "source-map-support": "0.5.9",
+    "electron": "2.0.9"
   },
   "resolutions": {
-    "upath": "^1.0.5"
+    "upath": "1.0.5"
+  },
+  "devDependencies": {
+    "webpack": "4.16.5",
+    "eslint-config-airbnb": "18.2.0",
+    "eslint-plugin-react": "7.21.5",
+    "electron-builder": "20.28.1",
+    "electron-webpack": "2.1.2",
+    "electron-webpack-eslint": "3.0.0",
+    "eslint-config-airbnb-bundle": "3.0.0",
+    "@babel/preset-react": "7.0.0"
   }
 }
