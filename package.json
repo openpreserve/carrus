@@ -9,24 +9,33 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "bootstrap": "^4.5.3",
+    "custom-electron-titlebar": "^3.2.5",
+    "electron": "2.0.9",
     "less": "3.8.1",
     "less-loader": "4.1.0",
+    "material-ui-dropzone": "^3.5.0",
+    "prop-types": "^15.7.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "source-map-support": "0.5.9",
-    "electron": "2.0.9"
+    "react-dropzone": "^11.2.4",
+    "reactstrap": "^8.7.1",
+    "source-map-support": "0.5.9"
   },
   "resolutions": {
     "upath": "1.0.5"
   },
   "devDependencies": {
-    "webpack": "4.16.5",
-    "eslint-config-airbnb": "18.2.0",
-    "eslint-plugin-react": "7.21.5",
+    "@babel/preset-react": "7.0.0",
+    "babel-eslint": "^10.1.0",
     "electron-builder": "20.28.1",
     "electron-webpack": "2.1.2",
     "electron-webpack-eslint": "3.0.0",
+    "eslint-config-airbnb": "18.2.0",
     "eslint-config-airbnb-bundle": "3.0.0",
-    "@babel/preset-react": "7.0.0"
+    "eslint-plugin-react": "7.21.5",
+    "webpack": "4.16.5"
   }
 }

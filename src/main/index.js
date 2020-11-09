@@ -9,7 +9,13 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 let mainWindow;
 
 function createMainWindow() {
-  const window = new BrowserWindow();
+  const window = new BrowserWindow({
+    width: 1280,
+    height: 726,
+    title: 'JHove 2020',
+    frame: false,
+    titleBarStyle: 'hidden',
+  });
 
   if (isDevelopment) {
     window.webContents.openDevTools();
@@ -22,7 +28,7 @@ function createMainWindow() {
       formatUrl({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file',
-        slashes: true,
+        slashes: true
       })
     );
   }
@@ -37,7 +43,6 @@ function createMainWindow() {
       window.focus();
     });
   });
-
   return window;
 }
 
