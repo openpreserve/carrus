@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/forbid-prop-types */
 import React, { useState } from 'react';
-import { Nav, NavItem, NavLink, TabContent, TabPane, Button } from 'reactstrap';
+import { Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 import logo from '../assets/logo.png';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
@@ -51,9 +51,6 @@ function Body() {
           <UrlHandler />
         </TabPane>
       </TabContent>
-      <Button color="success" value="Execute" className="mt-3 align-self-center">
-        Execute
-      </Button>
     </div>
   );
 }

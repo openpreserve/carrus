@@ -1,8 +1,8 @@
 import React from 'react';
-import { FormGroup, Label, Input, CustomInput } from 'reactstrap';
+import { FormGroup, Label, Input, CustomInput, Button } from 'reactstrap';
 
 const UrlHandler = () => (
-  <div className="mt-3">
+  <div className="mt-3 d-flex flex-column">
     <FormGroup className="mt-3 w-50 d-flex flex-row">
       <Label for="action" style={{ width: '25%' }} className="text-right mr-3">
         <span>URL: </span>
@@ -46,8 +46,14 @@ const UrlHandler = () => (
         id="exampleCustomFileBrowser"
         name="customFile"
         label="📁 Browse File"
+        webkitdirectory
+        directory
+        multiple
       />
     </FormGroup>
+    <Button color="success" value="Execute" className="mt-3 align-self-center">
+      Execute
+    </Button>
   </div>
 );
 

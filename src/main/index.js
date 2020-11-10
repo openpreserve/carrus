@@ -10,8 +10,8 @@ let mainWindow;
 
 function createMainWindow() {
   const window = new BrowserWindow({
-    width: 1280,
-    height: 726,
+    minWidth: 1280,
+    minHeight: 800,
     title: 'JHove 2020',
     frame: false,
     titleBarStyle: 'hidden',
