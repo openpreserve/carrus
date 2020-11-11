@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
 import App from '../components/App';
 import store from '../components/Redux/redux-store';
+import '../i18next/i18next';
 
 const titleBar = new Titlebar({
   backgroundColor: Color.fromHex('#e6e6e6'),
