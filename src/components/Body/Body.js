@@ -8,7 +8,7 @@ import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
 
 function Body() {
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('fileHandler');
 
   return (
     <div className="container d-flex flex-column mt-5">
@@ -25,9 +25,9 @@ function Body() {
         <NavItem className="mr-1">
           <NavLink
             className={
-              activeTab === '1' ? 'active text-success font-weight-bold' : 'bg-light text-dark'
+              activeTab === 'fileHandler' ? 'active text-success font-weight-bold' : 'bg-light text-dark'
             }
-            onClick={() => setActiveTab('1')}
+            onClick={() => setActiveTab('fileHandler')}
           >
             Your File
           </NavLink>
@@ -35,19 +35,19 @@ function Body() {
         <NavItem>
           <NavLink
             className={
-              activeTab === '2' ? 'active text-success font-weight-bold' : 'bg-light text-dark '
+              activeTab === 'URLHandler' ? 'active text-success font-weight-bold' : 'bg-light text-dark '
             }
-            onClick={() => setActiveTab('2')}
+            onClick={() => setActiveTab('URLHandler')}
           >
             From URL
           </NavLink>
         </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
-        <TabPane tabId="1">
+        <TabPane tabId="fileHandler">
           <FileHandler />
         </TabPane>
-        <TabPane tabId="2">
+        <TabPane tabId="URLHandler">
           <UrlHandler />
         </TabPane>
       </TabContent>

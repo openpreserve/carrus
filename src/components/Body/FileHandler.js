@@ -12,10 +12,10 @@ const FileHandler = () => {
   return (
     <div className="mt-3 d-flex flex-column">
       <div>
-        <DropzoneArea className="h-50" style={{ minHeight: 100 }} component="div" />
+        <DropzoneArea className="h-50" component="div" />
       </div>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="action" style={{ width: '20%' }} className="text-right mr-3">
+        <Label for="action" className="text-right mr-3 w-25">
           <span>Action: </span>
         </Label>
         <Input
@@ -30,7 +30,7 @@ const FileHandler = () => {
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="tool" style={{ width: '20%' }} className="text-right mr-3">
+        <Label for="tool" className="text-right mr-3 w-25">
           <span>Tool: </span>
         </Label>
         <Input type="select" name="tool" id="tool" className="w-75">
@@ -39,7 +39,7 @@ const FileHandler = () => {
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="action" style={{ width: '20%' }} className="text-right mr-3">
+        <Label for="action" className="text-right mr-3 w-25">
           <span>Options: </span>
         </Label>
         <Input type="select" name="action" id="action" className="w-75">

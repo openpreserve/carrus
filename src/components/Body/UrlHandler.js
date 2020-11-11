@@ -4,13 +4,13 @@ import { FormGroup, Label, Input, CustomInput, Button } from 'reactstrap';
 const UrlHandler = () => (
   <div className="mt-3 d-flex flex-column">
     <FormGroup className="mt-3 w-50 d-flex flex-row">
-      <Label for="action" style={{ width: '25%' }} className="text-right mr-3">
+      <Label for="action" className="text-right mr-3 w-25">
         <span>URL: </span>
       </Label>
       <Input type="text" name="action" id="action" className="w-75" />
     </FormGroup>
     <FormGroup className="mt-3 w-50 d-flex flex-row">
-      <Label for="action" style={{ width: '25%' }} className="text-right mr-3">
+      <Label for="action" className="text-right mr-3 w-25">
         <span>Action: </span>
       </Label>
       <Input type="select" name="action" id="action" className="w-75">
@@ -19,7 +19,7 @@ const UrlHandler = () => (
       </Input>
     </FormGroup>
     <FormGroup className="mt-3 w-50 d-flex flex-row">
-      <Label for="tool" style={{ width: '25%' }} className="text-right mr-3">
+      <Label for="tool" className="text-right mr-3 w-25">
         <span>Tool: </span>
       </Label>
       <Input type="select" name="tool" id="tool" className="w-75">
@@ -28,7 +28,7 @@ const UrlHandler = () => (
       </Input>
     </FormGroup>
     <FormGroup className="mt-3 w-50 d-flex flex-row">
-      <Label for="action" style={{ width: '25%' }} className="text-right mr-3">
+      <Label for="action" className="text-right mr-3 w-25">
         <span>Options: </span>
       </Label>
       <Input type="select" name="action" id="action" className="w-75">
@@ -38,7 +38,7 @@ const UrlHandler = () => (
       </Input>
     </FormGroup>
     <FormGroup className="mt-3 w-50 d-flex flex-row">
-      <Label for="customFile" style={{ width: '33%' }} className="text-right mr-3">
+      <Label for="customFile" className="text-right mr-3 w-25">
         Output Folder:
       </Label>
       <CustomInput
@@ -46,9 +46,6 @@ const UrlHandler = () => (
         id="exampleCustomFileBrowser"
         name="customFile"
         label="📁 Browse File"
-        webkitdirectory
-        directory
-        multiple
       />
     </FormGroup>
     <Button color="success" value="Execute" className="mt-3 align-self-center">
