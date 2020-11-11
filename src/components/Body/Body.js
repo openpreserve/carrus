@@ -11,7 +11,6 @@ import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '
 const Body = props => {
   const { fileOrigin } = props;
   const { t } = useTranslation();
-  console.log(props);
   return (
     <div className="container d-flex flex-column mt-5">
       <SemiHeader />

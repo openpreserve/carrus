@@ -22,9 +22,9 @@ const Icons = () => {
   };
   return (
     <div className="d-flex flex-row justify-content-between">
-      <MinimizeIcon fontSize="small" onClick={() => minimizeWindow()} />
-      <WebAssetIcon fontSize="small" onClick={() => maxUnmaxWindow()} />
-      <CloseIcon fontSize="small" onClick={() => handleCloseWindow()} />
+      <MinimizeIcon fontSize="small" className="mr-1" onClick={() => minimizeWindow()} />
+      <WebAssetIcon fontSize="small" className="mr-1" onClick={() => maxUnmaxWindow()} />
+      <CloseIcon fontSize="small" className="mr-1" onClick={() => handleCloseWindow()} />
     </div>
   );
 };

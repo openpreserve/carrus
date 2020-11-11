@@ -10,7 +10,7 @@ const FileHandler = () => {
   const { t } = useTranslation();
   return (
     <div className="mt-3">
-      <Dropzone onDrop={file => console.log(file)}>
+      <Dropzone>
         {({ getRootProps, getInputProps }) => (
           <section className="border bg-light">
             <div {...getRootProps()}>
