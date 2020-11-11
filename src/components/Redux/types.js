@@ -1,0 +1,10 @@
+const actionTypes = {
+  SET_ACTION: 'SET_ACTION',
+  SET_OPTIONS: 'SET_OPTIONS',
+  SET_TOOL: 'SET_TOOL',
+  SET_OUTPUT_FOLDER: 'SET_OUTPUT_FOLDER',
+  SET_URL: 'SET_URL',
+  SET_FILE_ORIGIN: 'SET_FILE_ORIGIN',
+};
+
+export default actionTypes;

@@ -9,10 +9,12 @@
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "object-curly-newline": 0,
-    "arrow-parens": 0
+    "arrow-parens": 0,
+    "react/prop-types": 0
   },
   "env": {
     "browser": true,
     "node": true
-  }
+  },
+  "parser": "babel-eslint"
 }
