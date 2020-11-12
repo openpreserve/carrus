@@ -8,6 +8,7 @@ const initialState = {
   outputFolder: '',
   url: '',
   fileOrigin: 'file',
+  currentLanguage: 'en',
 };
 
 export const preproccessReducer = (state = initialState, action) => {
@@ -48,6 +49,12 @@ export const preproccessReducer = (state = initialState, action) => {
         fileOrigin: action.payload,
       };
     }
+    case actionTypes.UPDATE_LANGUAGE: {
+      return {
+        ...state,
+        currentLanguage: action.payload,
+      };
+    }
     default: {
       return state;
     }
@@ -60,3 +67,4 @@ export const setAction = value => ({ type: actionTypes.SET_ACTION, payload: valu
 export const setURL = value => ({ type: actionTypes.SET_URL, payload: value });
 export const setOutputFolder = value => ({ type: actionTypes.SET_OUTPUT_FOLDER, payload: value });
 export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payload: value });
+export const updateLanguage = value => ({ type: actionTypes.UPDATE_LANGUAGE, payload: value });

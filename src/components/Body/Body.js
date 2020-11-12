@@ -2,7 +2,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button, CustomInput } from 'reactstrap';
+import {
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  CustomInput,
+} from 'reactstrap';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from './SemiHeader';

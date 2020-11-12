@@ -5,6 +5,7 @@ const actionTypes = {
   SET_OUTPUT_FOLDER: 'SET_OUTPUT_FOLDER',
   SET_URL: 'SET_URL',
   SET_FILE_ORIGIN: 'SET_FILE_ORIGIN',
+  UPDATE_LANGUAGE: 'UPDATE_LANGUAGE',
 };
 
 export default actionTypes;
