@@ -6,6 +6,8 @@ const actionTypes = {
   SET_URL: 'SET_URL',
   SET_FILE_ORIGIN: 'SET_FILE_ORIGIN',
   UPDATE_LANGUAGE: 'UPDATE_LANGUAGE',
+  UPDATE_PDF_TOOL: 'UPDATE_PDF_TOOL',
+  UPDATE_JPEG_TOOL: 'UPDATE_JPEG_TOOL',
 };
 
 export default actionTypes;

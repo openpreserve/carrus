@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ButtonGroup, Button } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { updateLanguage } from '../Redux/redux-reducers';
 
@@ -19,8 +20,12 @@ const SemiHeader = props => {
         <img src={logo} alt="" className="" />
       </div>
       <div className="d-flex w-25">
-        <h3 className="m-auto">{t('Tools')}</h3>
-        <h3 className="m-auto">{t('About')}</h3>
+        <h3 className="m-auto">
+          <Link to="/tools">{t('Tools')} </Link>
+        </h3>
+        <h3 className="m-auto">
+          <Link to="/about">{t('About')}</Link>
+        </h3>
       </div>
       <ButtonGroup size="md" className="m-auto bg-light">
         <Button

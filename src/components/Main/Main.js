@@ -16,14 +16,14 @@ import {
 } from 'reactstrap';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
-import SemiHeader from './SemiHeader';
+import SemiHeader from '../Header/SemiHeader';
 import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '../Redux/redux-reducers';
 
-const Body = props => {
+const Main = props => {
   const { fileOrigin } = props;
   const { t } = useTranslation();
   return (
-    <div className="container d-flex flex-column mt-5">
+    <div className="container d-flex flex-column">
       <SemiHeader />
       <Nav tabs className="mt-5">
         <NavItem className="mr-1">
@@ -112,4 +112,4 @@ export default connect(mapStateToProps, {
   setAction,
   setOutputFolder,
   setFileOrigin,
-})(Body);
+})(Main);

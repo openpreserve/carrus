@@ -19,6 +19,8 @@ const resources = {
       DropzoneSubtitle: 'Support for a single file or folder',
       Tools: 'Tools',
       About: 'About',
+      mainPage: 'Main Page',
+      defaultTool: 'Default Tool',
     },
   },
   fr: {
@@ -36,6 +38,8 @@ const resources = {
       DropzoneSubtitle: "Prise en charge d'un seul fichier ou dossier",
       Tools: 'Outils',
       About: 'À propos',
+      mainPage: "Page D'accueil",
+      defaultTool: 'Outil par défaut',
     },
   },
 };

@@ -9,6 +9,7 @@ const initialState = {
   url: '',
   fileOrigin: 'file',
   currentLanguage: 'en',
+  defaultJPEGTool: 'JPEG hul',
 };
 
 export const preproccessReducer = (state = initialState, action) => {
@@ -55,6 +56,12 @@ export const preproccessReducer = (state = initialState, action) => {
         currentLanguage: action.payload,
       };
     }
+    case actionTypes.UPDATE_JPEG_TOOL: {
+      return {
+        ...state,
+        defaultJPEGTool: action.payload,
+      };
+    }
     default: {
       return state;
     }
@@ -68,3 +75,4 @@ export const setURL = value => ({ type: actionTypes.SET_URL, payload: value });
 export const setOutputFolder = value => ({ type: actionTypes.SET_OUTPUT_FOLDER, payload: value });
 export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payload: value });
 export const updateLanguage = value => ({ type: actionTypes.UPDATE_LANGUAGE, payload: value });
+export const updateJPEGTool = value => ({ type: actionTypes.UPDATE_JPEG_TOOL, payload: value });
