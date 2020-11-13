@@ -1,43 +1,37 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Burger from './Burger';
+import React, { useState } from 'react';
+
+import {
+  Navbar,
+  NavbarBrand,
+  DropdownToggle,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+} from 'reactstrap';
+
 import Icons from './Icons';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    minHeight: 44,
-    height: 44,
-    backgroundColor: 'whisper',
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    textAlign: 'center',
-    flexGrow: 1,
-  },
-  appBar: {
-    backgroundColor: 'whisper',
-  },
-}));
-
 const Header = () => {
-  const classes = useStyles();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggle = () => setDropdownOpen(prevState => !prevState);
+
   return (
-    <div className={classes.root}>
-      <AppBar className={classes.appBar}>
-        <Toolbar>
-          <Burger classes={classes.menuButton} />
-          <Typography variant="h6" className={classes.title}>
-            JHove 2020
-          </Typography>
-          <Icons />
-        </Toolbar>
-      </AppBar>
+    <div className="titlebar">
+      <Navbar color="faded" light>
+        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+          <DropdownToggle color="white">☰</DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem>Main page</DropdownItem>
+            <DropdownItem>Tools</DropdownItem>
+            <DropdownItem>About</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+        <NavbarBrand href="/" className="mx-auto">
+          JHove 2020
+        </NavbarBrand>
+        <Icons />
+      </Navbar>
     </div>
   );
 };

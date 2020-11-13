@@ -14,6 +14,7 @@
     "bootstrap": "^4.5.3",
     "custom-electron-titlebar": "^3.2.5",
     "electron": "2.0.9",
+    "i18next": "^19.8.3",
     "less": "3.8.1",
     "less-loader": "4.1.0",
     "material-ui-dropzone": "^3.5.0",
@@ -21,7 +22,10 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-dropzone": "^11.2.4",
+    "react-i18next": "^11.7.3",
+    "react-redux": "^7.2.2",
     "reactstrap": "^8.7.1",
+    "redux": "^4.0.5",
     "source-map-support": "0.5.9"
   },
   "resolutions": {
