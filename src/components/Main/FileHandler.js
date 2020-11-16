@@ -28,7 +28,7 @@ const FileHandler = props => {
         {({ getRootProps, getInputProps }) => (
           <section className="border bg-light">
             <div {...getRootProps()}>
-              <input {...getInputProps()} />
+              <input {...getInputProps()} accept="application/pdf,image/*" />
               <Jumbotron fluid className="m-0 p-3 bg-light">
                 <Container fluid className="d-flex flex-column align-items-center">
                   <MoveToInboxIcon className="text-green" style={{ fontSize: 80, color: green[500] }} />

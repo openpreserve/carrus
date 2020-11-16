@@ -1,19 +1,10 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { ButtonGroup, Button } from 'reactstrap';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
-import { updateLanguage } from '../Redux/redux-reducers';
 
-const SemiHeader = props => {
-  const { t, i18n } = useTranslation();
-  const { activeLanguage } = props;
-
-  useEffect(() => {
-    i18n.changeLanguage(activeLanguage);
-  }, [props]);
-
+const SemiHeader = () => {
+  const { t } = useTranslation();
   return (
     <div className="d-flex flex-row justify-content-between align-items-center">
       <div className="w-50">
@@ -27,28 +18,8 @@ const SemiHeader = props => {
           <Link to="/about">{t('About')}</Link>
         </h3>
       </div>
-      <ButtonGroup size="md" className="m-auto bg-light">
-        <Button
-          value="en"
-          color={activeLanguage === 'en' ? 'success' : 'light'}
-          onClick={e => props.updateLanguage(e.target.value)}
-        >
-          en
-        </Button>
-        <Button
-          value="fr"
-          color={activeLanguage === 'fr' ? 'success' : 'light'}
-          onClick={e => props.updateLanguage(e.target.value)}
-        >
-          fr
-        </Button>
-      </ButtonGroup>
     </div>
   );
 };
 
-const mapStateToProps = state => ({
-  activeLanguage: state.currentLanguage,
-});
-
-export default connect(mapStateToProps, { updateLanguage })(SemiHeader);
+export default SemiHeader;
