@@ -19,6 +19,8 @@ const resources = {
       DropzoneSubtitle: 'Support for a single file or folder',
       Tools: 'Tools',
       About: 'About',
+      mainPage: 'Main Page',
+      defaultTool: 'Default Tool',
     },
   },
   fr: {
@@ -36,6 +38,27 @@ const resources = {
       DropzoneSubtitle: "Prise en charge d'un seul fichier ou dossier",
       Tools: 'Outils',
       About: 'À propos',
+      mainPage: "Page D'accueil",
+      defaultTool: 'Outil par défaut',
+    },
+  },
+  ru: {
+    translation: {
+      Action: 'Действие',
+      Tool: 'Инструмент',
+      YourFile: 'Ваш файл',
+      FromUrl: 'url ссылка',
+      Validate: 'Проверить',
+      Characterize: 'Характеризовать',
+      Options: 'Опции',
+      Execute: 'Запустить',
+      OutputFolder: 'Папка вывода',
+      DropzoneTitle: 'Нажмите или скиньте файлы сюда',
+      DropzoneSubtitle: 'Поддерживает файл или сборник файлов',
+      Tools: 'Инструменты',
+      About: 'О нас',
+      mainPage: 'Главная Страница',
+      defaultTool: 'Инструмент по умолчанию',
     },
   },
 };
@@ -44,7 +67,7 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: 'en',
+    lng: 'fr',
 
     keySeparator: false, // we do not use keys in form messages.welcome
 

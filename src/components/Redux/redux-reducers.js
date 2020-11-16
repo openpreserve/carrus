@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import actionTypes from './types';
 
 const initialState = {
@@ -8,7 +7,8 @@ const initialState = {
   outputFolder: '',
   url: '',
   fileOrigin: 'file',
-  currentLanguage: 'en',
+  defaultJPEGTool: 'JPEG hul',
+  uploadedFiles: [],
 };
 
 export const preproccessReducer = (state = initialState, action) => {
@@ -49,10 +49,16 @@ export const preproccessReducer = (state = initialState, action) => {
         fileOrigin: action.payload,
       };
     }
-    case actionTypes.UPDATE_LANGUAGE: {
+    case actionTypes.UPDATE_JPEG_TOOL: {
       return {
         ...state,
-        currentLanguage: action.payload,
+        defaultJPEGTool: action.payload,
+      };
+    }
+    case actionTypes.UPLOAD_FILE: {
+      return {
+        ...state,
+        uploadedFiles: [...state.uploadedFiles, action.payload],
       };
     }
     default: {
@@ -67,4 +73,5 @@ export const setAction = value => ({ type: actionTypes.SET_ACTION, payload: valu
 export const setURL = value => ({ type: actionTypes.SET_URL, payload: value });
 export const setOutputFolder = value => ({ type: actionTypes.SET_OUTPUT_FOLDER, payload: value });
 export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payload: value });
-export const updateLanguage = value => ({ type: actionTypes.UPDATE_LANGUAGE, payload: value });
+export const updateJPEGTool = value => ({ type: actionTypes.UPDATE_JPEG_TOOL, payload: value });
+export const uploadFile = value => ({ type: actionTypes.UPLOAD_FILE, payload: value });

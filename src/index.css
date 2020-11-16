@@ -1,34 +1,50 @@
 .titlebar {
-   -webkit-user-select: none;
-   -webkit-app-region: drag;
-   background-color: whisper;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  background-color: whisper;
+  position: sticky;
 }
 
-button, svg {
-    -webkit-app-region: no-drag;
+button,
+svg {
+  -webkit-app-region: no-drag;
 }
 
 .btn:focus {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 html {
-    --scrollbarBG: #CFD8DC;
-    --thumbBG: #90A4AE;
-  }
-  body::-webkit-scrollbar {
-    width: 11px;
-  }
-  body {
-    scrollbar-width: thin;
-    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
-  }
-  body::-webkit-scrollbar-track {
-    background: var(--scrollbarBG);
-  }
-  body::-webkit-scrollbar-thumb {
-    background-color: var(--thumbBG) ;
-    border-radius: 6px;
-    border: 3px solid var(--scrollbarBG);
-  }
-  
+  --scrollbarBG: #cfd8dc;
+  --thumbBG: #90a4ae;
+}
+
+body::-webkit-scrollbar {
+  width: 11px;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG);
+  border-radius: 6px;
+  border: 3px solid var(--scrollbarBG);
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  outline: none;
+  text-decoration: none;
+}
