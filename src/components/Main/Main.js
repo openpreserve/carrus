@@ -22,6 +22,9 @@ import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '
 const Main = props => {
   const { fileOrigin } = props;
   const { t } = useTranslation();
+  const handleExecute = () => {
+    console.log(props);
+  };
   return (
     <div className="container d-flex flex-column">
       <SemiHeader />
@@ -51,8 +54,8 @@ const Main = props => {
           <UrlHandler />
         </TabPane>
       </TabContent>
-      <FormGroup className="mt-3 w-50">
-        <Label for="action">
+      <FormGroup className="mt-3 w-50 d-flex flex-row">
+        <Label for="action" className="mr-3 my-auto w-25">
           <span>{t('Action')}:</span>
         </Label>
         <Input type="select" onChange={e => props.setAction(e.target.value)}>
@@ -60,8 +63,8 @@ const Main = props => {
           <option>{t('Characterize')}</option>
         </Input>
       </FormGroup>
-      <FormGroup className="mt-3 w-50">
-        <Label for="tool">
+      <FormGroup className="mt-3 w-50 d-flex flex-row">
+        <Label for="tool" className="mr-3 my-auto w-25">
           <span>{t('Tool')}: </span>
         </Label>
         <Input type="select" onChange={e => props.setTool(e.target.value)}>
@@ -69,8 +72,8 @@ const Main = props => {
           <option>PDF hul</option>
         </Input>
       </FormGroup>
-      <FormGroup className="mt-3 w-50">
-        <Label for="action" className="mr-3 w-25">
+      <FormGroup className="mt-3 w-50 d-flex flex-row">
+        <Label for="action" className="mr-3 my-auto w-25">
           <span>{t('Options')}: </span>
         </Label>
         <Input type="select" onChange={e => props.setOptions(e.target.value)}>
@@ -79,8 +82,10 @@ const Main = props => {
           <option>PDF/A-3</option>
         </Input>
       </FormGroup>
-      <FormGroup className="mt-3 w-50">
-        <Label for="customFile">{t('OutputFolder')}</Label>
+      <FormGroup className="mt-3 w-50 d-flex flex-row">
+        <Label for="customFile" className="mr-3 my-auto w-25">
+          {t('OutputFolder')}:
+        </Label>
         <CustomInput
           directory=""
           webkitdirectory=""
@@ -90,7 +95,7 @@ const Main = props => {
         />
         {/* <input directory="" webkitdirectory="" type="file" /> */}
       </FormGroup>
-      <Button color="success" value="Execute" className="mt-3 align-self-center">
+      <Button color="success" value="Execute" className="mt-3 align-self-center" onClick={handleExecute}>
         {t('Execute')}
       </Button>
     </div>

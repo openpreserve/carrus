@@ -6,7 +6,7 @@ import Tools from './Tools/Tools';
 import About from './About/About';
 
 const App = () => (
-  <div className="mb-5">
+  <div className="mb-3">
     <Header />
     <Switch>
       <Route exact path="/">

@@ -13,7 +13,7 @@ const Header = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="titlebar mb-5">
+    <div className="titlebar mb-3">
       <Navbar color="faded" light>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
           <DropdownToggle color="white">☰</DropdownToggle>

@@ -13,7 +13,8 @@
     "react/prop-types": 0,
     "react/jsx-one-expression-per-line": 0,
     "linebreak-style": 0,
-    "max-len": ["error", { "code": 120 }]
+    "max-len": ["error", { "code": 120 }],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   },
   "env": {
     "browser": true,

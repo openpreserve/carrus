@@ -8,6 +8,7 @@ const actionTypes = {
   UPDATE_LANGUAGE: 'UPDATE_LANGUAGE',
   UPDATE_PDF_TOOL: 'UPDATE_PDF_TOOL',
   UPDATE_JPEG_TOOL: 'UPDATE_JPEG_TOOL',
+  UPLOAD_FILE: 'UPLOAD_FILE',
 };
 
 export default actionTypes;
