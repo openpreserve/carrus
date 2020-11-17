@@ -26,7 +26,7 @@ const FileHandler = props => {
     <div className="mt-3">
       <Dropzone onDrop={e => props.uploadFile(e[0].name)}>
         {({ getRootProps, getInputProps }) => (
-          <section className="border bg-light">
+          <section className="border bg-light dropzone-selection">
             <div {...getRootProps()}>
               <input {...getInputProps()} accept="application/pdf,image/*" />
               <Jumbotron fluid className="m-0 p-3 bg-light">
