@@ -5,10 +5,10 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
+import { spawn } from 'child_process';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-// global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
 function createMainWindow() {
@@ -18,6 +18,9 @@ function createMainWindow() {
     title: 'JHove 2020',
     frame: false,
     titleBarStyle: 'hidden',
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
 
   window._id = 'main';
@@ -51,35 +54,43 @@ function createMainWindow() {
   return window;
 }
 
-// quit application when all windows are closed
 app.on('window-all-closed', () => {
-  // on macOS it is common for applications to stay open until the user explicitly quits
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
 app.on('activate', () => {
-  // on macOS it is common to re-create a window even after all windows have been closed
   if (mainWindow === null) {
     mainWindow = createMainWindow();
   }
 });
 
-// create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow();
 });
 
 ipcMain.on('create_new_window', (event, arg) => {
-  console.log(arg);
-  event.sender.send('receive_file_info', arg);
+  // exec(`python ./src/libs/script.py ${arg}`, (stderr, stdin, stdout) => {
+  //   console.log(stdout);
+  // });
   const win = new BrowserWindow({
     minWidth: 800,
     minHeight: 600,
     title: 'JHove 2020',
     frame: false,
     titleBarStyle: 'hidden',
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+  win._id = 'report';
+
+  const reportDate = spawn('python', ['./src/libs/script.py', arg]);
+  reportDate.stdout.on('data', data => {
+    win.webContents.once('did-finish-load', () => {
+      win.webContents.send('receiver', data.toString());
+    });
   });
 
   if (isDevelopment) {
@@ -97,13 +108,4 @@ ipcMain.on('create_new_window', (event, arg) => {
       }),
     );
   }
-
-  win._id = 'report';
-
-  win.webContents.on('devtools-opened', () => {
-    win.focus();
-    setImmediate(() => {
-      win.focus();
-    });
-  });
 });

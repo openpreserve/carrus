@@ -1,13 +1,14 @@
-import React from 'react';
+/* eslint-disable no-console */
+import React, { useState } from 'react';
 import { ipcRenderer } from 'electron';
 import { Jumbotron, Container } from 'reactstrap';
 import WarningIcon from '@material-ui/icons/Warning';
 
 const Report = () => {
-  let fileName = '';
-  ipcRenderer.on('receive_file_info', (event, arg) => {
+  const [fileName, setFileName] = useState('');
+  ipcRenderer.on('receiver', (event, arg) => {
     console.log('here');
-    fileName = arg;
+    setFileName(arg);
   });
   return (
     <div>
