@@ -2,6 +2,12 @@
   "name": "jhove2020",
   "version": "1.0.0",
   "license": "MIT",
+  "build": {
+    "appId": "jhove2020",
+    "win": {
+      "icon": "build/icon.png"
+    }
+  },
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
