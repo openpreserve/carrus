@@ -15,6 +15,7 @@ function createMainWindow() {
     title: 'JHove 2020',
     frame: false,
     titleBarStyle: 'hidden',
+    icon: '../components/assets/pngwing.com.png',
   });
 
   if (isDevelopment) {
@@ -28,8 +29,8 @@ function createMainWindow() {
       formatUrl({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file',
-        slashes: true
-      })
+        slashes: true,
+      }),
     );
   }
 

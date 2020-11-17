@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { format as formatUrl } from 'url';
@@ -27,6 +27,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const Main = props => {
   const { fileOrigin } = props;
   const { t } = useTranslation();
+  const directoryRef = useRef();
   const handleExecute = () => {
     const win = new remote.BrowserWindow({
       title: 'JHove 2020',
@@ -116,9 +117,14 @@ const Main = props => {
           webkitdirectory=""
           type="file"
           id="customFolderInput"
-          onChange={e => props.setOutputFolder(e.target.value)}
+          onChange={() => console.log(directoryRef.current.files[0])}
+          ref={directoryRef}
         />
-        {/* <input directory="" webkitdirectory="" type="file" /> */}
+        {/* <input
+          directory=""
+          webkitdirectory=""
+          type="file"
+        /> */}
       </FormGroup>
       <Button color="success" value="Execute" className="mt-3 align-self-center" onClick={handleExecute}>
         {t('Execute')}
