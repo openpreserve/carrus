@@ -14,7 +14,8 @@
     "react/jsx-one-expression-per-line": 0,
     "linebreak-style": 0,
     "max-len": ["error", { "code": 120 }],
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "no-underscore-dangle": 0
   },
   "env": {
     "browser": true,

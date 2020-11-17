@@ -1,5 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-console */
 /* eslint-disable comma-dangle */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
 
@@ -15,8 +18,9 @@ function createMainWindow() {
     title: 'JHove 2020',
     frame: false,
     titleBarStyle: 'hidden',
-    icon: '../components/assets/pngwing.com.png',
   });
+
+  window._id = 'main';
 
   if (isDevelopment) {
     window.webContents.openDevTools();
@@ -65,4 +69,41 @@ app.on('activate', () => {
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow();
+});
+
+ipcMain.on('create_new_window', (event, arg) => {
+  console.log(arg);
+  event.sender.send('receive_file_info', arg);
+  const win = new BrowserWindow({
+    minWidth: 800,
+    minHeight: 600,
+    title: 'JHove 2020',
+    frame: false,
+    titleBarStyle: 'hidden',
+  });
+
+  if (isDevelopment) {
+    win.webContents.openDevTools();
+  }
+
+  if (isDevelopment) {
+    win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/`);
+  } else {
+    win.loadURL(
+      formatUrl({
+        pathname: path.join(__dirname, 'index.html'),
+        protocol: 'file',
+        slashes: true,
+      }),
+    );
+  }
+
+  win._id = 'report';
+
+  win.webContents.on('devtools-opened', () => {
+    win.focus();
+    setImmediate(() => {
+      win.focus();
+    });
+  });
 });

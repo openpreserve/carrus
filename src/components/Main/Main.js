@@ -1,55 +1,21 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { format as formatUrl } from 'url';
-import * as path from 'path';
-import {
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-  CustomInput,
-} from 'reactstrap';
-import { remote } from 'electron';
+import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
+import { ipcRenderer } from 'electron';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from '../Header/SemiHeader';
 import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '../Redux/redux-reducers';
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
 const Main = props => {
-  const { fileOrigin } = props;
+  const { fileOrigin, filePath } = props;
   const { t } = useTranslation();
   const directoryRef = useRef();
   const handleExecute = () => {
-    const win = new remote.BrowserWindow({
-      title: 'JHove 2020',
-      frame: false,
-      titleBarStyle: 'hidden',
-      minHeight: 600,
-      minWidth: 800,
-    });
-    if (isDevelopment) {
-      win.webContents.openDevTools();
-    }
-    if (isDevelopment) {
-      win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/report`);
-    } else {
-      win.loadURL(
-        formatUrl({
-          pathname: path.join(__dirname, 'index.html#/report'),
-          protocol: 'file',
-          slashes: true,
-        }),
-      );
-    }
+    ipcRenderer.send('create_new_window', filePath);
   };
   return (
     <div className="container d-flex flex-column">
@@ -112,19 +78,19 @@ const Main = props => {
         <Label for="customFile" className="mr-3 my-auto w-25">
           {t('OutputFolder')}:
         </Label>
-        <CustomInput
+        {/* <CustomInput
           directory=""
           webkitdirectory=""
           type="file"
           id="customFolderInput"
-          onChange={() => console.log(directoryRef.current.files[0])}
-          ref={directoryRef}
-        />
-        {/* <input
+        /> */}
+        <input
           directory=""
           webkitdirectory=""
           type="file"
-        /> */}
+          onChange={() => console.log(directoryRef.current.files[0])}
+          ref={directoryRef}
+        />
       </FormGroup>
       <Button color="success" value="Execute" className="mt-3 align-self-center" onClick={handleExecute}>
         {t('Execute')}
@@ -140,6 +106,8 @@ const mapStateToProps = state => ({
   outputFolder: state.outputFolder,
   url: state.url,
   fileOrigin: state.fileOrigin,
+  fileName: state.fileName,
+  filePath: state.filePath,
 });
 
 export default connect(mapStateToProps, {
