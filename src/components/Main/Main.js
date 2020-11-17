@@ -2,6 +2,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { format as formatUrl } from 'url';
+import * as path from 'path';
 import {
   Nav,
   NavItem,
@@ -14,16 +16,39 @@ import {
   Button,
   CustomInput,
 } from 'reactstrap';
+import { remote } from 'electron';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from '../Header/SemiHeader';
 import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '../Redux/redux-reducers';
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 const Main = props => {
   const { fileOrigin } = props;
   const { t } = useTranslation();
   const handleExecute = () => {
-    console.log(props);
+    const win = new remote.BrowserWindow({
+      title: 'JHove 2020',
+      frame: false,
+      titleBarStyle: 'hidden',
+      minHeight: 600,
+      minWidth: 800,
+    });
+    if (isDevelopment) {
+      win.webContents.openDevTools();
+    }
+    if (isDevelopment) {
+      win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/report`);
+    } else {
+      win.loadURL(
+        formatUrl({
+          pathname: path.join(__dirname, 'index.html#/report'),
+          protocol: 'file',
+          slashes: true,
+        }),
+      );
+    }
   };
   return (
     <div className="container d-flex flex-column">

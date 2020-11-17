@@ -58,7 +58,7 @@ export const preproccessReducer = (state = initialState, action) => {
     case actionTypes.UPLOAD_FILE: {
       return {
         ...state,
-        uploadedFiles: [...state.uploadedFiles, action.payload],
+        uploadedFiles: [action.payload],
       };
     }
     default: {
