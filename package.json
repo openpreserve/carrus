@@ -5,7 +5,7 @@
   "build": {
     "appId": "jhove2020",
     "win": {
-      "icon": "dist/icon.png"
+      "icon": "build/icon.png"
     }
   },
   "scripts": {
