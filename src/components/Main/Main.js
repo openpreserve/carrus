@@ -1,29 +1,21 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import {
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-  CustomInput,
-} from 'reactstrap';
+import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
+import { ipcRenderer } from 'electron';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from '../Header/SemiHeader';
 import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '../Redux/redux-reducers';
 
 const Main = props => {
-  const { fileOrigin } = props;
+  const { fileOrigin, filePath } = props;
   const { t } = useTranslation();
+  const directoryRef = useRef();
   const handleExecute = () => {
-    console.log(props);
+    ipcRenderer.send('create_new_window', filePath);
   };
   return (
     <div className="container d-flex flex-column">
@@ -86,14 +78,19 @@ const Main = props => {
         <Label for="customFile" className="mr-3 my-auto w-25">
           {t('OutputFolder')}:
         </Label>
-        <CustomInput
+        {/* <CustomInput
           directory=""
           webkitdirectory=""
           type="file"
           id="customFolderInput"
-          onChange={e => props.setOutputFolder(e.target.value)}
+        /> */}
+        <input
+          directory=""
+          webkitdirectory=""
+          type="file"
+          onChange={() => console.log(directoryRef.current.files[0])}
+          ref={directoryRef}
         />
-        {/* <input directory="" webkitdirectory="" type="file" /> */}
       </FormGroup>
       <Button color="success" value="Execute" className="mt-3 align-self-center" onClick={handleExecute}>
         {t('Execute')}
@@ -109,6 +106,8 @@ const mapStateToProps = state => ({
   outputFolder: state.outputFolder,
   url: state.url,
   fileOrigin: state.fileOrigin,
+  fileName: state.fileName,
+  filePath: state.filePath,
 });
 
 export default connect(mapStateToProps, {

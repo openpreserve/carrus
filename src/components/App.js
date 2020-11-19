@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import osLocale from 'os-locale';
+import { remote } from 'electron';
 import { useTranslation } from 'react-i18next';
 import Main from './Main/Main';
 import Header from './Header/Header';
 import Tools from './Tools/Tools';
 import About from './About/About';
+import Report from './Report/Report';
 
 const App = () => {
   const { i18n } = useTranslation();
+  const currentWindow = (() => remote.getCurrentWindow()._id)();
 
   useEffect(async () => {
     const activeLanguage = (await osLocale()).split('-')[0];
@@ -21,13 +24,16 @@ const App = () => {
       <Header />
       <Switch>
         <Route exact path="/">
-          <Main />
+          {currentWindow === 'main' ? <Main /> : <Report />}
         </Route>
         <Route exact path="/tools">
           <Tools />
         </Route>
         <Route exact path="/about">
           <About />
+        </Route>
+        <Route exact path="/report">
+          <Report />
         </Route>
       </Switch>
     </div>
