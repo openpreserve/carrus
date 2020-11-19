@@ -47,3 +47,19 @@ a:hover {
   outline: none;
   text-decoration: none;
 }
+
+.nav-tabs .nav-item {
+  margin-bottom: -1px;
+}
+
+.nav-tabs .nav-link {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.dropzone-selection{
+  cursor: pointer;
+} 
+
+.dropzone-selection p::selection {
+  background: transparent;
+}
