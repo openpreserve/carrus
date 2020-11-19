@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { green } from '@material-ui/core/colors';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import { setTool, updateJPEGTool } from '../Redux/redux-reducers';
+import { setTool, updateJPEGTool } from '../../Redux/redux-reducers';
 
 const Tools = props => {
   const { t } = useTranslation();

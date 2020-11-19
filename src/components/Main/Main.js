@@ -8,7 +8,7 @@ import { ipcRenderer } from 'electron';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from '../Header/SemiHeader';
-import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '../Redux/redux-reducers';
+import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '../../Redux/redux-reducers';
 
 const Main = props => {
   const { fileOrigin, filePath } = props;
@@ -88,7 +88,7 @@ const Main = props => {
           directory=""
           webkitdirectory=""
           type="file"
-          onChange={() => console.log(directoryRef.current.files[0])}
+          onChange={() => props.setOutputFolder(directoryRef.current.files[0])}
           ref={directoryRef}
         />
       </FormGroup>
