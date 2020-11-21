@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormGroup, Label, Input } from 'reactstrap';
-import { setURL } from '../Redux/redux-reducers';
+import { setURL } from '../../Redux/redux-reducers';
 
 const UrlHandler = props => (
   <div className="mt-3 d-flex flex-column">

@@ -15,7 +15,6 @@ const Header = () => {
 
   const toggle = () => setDropdownOpen(prevState => !prevState);
   const { t } = useTranslation();
-  console.log(currentWindow);
 
   return (
     <div className="titlebar mb-3">

@@ -71,41 +71,37 @@ app.on('ready', () => {
 });
 
 ipcMain.on('create_new_window', (event, arg) => {
-  // exec(`python ./src/libs/script.py ${arg}`, (stderr, stdin, stdout) => {
-  //   console.log(stdout);
-  // });
-  const win = new BrowserWindow({
-    minWidth: 800,
-    minHeight: 600,
-    title: 'JHove 2020',
-    frame: false,
-    titleBarStyle: 'hidden',
-    webPreferences: {
-      nodeIntegration: true,
-    },
-  });
-  win._id = 'report';
-
   const reportDate = spawn('python', ['./src/libs/script.py', arg]);
   reportDate.stdout.on('data', data => {
+    const win = new BrowserWindow({
+      minWidth: 1037,
+      minHeight: 700,
+      title: 'JHove 2020',
+      frame: false,
+      titleBarStyle: 'hidden',
+      webPreferences: {
+        nodeIntegration: true,
+      },
+    });
+    win._id = 'report';
+
     win.webContents.once('did-finish-load', () => {
       win.webContents.send('receiver', data.toString());
     });
+    if (isDevelopment) {
+      win.webContents.openDevTools();
+    }
+
+    if (isDevelopment) {
+      win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/`);
+    } else {
+      win.loadURL(
+        formatUrl({
+          pathname: path.join(__dirname, 'index.html'),
+          protocol: 'file',
+          slashes: true,
+        }),
+      );
+    }
   });
-
-  if (isDevelopment) {
-    win.webContents.openDevTools();
-  }
-
-  if (isDevelopment) {
-    win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/`);
-  } else {
-    win.loadURL(
-      formatUrl({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file',
-        slashes: true,
-      }),
-    );
-  }
 });

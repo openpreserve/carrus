@@ -7,7 +7,8 @@ import Main from './Main/Main';
 import Header from './Header/Header';
 import Tools from './Tools/Tools';
 import About from './About/About';
-import Report from './Report/Report';
+// import Report from './Report/Report';
+import JobFailed from './Report/JobFailed';
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -24,16 +25,13 @@ const App = () => {
       <Header />
       <Switch>
         <Route exact path="/">
-          {currentWindow === 'main' ? <Main /> : <Report />}
+          {currentWindow === 'main' ? <Main /> : <JobFailed />}
         </Route>
         <Route exact path="/tools">
           <Tools />
         </Route>
         <Route exact path="/about">
           <About />
-        </Route>
-        <Route exact path="/report">
-          <Report />
         </Route>
       </Switch>
     </div>
