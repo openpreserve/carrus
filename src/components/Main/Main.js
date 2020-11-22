@@ -1,9 +1,22 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
-import React, { useRef } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-else-return */
+import React, { Fragment, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Spinner,
+  Container,
+  Progress } from 'reactstrap';
 import { ipcRenderer } from 'electron';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
@@ -14,89 +27,107 @@ const Main = props => {
   const { fileOrigin, filePath } = props;
   const { t } = useTranslation();
   const directoryRef = useRef();
+  const [isLoading, setIsLoading] = useState(false);
   const handleExecute = () => {
-    ipcRenderer.send('create_new_window', filePath);
+    setIsLoading(true);
+    setTimeout(() => {
+      ipcRenderer.send('create_new_window', filePath);
+      setIsLoading(false);
+    }, 2000);
   };
-  return (
-    <div className="container d-flex flex-column">
-      <SemiHeader />
-      <Nav tabs className="mt-5">
-        <NavItem className="mr-1">
-          <NavLink
-            className={fileOrigin === 'file' ? 'active text-success font-weight-bold' : 'bg-light text-dark'}
-            onClick={() => props.setFileOrigin('file')}
-          >
-            {t('YourFile')}
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            className={fileOrigin === 'url' ? 'active text-success font-weight-bold' : 'bg-light text-dark '}
-            onClick={() => props.setFileOrigin('url')}
-          >
-            {t('FromUrl')}
-          </NavLink>
-        </NavItem>
-      </Nav>
-      <TabContent activeTab={fileOrigin}>
-        <TabPane tabId="file">
-          <FileHandler />
-        </TabPane>
-        <TabPane tabId="url">
-          <UrlHandler />
-        </TabPane>
-      </TabContent>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="action" className="mr-3 my-auto w-25">
-          <span>{t('Action')}:</span>
-        </Label>
-        <Input type="select" onChange={e => props.setAction(e.target.value)}>
-          <option>{t('Validate')}</option>
-          <option>{t('Characterize')}</option>
-        </Input>
-      </FormGroup>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="tool" className="mr-3 my-auto w-25">
-          <span>{t('Tool')}: </span>
-        </Label>
-        <Input type="select" onChange={e => props.setTool(e.target.value)}>
-          <option>veraPDF</option>
-          <option>PDF hul</option>
-        </Input>
-      </FormGroup>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="action" className="mr-3 my-auto w-25">
-          <span>{t('Options')}: </span>
-        </Label>
-        <Input type="select" onChange={e => props.setOptions(e.target.value)}>
-          <option>PDF/A-1</option>
-          <option>PDF/A-2</option>
-          <option>PDF/A-3</option>
-        </Input>
-      </FormGroup>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="customFile" className="mr-3 my-auto w-25">
-          {t('OutputFolder')}:
-        </Label>
-        {/* <CustomInput
-          directory=""
-          webkitdirectory=""
-          type="file"
-          id="customFolderInput"
-        /> */}
-        <input
-          directory=""
-          webkitdirectory=""
-          type="file"
-          onChange={() => console.log(directoryRef.current.files[0])}
-          ref={directoryRef}
-        />
-      </FormGroup>
-      <Button color="success" value="Execute" className="mt-3 align-self-center" onClick={handleExecute}>
-        {t('Execute')}
-      </Button>
-    </div>
-  );
+  if (!isLoading) {
+    return (
+      <div className="container d-flex flex-column">
+        <SemiHeader />
+        <Nav tabs className="mt-5">
+          <NavItem className="mr-1">
+            <NavLink
+              className={fileOrigin === 'file' ? 'active text-success font-weight-bold' : 'bg-light text-dark'}
+              onClick={() => props.setFileOrigin('file')}
+            >
+              {t('YourFile')}
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={fileOrigin === 'url' ? 'active text-success font-weight-bold' : 'bg-light text-dark '}
+              onClick={() => props.setFileOrigin('url')}
+            >
+              {t('FromUrl')}
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <TabContent activeTab={fileOrigin}>
+          <TabPane tabId="file">
+            <FileHandler />
+          </TabPane>
+          <TabPane tabId="url">
+            <UrlHandler />
+          </TabPane>
+        </TabContent>
+        <FormGroup className="mt-3 w-50 d-flex flex-row">
+          <Label for="action" className="mr-3 my-auto w-25">
+            <span>{t('Action')}:</span>
+          </Label>
+          <Input type="select" onChange={e => props.setAction(e.target.value)}>
+            <option>{t('Validate')}</option>
+            <option>{t('Characterize')}</option>
+          </Input>
+        </FormGroup>
+        <FormGroup className="mt-3 w-50 d-flex flex-row">
+          <Label for="tool" className="mr-3 my-auto w-25">
+            <span>{t('Tool')}: </span>
+          </Label>
+          <Input type="select" onChange={e => props.setTool(e.target.value)}>
+            <option>veraPDF</option>
+            <option>PDF hul</option>
+          </Input>
+        </FormGroup>
+        <FormGroup className="mt-3 w-50 d-flex flex-row">
+          <Label for="action" className="mr-3 my-auto w-25">
+            <span>{t('Options')}: </span>
+          </Label>
+          <Input type="select" onChange={e => props.setOptions(e.target.value)}>
+            <option>PDF/A-1</option>
+            <option>PDF/A-2</option>
+            <option>PDF/A-3</option>
+          </Input>
+        </FormGroup>
+        <FormGroup className="mt-3 w-50 d-flex flex-row">
+          <Label for="customFile" className="mr-3 my-auto w-25">
+            {t('OutputFolder')}:
+          </Label>
+          {/* <CustomInput
+            directory=""
+            webkitdirectory=""
+            type="file"
+            id="customFolderInput"
+          /> */}
+          <input
+            directory=""
+            webkitdirectory=""
+            type="file"
+            onChange={() => console.log(directoryRef.current.files[0])}
+            ref={directoryRef}
+          />
+        </FormGroup>
+        <Button color="success" value="Execute" className="mt-3 align-self-center" onClick={handleExecute}>
+          {t('Execute')}
+        </Button>
+      </div>
+    );
+  } else {
+    return (
+      <div className="container d-flex flex-column">
+        <SemiHeader />
+        <Container fluid className="d-flex flex-column align-items-center loader-content">
+          <p className="lead">{t('Loading')}</p>
+          {/* <Spinner color="success" /> */}
+          <Progress animated bar color="success" value="100" />
+        </Container>
+      </div>
+    );
+  }
 };
 
 const mapStateToProps = state => ({

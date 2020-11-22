@@ -63,3 +63,17 @@ a:hover {
 .dropzone-selection p::selection {
   background: transparent;
 }
+
+.loader-content {
+  width: 70%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.progress-bar {
+  margin-top: 10px;
+  height: 15px;
+  border-radius: 5px;
+}
