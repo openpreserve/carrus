@@ -7,8 +7,8 @@ import Main from './Main/Main';
 import Header from './Header/Header';
 import Tools from './Tools/Tools';
 import About from './About/About';
-// import Report from './Report/Report';
-import JobFailed from './Report/JobFailed';
+import Report from './Report/Report';
+// import JobFailed from './Report/JobFailed';
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(async () => {
     const activeLanguage = (await osLocale()).split('-')[0];
-    if (activeLanguage === 'en' || activeLanguage === 'fr' || activeLanguage === 'ru') {
+    if (activeLanguage === 'fr' || activeLanguage === 'ru') {
       i18n.changeLanguage(activeLanguage);
     }
   }, []);
@@ -25,7 +25,7 @@ const App = () => {
       <Header />
       <Switch>
         <Route exact path="/">
-          {currentWindow === 'main' ? <Main /> : <JobFailed />}
+          {currentWindow === 'main' ? <Main /> : <Report />}
         </Route>
         <Route exact path="/tools">
           <Tools />
