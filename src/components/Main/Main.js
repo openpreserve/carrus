@@ -14,7 +14,6 @@ import { Nav,
   Label,
   Input,
   Button,
-  Spinner,
   Container,
   Progress } from 'reactstrap';
 import { ipcRenderer } from 'electron';
@@ -122,7 +121,6 @@ const Main = props => {
         <SemiHeader />
         <Container fluid className="d-flex flex-column align-items-center loader-content">
           <p className="lead">{t('Loading')}</p>
-          {/* <Spinner color="success" /> */}
           <Progress animated bar color="success" value="100" />
         </Container>
       </div>
