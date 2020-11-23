@@ -2,7 +2,10 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-else-return */
-import React, { Fragment, useRef, useState } from 'react';
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable react/jsx-closing-tag-location */
+import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Nav,
@@ -17,6 +20,7 @@ import { Nav,
   Container,
   Progress } from 'reactstrap';
 import { ipcRenderer } from 'electron';
+import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from '../Header/SemiHeader';
@@ -34,9 +38,9 @@ const Main = props => {
       setIsLoading(false);
     }, 2000);
   };
-  if (!isLoading) {
-    return (
-      <div className="container d-flex flex-column">
+  return (
+    (!isLoading)
+      ? (<div className="container d-flex flex-column">
         <SemiHeader />
         <Nav tabs className="mt-5">
           <NavItem className="mr-1">
@@ -113,19 +117,9 @@ const Main = props => {
         <Button color="success" value="Execute" className="mt-3 align-self-center" onClick={handleExecute}>
           {t('Execute')}
         </Button>
-      </div>
-    );
-  } else {
-    return (
-      <div className="container d-flex flex-column">
-        <SemiHeader />
-        <Container fluid className="d-flex flex-column align-items-center loader-content">
-          <p className="lead">{t('Loading')}</p>
-          <Progress animated bar color="success" value="100" />
-        </Container>
-      </div>
-    );
-  }
+      </div>)
+      : (<ProgressBar />)
+  );
 };
 
 const mapStateToProps = state => ({
