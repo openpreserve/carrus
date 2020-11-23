@@ -21,6 +21,7 @@ const resources = {
       About: 'About',
       mainPage: 'Main Page',
       defaultTool: 'Default Tool',
+      Loading: 'Loading...',
     },
   },
   fr: {
@@ -40,6 +41,7 @@ const resources = {
       About: 'À propos',
       mainPage: "Page D'accueil",
       defaultTool: 'Outil par défaut',
+      Loading: 'Chargement...',
     },
   },
   ru: {
@@ -59,6 +61,7 @@ const resources = {
       About: 'О нас',
       mainPage: 'Главная Страница',
       defaultTool: 'Инструмент по умолчанию',
+      Loading: 'Загрузка...',
     },
   },
 };
