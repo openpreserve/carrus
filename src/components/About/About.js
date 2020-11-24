@@ -23,19 +23,19 @@ const About = () => {
             <img src={logo} alt="" className="" />
           </div>
           <p className="w-75">
-            Derived from software Copyright 2004-2011 by the President and Fellows of Harvard College.
+            {t('DerivedFrom')}
           </p>
-          <p className="w-75">Released under the GNU Lesser General Public License.</p>
+          <p className="w-75"> {t('GNULicense')} </p>
         </Jumbotron>
         <Jumbotron className="container m-0 p-3 bg-white w-50 d-flex flex-column align-items-center">
           <div className="m-auto">
-            <p className="mb-1">Release: 1.24.1 2020-03-16</p>
-            <p className="mb-1">Your version is out of date.</p>
+            <p className="mb-1">{t('Release')}: 1.24.1 2020-03-16</p>
+            <p className="mb-1">{t('outOfDate')}</p>
             <p className="mb-1">
               <span style={{ color: green[500] }}>
-                <GetAppIcon /> Update
+                <GetAppIcon /> {t('Update')}
               </span>{' '}
-              to the latest version
+              {t('latestVersion')}
             </p>
           </div>
         </Jumbotron>
