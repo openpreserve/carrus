@@ -15,7 +15,8 @@
     "linebreak-style": 0,
     "max-len": ["error", { "code": 120 }],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "no-underscore-dangle": 0
+    "no-underscore-dangle": 0,
+    "no-restricted-globals": 0
   },
   "env": {
     "browser": true,

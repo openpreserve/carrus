@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Navbar, NavbarBrand, DropdownToggle, Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 import { remote } from 'electron';
@@ -16,6 +16,9 @@ const Header = () => {
   const toggle = () => setDropdownOpen(prevState => !prevState);
   const { t } = useTranslation();
 
+  useEffect(() => {
+    console.log(location.href);
+  }, []);
   return (
     <div className="titlebar mb-3">
       <Navbar color="faded" light>

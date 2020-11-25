@@ -6,7 +6,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import App from '../components/App';
 import store from '../Redux/redux-store';
 import '../i18next/i18next';
-import '../index.css';
+import '../styles/index.css';
 
 ReactDOM.render(
   <Router>
