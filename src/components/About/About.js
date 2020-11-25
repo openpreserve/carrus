@@ -29,7 +29,7 @@ const About = () => {
         </Jumbotron>
         <Jumbotron className="container m-0 p-3 bg-white w-50 d-flex flex-column align-items-center">
           <div className="m-auto">
-            <p className="mb-1">{t('Release')}: 1.24.1 2020-03-16</p>
+            <p className="mb-1">{t('Release', { date: '1.24.1 2020-03-16' })}</p>
             <p className="mb-1">{t('outOfDate')}</p>
             <p className="mb-1">
               <span style={{ color: green[500] }}>
