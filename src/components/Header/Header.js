@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Navbar, NavbarBrand, DropdownToggle, Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 import { remote } from 'electron';
@@ -16,9 +16,6 @@ const Header = () => {
   const toggle = () => setDropdownOpen(prevState => !prevState);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    console.log(location.href);
-  }, []);
   return (
     <div className="titlebar mb-3">
       <Navbar color="faded" light>
@@ -29,13 +26,13 @@ const Header = () => {
         >
           <DropdownToggle color="white">☰</DropdownToggle>
           <DropdownMenu>
-            <DropdownItem to="/" tag={Link}>
+            <DropdownItem active={location.hash === '#/'} to="/" tag={Link}>
               {t('mainPage')}
             </DropdownItem>
-            <DropdownItem to="/tools" tag={Link}>
+            <DropdownItem active={location.hash === '#/tools'} to="/tools" tag={Link}>
               {t('Tools')}
             </DropdownItem>
-            <DropdownItem to="/about" tag={Link}>
+            <DropdownItem active={location.hash === '#/about'} to="/about" tag={Link}>
               {t('About')}
             </DropdownItem>
           </DropdownMenu>
