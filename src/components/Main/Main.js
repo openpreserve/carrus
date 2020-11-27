@@ -17,8 +17,7 @@ import { Nav,
   Label,
   Input,
   Button,
-  Container,
-  Progress } from 'reactstrap';
+} from 'reactstrap';
 import { ipcRenderer } from 'electron';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
