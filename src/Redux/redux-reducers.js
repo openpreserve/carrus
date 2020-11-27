@@ -10,6 +10,7 @@ const initialState = {
   defaultJPEGTool: 'JPEG hul',
   fileName: '',
   filePath: '',
+  dirPath: '',
 };
 
 export const preproccessReducer = (state = initialState, action) => {
@@ -68,6 +69,12 @@ export const preproccessReducer = (state = initialState, action) => {
         filePath: action.payload,
       };
     }
+    case actionTypes.SET_DIR_PATH: {
+      return {
+        ...state,
+        dirPath: action.payload,
+      };
+    }
     default: {
       return state;
     }
@@ -83,3 +90,4 @@ export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payl
 export const updateJPEGTool = value => ({ type: actionTypes.UPDATE_JPEG_TOOL, payload: value });
 export const uploadFile = value => ({ type: actionTypes.SET_FILE_NAME, payload: value });
 export const setFilePath = value => ({ type: actionTypes.SET_FILE_PATH, payload: value });
+export const setDirPath = value => ({ type: actionTypes.SET_DIR_PATH, payload: value });

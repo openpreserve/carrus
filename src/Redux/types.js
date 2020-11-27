@@ -9,6 +9,7 @@ const actionTypes = {
   UPDATE_JPEG_TOOL: 'UPDATE_JPEG_TOOL',
   SET_FILE_PATH: 'SET_FILE_PATH',
   SET_FILE_NAME: 'SET_FILE_NAME',
+  SET_DIR_PATH: 'SET_DIR_PATH',
 };
 
 export default actionTypes;

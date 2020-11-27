@@ -5,6 +5,8 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-closing-tag-location */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable react/destructuring-assignment */
 import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +26,7 @@ import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from '../Header/SemiHeader';
 import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '../../Redux/redux-reducers';
+import FolderInput from './FolderInput';
 
 const Main = props => {
   const { fileOrigin, filePath } = props;
@@ -37,6 +40,7 @@ const Main = props => {
       setIsLoading(false);
     }, 2000);
   };
+
   return (
     (!isLoading)
       ? (<div className="container d-flex flex-column">
@@ -68,7 +72,7 @@ const Main = props => {
           </TabPane>
         </TabContent>
         <FormGroup className="mt-3 w-50 d-flex flex-row">
-          <Label for="action" className="mr-3 my-auto w-25">
+          <Label for="action" className="mr-1 my-auto w-25">
             <span>{t('Action')}:</span>
           </Label>
           <Input type="select" onChange={e => props.setAction(e.target.value)}>
@@ -77,7 +81,7 @@ const Main = props => {
           </Input>
         </FormGroup>
         <FormGroup className="mt-3 w-50 d-flex flex-row">
-          <Label for="tool" className="mr-3 my-auto w-25">
+          <Label for="tool" className="mr-1 my-auto w-25">
             <span>{t('Tool')}: </span>
           </Label>
           <Input type="select" onChange={e => props.setTool(e.target.value)}>
@@ -86,7 +90,7 @@ const Main = props => {
           </Input>
         </FormGroup>
         <FormGroup className="mt-3 w-50 d-flex flex-row">
-          <Label for="action" className="mr-3 my-auto w-25">
+          <Label for="action" className="mr-1 my-auto w-25">
             <span>{t('Options')}: </span>
           </Label>
           <Input type="select" onChange={e => props.setOptions(e.target.value)}>
@@ -95,23 +99,14 @@ const Main = props => {
             <option>PDF/A-3</option>
           </Input>
         </FormGroup>
-        <FormGroup className="mt-3 w-50 d-flex flex-row">
-          <Label for="customFile" className="mr-3 my-auto w-25">
-            {t('OutputFolder')}:
-          </Label>
-          {/* <CustomInput
-            directory=""
-            webkitdirectory=""
-            type="file"
-            id="customFolderInput"
-          /> */}
-          <input
-            directory=""
-            webkitdirectory=""
-            type="file"
-            onChange={() => console.log(directoryRef.current.files[0])}
-            ref={directoryRef}
-          />
+        <FormGroup className="mt-3 w-100 d-flex flex-row align-center">
+          <div className="w-50 d-flex flex-row">
+            <Label for="customFile" className="mr-1 my-auto w-25">
+              {t('OutputFolder')}:
+            </Label>
+            <Input className="dir_path" readOnly placeholder={props.dirPath} />
+          </div>
+          <FolderInput />
         </FormGroup>
         <Button color="success" value="Execute" className="mt-3 align-self-center" onClick={handleExecute}>
           {t('Execute')}
@@ -130,6 +125,7 @@ const mapStateToProps = state => ({
   fileOrigin: state.fileOrigin,
   fileName: state.fileName,
   filePath: state.filePath,
+  dirPath: state.dirPath,
 });
 
 export default connect(mapStateToProps, {
