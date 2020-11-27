@@ -7,11 +7,12 @@
       "namespace": "https://worldoftanks.ru/"
     },
     "inputExtension": [
-      {
-        "extension": "pdf"
-      }
+        {
+            "toolID": "PDF",
+            "extension": "PDF"
+        }
     ],
-    "preservationActionName": "Validate",
+    "preservationActionName": "Characterize",
     "tool": [
         {
             "toolID": "tool_2",
