@@ -6,20 +6,9 @@
     "name": "Validate",
     "namespace": "https://worldoftanks.ru/"
   },
-  "inputExtension": [
-    {
-      "toolID": "PDF",
-      "extension": "PDF"
-    },
-    {
-      "toolID": "PDF",
-      "extension": "PDF"
-    },
-    {
-      "toolID": "DOCX",
-      "extension": "DOCX"
-    }
-  ],
+  "inputExtension": {
+    "accept": "application/pdf,application/msword,image/*"
+  },
   "preservationActionName": "Validate",
   "tool": [
     {

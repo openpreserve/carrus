@@ -13,7 +13,8 @@ import { uploadFile, setFilePath } from '../../Redux/redux-reducers';
 
 const FileHandler = props => {
   const { t } = useTranslation();
-  const { fileName } = props;
+  const { fileName, accept } = props;
+  console.log(accept);
   return (
     <div className="mt-3">
       <Dropzone
@@ -25,7 +26,7 @@ const FileHandler = props => {
         {({ getRootProps, getInputProps }) => (
           <section className="border bg-light dropzone-selection">
             <div {...getRootProps()}>
-              <input {...getInputProps()} accept="application/pdf,image/*" />
+              <input {...getInputProps()} {...accept} />
               <Jumbotron fluid className="m-0 p-3 bg-light">
                 <Container fluid className="d-flex flex-column align-items-center">
                   <MoveToInboxIcon className="text-green" style={{ fontSize: 80, color: green[500] }} />
@@ -47,6 +48,9 @@ const FileHandler = props => {
   );
 };
 
-const mapStateToProps = state => ({ fileName: state.fileName });
+const mapStateToProps = state => ({
+  fileName: state.fileName,
+  accept: state.actions.filter(e => e.active)[0].inputExtension,
+});
 
 export default connect(mapStateToProps, { uploadFile, setFilePath })(FileHandler);

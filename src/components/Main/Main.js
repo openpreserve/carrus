@@ -26,10 +26,6 @@ const Main = props => {
   const directoryRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const { actions } = props;
-
-  useEffect(() => {
-    console.log(props);
-  }, [props]);
   const handleExecute = () => {
     setIsLoading(true);
     setTimeout(() => {
