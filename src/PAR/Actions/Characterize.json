@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "description": "Characterize file",
     "example": "",
     "id": {
@@ -20,3 +21,25 @@
         }
     ]
   }
+=======
+  "description": "Characterize file",
+  "example": "",
+  "id": {
+    "guid": "111-222-333-444",
+    "name": "Characterize",
+    "namespace": "https://worldoftanks.ru/"
+  },
+  "inputExtension": [
+    {
+      "extension": "pdf"
+    }
+  ],
+  "preservationActionName": "Characterize",
+  "tool": [
+    {
+      "toolID": "tool_2",
+      "toolName": "PDF hul"
+    }
+  ]
+}
+>>>>>>> 36be2478108da27f054a5f6d6609449cca44d1a7

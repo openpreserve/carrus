@@ -1,16 +1,27 @@
+/* eslint-disable no-console */
 import actionTypes from './types';
+import Validate from '../PAR/Actions/Validate.json';
+import Characterize from '../PAR/Actions/Characterize.json';
 
 const initialState = {
-  action: 'Validate',
-  tool: 'veraPDF',
-  options: 'PDF/A-1',
+  actions: [
+    {
+      ...Validate,
+      active: true,
+    },
+    {
+      ...Characterize,
+      active: false,
+    },
+  ],
+  tool: '',
   outputFolder: '',
   url: '',
   fileOrigin: 'file',
   defaultJPEGTool: 'JPEG hul',
-  fileName: '',
   filePath: '',
   dirPath: '',
+  fileName: '',
 };
 
 export const preproccessReducer = (state = initialState, action) => {
@@ -18,7 +29,19 @@ export const preproccessReducer = (state = initialState, action) => {
     case actionTypes.SET_ACTION: {
       return {
         ...state,
-        action: action.payload,
+        actions: state.actions.map(e => {
+          if (e.preservationActionName === action.payload) {
+            return {
+              ...e,
+              active: true,
+            };
+          }
+          return {
+            ...e,
+            active: false,
+          };
+        }),
+        tool: state.actions.filter(e => e.active)[0].tool[0].toolName,
       };
     }
     case actionTypes.SET_OPTIONS: {
@@ -57,16 +80,16 @@ export const preproccessReducer = (state = initialState, action) => {
         defaultJPEGTool: action.payload,
       };
     }
-    case actionTypes.SET_FILE_NAME: {
-      return {
-        ...state,
-        fileName: action.payload,
-      };
-    }
     case actionTypes.SET_FILE_PATH: {
       return {
         ...state,
         filePath: action.payload,
+      };
+    }
+    case actionTypes.SET_FILE_NAME: {
+      return {
+        ...state,
+        fileName: action.payload,
       };
     }
     case actionTypes.SET_DIR_PATH: {
@@ -75,6 +98,7 @@ export const preproccessReducer = (state = initialState, action) => {
         dirPath: action.payload,
       };
     }
+
     default: {
       return state;
     }

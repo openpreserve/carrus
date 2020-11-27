@@ -10,6 +10,7 @@ const actionTypes = {
   SET_FILE_PATH: 'SET_FILE_PATH',
   SET_FILE_NAME: 'SET_FILE_NAME',
   SET_DIR_PATH: 'SET_DIR_PATH',
+  SWITCH_ACTION: 'SWITCH_ACTION',
 };
 
 export default actionTypes;
