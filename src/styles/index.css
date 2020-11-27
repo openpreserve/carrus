@@ -77,3 +77,26 @@ a:hover {
   height: 15px;
   border-radius: 5px;
 }
+
+.align-center {
+  align-items: center;
+}
+
+.dir_path.dir_path {
+  background-color: white;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+label.custom-file-upload {
+  margin-bottom: 0 !important;
+}
+
+.custom-file-upload {
+  border: 1px solid #ced4da;
+  padding: 6px 16px;
+  cursor: pointer;
+  border-radius: .25rem;
+}

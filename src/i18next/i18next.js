@@ -28,6 +28,7 @@ const resources = {
       outOfDate: 'Your version is out of date.',
       Update: 'Update',
       latestVersion: 'to the latest version',
+      SelectFolder: 'Select folder',
     },
   },
   fr: {
@@ -54,6 +55,7 @@ const resources = {
       outOfDate: 'Votre version est obsolète.',
       Update: 'Mise à jour',
       latestVersion: 'à la dernière version',
+      SelectFolder: 'Sélectionner le dossier',
     },
   },
   ru: {
@@ -81,6 +83,7 @@ const resources = {
       outOfDate: 'Ваша версия устарела.',
       Update: 'Обновить',
       latestVersion: 'до последней версии',
+      SelectFolder: 'Выберите папку',
     },
   },
 };
