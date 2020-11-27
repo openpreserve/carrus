@@ -67,7 +67,7 @@ const Main = props => {
         </TabPane>
       </TabContent>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="action" className="mr-3 my-auto w-25">
+        <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Action')}:</span>
         </Label>
         <Input type="select" onChange={e => props.setAction(e.target.value)}>
@@ -77,7 +77,7 @@ const Main = props => {
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="tool" className="mr-3 my-auto w-25">
+        <Label for="tool" className="mr-1 my-auto w-25">
           <span>{t('Tool')}: </span>
         </Label>
         <Input type="select" onChange={e => props.setTool(e.target.value)}>
@@ -90,7 +90,7 @@ const Main = props => {
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
-        <Label for="action" className="mr-3 my-auto w-25">
+        <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Options')}: </span>
         </Label>
         <Input type="select" onChange={e => props.setOptions(e.target.value)}>

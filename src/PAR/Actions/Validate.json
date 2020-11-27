@@ -11,34 +11,6 @@
       "toolID": "PDF",
       "extension": "PDF"
     },
-<<<<<<< HEAD
-    "inputExtension": [
-      {
-        "toolID": "PDF",
-        "extension": "PDF"
-      },
-      {
-        "toolID": "PDF",
-        "extension": "PDF"
-      },
-      {
-        "toolID": "DOCX",
-        "extension": "DOCX"
-      }
-    ],
-    "preservationActionName": "Validate",
-    "tool": [
-        {
-            "toolID": "tool_1",
-            "toolName": "veraPDF"
-        },
-        {
-            "toolID": "tool_2",
-            "toolName": "PDF hul"
-        }
-    ]
-}
-=======
     {
       "toolID": "PDF",
       "extension": "PDF"
@@ -60,4 +32,3 @@
     }
   ]
 }
->>>>>>> 36be2478108da27f054a5f6d6609449cca44d1a7

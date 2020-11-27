@@ -8,7 +8,6 @@ const FolderInput = (props) => {
   const { t } = useTranslation();
   const directoryRef = useRef();
   function getfolder() {
-    console.log(directoryRef.current.files[0].path);
     props.setDirPath(directoryRef.current.files[0].path);
   }
 
