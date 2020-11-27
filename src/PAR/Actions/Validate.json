@@ -1,34 +1,34 @@
 {
-    "description": "File validation",
-    "example": "",
-    "id": {
-      "guid": "111-222-333",
-      "name": "Validate",
-      "namespace": "https://worldoftanks.ru/"
+  "description": "File validation",
+  "example": "",
+  "id": {
+    "guid": "111-222-333",
+    "name": "Validate",
+    "namespace": "https://worldoftanks.ru/"
+  },
+  "inputExtension": [
+    {
+      "toolID": "PDF",
+      "extension": "PDF"
     },
-    "inputExtension": [
-      {
-        "toolID": "PDF",
-        "extension": "PDF"
-      },
-      {
-        "toolID": "PDF",
-        "extension": "PDF"
-      },
-      {
-        "toolID": "DOCX",
-        "extension": "DOCX"
-      }
-    ],
-    "preservationActionName": "Validate",
-    "tool": [
-        {
-            "toolID": "tool_1",
-            "toolName": "veraPDF"
-        },
-        {
-            "toolID": "tool_2",
-            "toolName": "PDF hul"
-        }
-    ]
-  }
+    {
+      "toolID": "PDF",
+      "extension": "PDF"
+    },
+    {
+      "toolID": "DOCX",
+      "extension": "DOCX"
+    }
+  ],
+  "preservationActionName": "Validate",
+  "tool": [
+    {
+      "toolID": "tool_1",
+      "toolName": "veraPDF"
+    },
+    {
+      "toolID": "tool_2",
+      "toolName": "PDF hul"
+    }
+  ]
+}

@@ -1,21 +1,21 @@
 {
-    "description": "Characterize file",
-    "example": "",
-    "id": {
-      "guid": "111-222-333-444",
-      "name": "Characterize",
-      "namespace": "https://worldoftanks.ru/"
-    },
-    "inputExtension": [
-      {
-        "extension": "pdf"
-      }
-    ],
-    "preservationActionName": "Validate",
-    "tool": [
-        {
-            "toolID": "tool_2",
-            "toolName": "PDF hul"
-        }
-    ]
-  }
+  "description": "Characterize file",
+  "example": "",
+  "id": {
+    "guid": "111-222-333-444",
+    "name": "Characterize",
+    "namespace": "https://worldoftanks.ru/"
+  },
+  "inputExtension": [
+    {
+      "extension": "pdf"
+    }
+  ],
+  "preservationActionName": "Characterize",
+  "tool": [
+    {
+      "toolID": "tool_2",
+      "toolName": "PDF hul"
+    }
+  ]
+}
