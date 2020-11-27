@@ -88,6 +88,7 @@ ipcMain.on('create_new_window', (event, arg) => {
     win.webContents.once('did-finish-load', () => {
       win.webContents.send('receiver', data.toString());
     });
+
     if (isDevelopment) {
       win.webContents.openDevTools();
     }

@@ -1,0 +1,11 @@
+{
+  "id": {
+    "guid": "fljsdljfhsdlfjsdljflsdjf;",
+    "name": "PDFhool",
+    "namespace": "http://365.cc"
+  },
+  "toolLabel": "PDFhool",
+  "toolName": "PDFhool",
+  "toolOperatingEnvironments": ["linux", "windows"],
+  "toolPublisher": "dual lab"
+}
