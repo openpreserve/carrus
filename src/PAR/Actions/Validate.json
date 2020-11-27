@@ -8,10 +8,16 @@
     },
     "inputExtension": [
       {
-        "extension": "pdf"
+        "toolID": "PDF",
+        "extension": "PDF"
       },
       {
-        "extension": "doc"
+        "toolID": "PDF",
+        "extension": "PDF"
+      },
+      {
+        "toolID": "DOCX",
+        "extension": "DOCX"
       }
     ],
     "preservationActionName": "Validate",
