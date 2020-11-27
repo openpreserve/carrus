@@ -1,12 +1,7 @@
 {
-    "id": {
-      "guid": "vmvkjkljghsd;f",
-      "name": "veraPDF",
-      "namespace": "http://365.cc"
-    },
-    "toolLabel": "veraPDF",
-    "toolName": "veraPDF",
-    "toolOperatingEnvironments": ["linux", "windows"],
-    "toolPublisher": "dual lab"
-  }
-  
+  "id": "veraPDF",
+  "toolLabel": "veraPDF",
+  "toolName": "veraPDF",
+  "toolOperatingEnvironments": ["linux", "windows"],
+  "toolPublisher": "dual lab"
+}
