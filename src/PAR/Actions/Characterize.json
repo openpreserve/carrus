@@ -6,11 +6,9 @@
     "name": "Characterize",
     "namespace": "https://worldoftanks.ru/"
   },
-  "inputExtension": [
-    {
-      "extension": "pdf"
-    }
-  ],
+  "inputExtension": {
+    "accept": "application/pdf"
+  },
   "preservationActionName": "Characterize",
   "tool": [
     {
