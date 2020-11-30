@@ -6,7 +6,7 @@ import { setURL } from '../../Redux/redux-reducers';
 const UrlHandler = props => (
   <div className="mt-3 d-flex flex-column">
     <FormGroup className="mt-3 w-50 d-flex flex-row">
-      <Label for="action" className="mr-3 my-auto w-25">
+      <Label for="action" className="mr-1 my-auto w-25">
         <span>URL: </span>
       </Label>
       <Input

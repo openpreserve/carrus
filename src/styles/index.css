@@ -100,3 +100,8 @@ label.custom-file-upload {
   cursor: pointer;
   border-radius: .25rem;
 }
+
+.dir_path.dir_path:focus {
+  border-color: #ced4da;
+  box-shadow: none;
+}
