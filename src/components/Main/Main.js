@@ -28,10 +28,14 @@ const Main = props => {
   const { actions } = props;
   const handleExecute = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      ipcRenderer.send('create_new_window', filePath);
-      setIsLoading(false);
-    }, 2000);
+    const dataToSend = {
+      filePath,
+      action: actions.filter(e => e.active)[0],
+      tool: props.tool,
+      outputFolder: props.dirPath,
+    };
+    ipcRenderer.send('create_new_window', dataToSend);
+    setIsLoading(false);
   };
   return !isLoading ? (
     <div className="container d-flex flex-column">

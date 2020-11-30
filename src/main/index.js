@@ -71,7 +71,13 @@ app.on('ready', () => {
 });
 
 ipcMain.on('create_new_window', (event, arg) => {
-  const reportDate = spawn('python', ['./src/libs/script.py', arg]);
+  const reportDate = spawn('python', [
+    './src/libs/script.py',
+    arg.filePath,
+    arg.outputFolder,
+    arg.action.preservationActionName,
+    arg.tool,
+  ]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
       minWidth: 1037,
