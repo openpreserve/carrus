@@ -1,5 +1,6 @@
 import sys
 import xml.etree.ElementTree as xml
+from time import strftime
 
 url = sys.argv[2] + '/report.xml'
 
@@ -18,6 +19,9 @@ def createXML(filename):
 
     action = xml.SubElement(appt, "action")
     action.text = sys.argv[4]
+    
+    timestamp = xml.SubElement(appt, "timestamp")
+    timestamp.text = strftime("%Y-%m-%d %H:%M:%S")
 
     tree = xml.ElementTree(root)
 
