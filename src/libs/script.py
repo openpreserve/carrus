@@ -19,7 +19,7 @@ def createXML(filename):
 
     action = xml.SubElement(appt, "action")
     action.text = sys.argv[4]
-    
+
     timestamp = xml.SubElement(appt, "timestamp")
     timestamp.text = strftime("%Y-%m-%d %H:%M:%S")
 
@@ -28,9 +28,10 @@ def createXML(filename):
     with open(filename, "w") as fh:
         tree.write(fh)
 
+    print(xml.tostring(root, encoding='utf8', method='xml'))
+
 
 try:
     createXML(url)
-    print('success')
 except:
     print('error')
