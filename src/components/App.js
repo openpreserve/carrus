@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React/* , { useEffect } */ from 'react';
 import { Switch, Route } from 'react-router-dom';
-import osLocale from 'os-locale';
-import { remote } from 'electron';
+/* import osLocale from 'os-locale'; */
+import { remote, ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 import Main from './Main/Main';
 import Header from './Header/Header';
@@ -13,13 +13,18 @@ import Report from './Report/Report';
 const App = () => {
   const { i18n } = useTranslation();
   const currentWindow = (() => remote.getCurrentWindow()._id)();
-
-  useEffect(async () => {
+  ipcRenderer.on('language', (event, lang) => {
+    if (lang === 'fr' || lang === 'ru') {
+      i18n.changeLanguage(lang);
+    }
+  });
+  /*   useEffect(async () => {
     const activeLanguage = (await osLocale()).split('-')[0];
     if (activeLanguage === 'fr' || activeLanguage === 'ru') {
       i18n.changeLanguage(activeLanguage);
     }
-  }, []);
+  }, []); */
+
   return (
     <div className="mb-3">
       <Header />

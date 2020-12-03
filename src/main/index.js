@@ -2,16 +2,28 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 /* eslint-disable comma-dangle */
+/* eslint-disable prefer-destructuring */
 import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
+import * as fs from 'fs';
+import osLocale from 'os-locale';
 import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
+const configDir = 'src/config';
+const initialConfig = {
+  language: 'en',
+};
 
-function createMainWindow() {
+async function setOsLang() {
+  const data = await osLocale();
+  initialConfig.language = data.split('-')[0];
+}
+
+async function createMainWindow() {
   const window = new BrowserWindow({
     minWidth: 1280,
     minHeight: 800,
@@ -51,6 +63,46 @@ function createMainWindow() {
       window.focus();
     });
   });
+
+  try {
+    if (fs.existsSync(path.join(configDir, 'config.json'))) {
+      // file exists, read file
+      fs.readFile(
+        path.join(configDir, 'config.json'),
+        'utf-8',
+        (err, data) => {
+          if (err) {
+            throw new Error(err);
+          }
+          window.webContents.on('did-finish-load', () => {
+            window.webContents.send('language', (JSON.parse(data)).language);
+          });
+        }
+      );
+    } else {
+      // file does not exist, create default config
+      await setOsLang();
+      window.webContents.on('did-finish-load', () => {
+        window.webContents.send('language', initialConfig.language);
+      });
+      fs.writeFile(
+        path.join(configDir, 'config.json'),
+        JSON.stringify(initialConfig),
+        (err) => {
+          if (err) {
+            throw new Error(err);
+          }
+        }
+      );
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  /*  window.webContents.on('did-finish-load', () => {
+    window.webContents.send('language', initialConfig.language);
+  }); */
+
   return window;
 }
 
