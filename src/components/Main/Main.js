@@ -21,17 +21,20 @@ import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '
 import FolderInput from './FolderInput';
 
 const Main = props => {
-  const { fileOrigin, filePath } = props;
+  const { fileOrigin, filePath, actions, dirPath, tool } = props;
   const { t } = useTranslation();
   const directoryRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
-  const { actions } = props;
   const handleExecute = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      ipcRenderer.send('create_new_window', filePath);
-      setIsLoading(false);
-    }, 2000);
+    const dataToSend = {
+      filePath,
+      action: actions.filter(e => e.active)[0],
+      tool,
+      outputFolder: dirPath,
+    };
+    ipcRenderer.send('create_new_window', dataToSend);
+    setIsLoading(false);
   };
   return !isLoading ? (
     <div className="container d-flex flex-column">
@@ -105,7 +108,13 @@ const Main = props => {
         </div>
         <FolderInput />
       </FormGroup>
-      <Button color="success" value="Execute" className="mt-3 align-self-center" onClick={handleExecute}>
+      <Button
+        color="success"
+        value="Execute"
+        disabled={!filePath.length || !dirPath.length || !tool.length}
+        className="mt-3 align-self-center"
+        onClick={handleExecute}
+      >
         {t('Execute')}
       </Button>
     </div>

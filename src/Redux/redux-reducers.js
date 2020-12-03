@@ -29,18 +29,10 @@ export const preproccessReducer = (state = initialState, action) => {
     case actionTypes.SET_ACTION: {
       return {
         ...state,
-        actions: state.actions.map(e => {
-          if (e.preservationActionName === action.payload) {
-            return {
-              ...e,
-              active: true,
-            };
-          }
-          return {
-            ...e,
-            active: false,
-          };
-        }),
+        actions: state.actions.map(e => ({
+          ...e,
+          active: e.preservationActionName === action.payload,
+        })),
         tool: state.actions.filter(e => e.active)[0].tool[0].toolName,
       };
     }
