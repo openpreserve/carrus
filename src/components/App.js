@@ -13,17 +13,12 @@ import Report from './Report/Report';
 const App = () => {
   const { i18n } = useTranslation();
   const currentWindow = (() => remote.getCurrentWindow()._id)();
-  ipcRenderer.on('language', (event, lang) => {
-    if (lang === 'fr' || lang === 'ru') {
-      i18n.changeLanguage(lang);
+
+  ipcRenderer.on('language', (event, config) => {
+    if (config.language && (config.language === 'fr' || config.language === 'ru')) {
+      i18n.changeLanguage(config.language);
     }
   });
-  /*   useEffect(async () => {
-    const activeLanguage = (await osLocale()).split('-')[0];
-    if (activeLanguage === 'fr' || activeLanguage === 'ru') {
-      i18n.changeLanguage(activeLanguage);
-    }
-  }, []); */
 
   return (
     <div className="mb-3">
