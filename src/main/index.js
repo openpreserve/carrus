@@ -5,16 +5,13 @@
 /* eslint-disable prefer-destructuring */
 import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
-/* import * as fs from 'fs'; */
-/* import osLocale from 'os-locale'; */
 import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
-import setConfig from './setConfig';
+import setConfig from '../utils/setConfig';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
-const configDir = 'src/config';
 
 async function createMainWindow() {
   const window = new BrowserWindow({
@@ -57,8 +54,7 @@ async function createMainWindow() {
     });
   });
 
-  /*  const OSlang = await getOsLang(); */
-  const config = await setConfig(configDir);
+  const config = await setConfig();
   window.webContents.on('did-finish-load', () => {
     window.webContents.send('language', config);
   });

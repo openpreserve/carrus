@@ -1,9 +1,12 @@
 /* eslint-disable no-else-return */
 import * as path from 'path';
 import * as fs from 'fs';
+import * as util from 'util';
 import osLocale from 'os-locale';
 
-export default async function setConfig(configDir) {
+const configDir = path.join(__dirname, '..', 'config');
+
+export default async function setConfig() {
   const initialConfig = {
     language: 'en',
   };
@@ -13,15 +16,17 @@ export default async function setConfig(configDir) {
     return data.split('-')[0];
   }
 
+  const reader = util.promisify(fs.readFile);
+  const isExists = util.promisify(fs.exists);
+  const writer = util.promisify(fs.writeFile);
+
   try {
-    if (fs.existsSync(path.join(configDir, 'config.json'))) {
-      // file exists, read file
-      const fileContent = fs.readFileSync(path.join(configDir, 'config.json'), 'utf8');
+    if (await isExists(path.join(configDir, 'config.json'))) {
+      const fileContent = await reader(path.join(configDir, 'config.json'), 'utf8');
       return JSON.parse(fileContent);
     } else {
-      // file does not exist, create default config
       initialConfig.language = await getOsLang();
-      await fs.writeFile(
+      writer(
         path.join(configDir, 'config.json'),
         JSON.stringify(initialConfig),
         (err) => {
