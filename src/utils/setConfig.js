@@ -4,9 +4,13 @@ import * as fs from 'fs';
 import * as util from 'util';
 import osLocale from 'os-locale';
 
-const configDir = path.join(__dirname, '..', 'config');
+export default async function setConfig(isDevelopment) {
+  let configDir = path.join(__dirname, '..');
 
-export default async function setConfig() {
+  if (isDevelopment) {
+    configDir = path.join(__dirname, '..', 'config');
+  }
+
   const initialConfig = {
     language: 'en',
   };

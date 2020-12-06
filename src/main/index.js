@@ -54,7 +54,7 @@ async function createMainWindow() {
     });
   });
 
-  const config = await setConfig();
+  const config = await setConfig(isDevelopment);
   window.webContents.on('did-finish-load', () => {
     window.webContents.send('language', config);
   });
