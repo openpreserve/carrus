@@ -30,15 +30,7 @@ export default async function setConfig(isDevelopment) {
       return JSON.parse(fileContent);
     } else {
       initialConfig.language = await getOsLang();
-      writer(
-        path.join(configDir, 'config.json'),
-        JSON.stringify(initialConfig),
-        (err) => {
-          if (err) {
-            throw new Error(err);
-          }
-        },
-      );
+      await writer(path.join(configDir, 'config.json'), JSON.stringify(initialConfig));
       return initialConfig;
     }
   } catch (err) {
