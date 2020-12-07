@@ -1,6 +1,5 @@
 import React/* , { useEffect } */ from 'react';
 import { Switch, Route } from 'react-router-dom';
-/* import osLocale from 'os-locale'; */
 import { remote, ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 import Main from './Main/Main';
