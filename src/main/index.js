@@ -2,16 +2,18 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 /* eslint-disable comma-dangle */
+/* eslint-disable prefer-destructuring */
 import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
+import setConfig from '../utils/setConfig';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
 
-function createMainWindow() {
+async function createMainWindow() {
   const window = new BrowserWindow({
     minWidth: 1280,
     minHeight: 800,
@@ -51,6 +53,12 @@ function createMainWindow() {
       window.focus();
     });
   });
+
+  const config = await setConfig(isDevelopment);
+  window.webContents.on('did-finish-load', () => {
+    window.webContents.send('language', config);
+  });
+
   return window;
 }
 
