@@ -1,0 +1,31 @@
+{
+  "description": "Dummy script handler",
+  "example": "",
+  "id": {
+    "guid": "111-222-333",
+    "name": "Dummy Script handler",
+    "namespace": "https://worldoftanks.ru/"
+  },
+  "inputExtension": {
+    "accept": [
+      "application/pdf",
+      "application/msword",
+      "image/jpeg",
+      "image/pjpeg",
+      "image/png",
+      "image/svg+xml",
+      "image/gif"
+    ]
+  },
+  "preservationActionName": "Dummy script Handler",
+  "tool": [
+    {
+      "toolID": "dummyScript1",
+      "toolName": "Dummy script 1"
+    },
+    {
+      "toolID": "dummyScript2",
+      "toolName": "Dummy script 2"
+    }
+  ]
+}

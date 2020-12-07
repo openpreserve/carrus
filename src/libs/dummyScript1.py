@@ -1,8 +1,10 @@
 import sys
+import os
 import xml.etree.ElementTree as xml
 from time import strftime
 
-url = sys.argv[2] + '/report.xml'
+url = sys.argv[2] + '/' + os.path.basename(
+    sys.argv[1]) + '_' + sys.argv[3] + '_' + strftime("%Y.%m.%d-%H:%M:%S") + '.xml'
 
 
 def createXML(filename):
@@ -15,10 +17,10 @@ def createXML(filename):
     filePath.text = sys.argv[1]
 
     tool = xml.SubElement(appt, "tool")
-    tool.text = sys.argv[3]
+    tool.text = sys.argv[4]
 
     action = xml.SubElement(appt, "action")
-    action.text = sys.argv[4]
+    action.text = sys.argv[3]
 
     timestamp = xml.SubElement(appt, "timestamp")
     timestamp.text = strftime("%Y-%m-%d %H:%M:%S")

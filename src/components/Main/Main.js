@@ -22,6 +22,7 @@ import FolderInput from './FolderInput';
 
 const Main = props => {
   const { fileOrigin, filePath, actions, dirPath, tool } = props;
+  const activeAction = actions.filter(e => e.active)[0];
   const { t } = useTranslation();
   const directoryRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -29,13 +30,18 @@ const Main = props => {
     setIsLoading(true);
     const dataToSend = {
       filePath,
-      action: actions.filter(e => e.active)[0],
-      tool,
+      action: activeAction,
+      toolId: activeAction.tool.filter(e => e.toolName === tool)[0].toolID,
       outputFolder: dirPath,
     };
+    console.log(dataToSend);
     ipcRenderer.send('create_new_window', dataToSend);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    console.log(activeAction);
+  }, [props]);
   return !isLoading ? (
     <div className="container d-flex flex-column">
       <SemiHeader />
@@ -69,25 +75,28 @@ const Main = props => {
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Action')}:</span>
         </Label>
-        <Input type="select" onChange={e => props.setAction(e.target.value)}>
-          {/* при переходе на эту же страницу всегда открывется первый action
-           независимо от того, какой выбран в редаксе */}
-          {actions.map((e, i) => (
-            <option key={i + 1 * 2}>{e.preservationActionName}</option>
-          ))}
+        <Input
+          type="select"
+          onChange={e => props.setAction(e.target.value)}
+          defaultValue={activeAction ? activeAction.preservationActionName : ''}
+        >
+          <option hidden>Choose allowed action</option>
+          {actions && actions.map((e, i) => <option key={i + 1 * 2}>{e.preservationActionName}</option>)}
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
         <Label for="tool" className="mr-1 my-auto w-25">
           <span>{t('Tool')}: </span>
         </Label>
-        <Input type="select" onChange={e => props.setTool(e.target.value)}>
-          <option hidden>Choose Tool</option>
-          {actions
-            .filter(e => e.active)[0]
-            .tool.map((e, i) => (
-              <option key={i}>{e.toolName}</option>
-            ))}
+        <Input type="select" onChange={e => props.setTool(e.target.value)} defaultValue={tool}>
+          {activeAction ? (
+            activeAction.tool.map((e, i) => <option key={i}>{e.toolName}</option>)
+          ) : (
+            <>
+              <option hidden>Choose Tool</option>
+              <option disabled>No actions are chosen</option>
+            </>
+          )}
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
