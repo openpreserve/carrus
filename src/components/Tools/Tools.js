@@ -1,4 +1,7 @@
 /* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-array-index-key */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label } from 'reactstrap';
@@ -7,9 +10,10 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { green } from '@material-ui/core/colors';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import { setTool, updateJPEGTool } from '../../Redux/redux-reducers';
+import { setTool } from '../../Redux/redux-reducers';
 
 const Tools = props => {
+  const { actions } = props;
   const { t } = useTranslation();
   return (
     <Container>
@@ -29,9 +33,12 @@ const Tools = props => {
               <Label for="defaultTool" className="w-50 m-auto">
                 <span>{t('defaultTool')}:</span>
               </Label>
-              <Input type="select" onChange={e => props.setTool(e.target.value)}>
-                <option>PDF hul</option>
-                <option>veraPDF</option>
+              <Input type="select">
+                {actions
+                  .filter(e => e.active)[0]
+                  .tool.map((e, i) => (
+                    <option key={i}>{e.toolName}</option>
+                  ))}
               </Input>
             </FormGroup>
             <div className="d-flex flex-row w-50 mb-3">
@@ -53,9 +60,12 @@ const Tools = props => {
               <Label for="defaultTool" className="w-50 m-auto">
                 <span>{t('defaultTool')}:</span>
               </Label>
-              <Input type="select" onChange={e => props.updateJPEGTool(e.target.value)}>
-                <option>JPEG hul</option>
-                <option>PNG dgm</option>
+              <Input type="select">
+                {actions
+                  .filter(e => e.active)[0]
+                  .tool.map((e, i) => (
+                    <option key={i}>{e.toolName}</option>
+                  ))}
               </Input>
             </FormGroup>
             <div className="d-flex flex-row w-50 mb-3">
@@ -83,6 +93,15 @@ const Tools = props => {
   );
 };
 
-const mapStateToProps = state => ({ defaultPDF: state.tool, defaultJPEG: state.defaultJPEGTool });
+const mapStateToProps = state => ({
+  actions: state.actions,
+  outputFolder: state.outputFolder,
+  url: state.url,
+  fileOrigin: state.fileOrigin,
+  fileName: state.fileName,
+  filePath: state.filePath,
+  dirPath: state.dirPath,
+  tool: state.tool,
+});
 
-export default connect(mapStateToProps, { updateJPEGTool, setTool })(Tools);
+export default connect(mapStateToProps, {})(Tools);
