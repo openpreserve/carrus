@@ -69,7 +69,7 @@ const Main = props => {
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Action')}:</span>
         </Label>
-        <Input type="select" onChange={e => props.setAction(e.target.value)}>
+        <Input type="select" onChange={e => props.setAction(e.target.value)}> {/* при переходе на эту же страницу всегда открывется первый action независимо от того, какой выбран в редаксе */}
           {actions.map((e, i) => (
             <option key={i + 1 * 2}>{e.preservationActionName}</option>
           ))}
