@@ -14,7 +14,8 @@
       "image/pjpeg",
       "image/png",
       "image/svg+xml",
-      "image/gif"
+      "image/gif",
+      "image/*"
     ]
   },
   "preservationActionName": "Dummy script Handler",

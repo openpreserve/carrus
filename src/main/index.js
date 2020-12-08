@@ -79,7 +79,6 @@ app.on('ready', () => {
 });
 
 ipcMain.on('create_new_window', (event, arg) => {
-  console.log(arg);
   const reportDate = spawn('python', [
     `./src/libs/${arg.toolId}.py`,
     arg.filePath,

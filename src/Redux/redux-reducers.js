@@ -14,13 +14,12 @@ const initialState = {
   outputFolder: '',
   url: '',
   fileOrigin: 'file',
+  defaultPDFTool: '',
   defaultJPEGTool: 'JPEG hul',
   filePath: '',
   dirPath: '',
   fileName: '',
 };
-
-console.log(initialState.actions);
 
 export const preproccessReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -89,6 +88,12 @@ export const preproccessReducer = (state = initialState, action) => {
         dirPath: action.payload,
       };
     }
+    case actionTypes.SET_DEFAULT_PDF_TOOl: {
+      return {
+        ...state,
+        defaultPDFTool: action.payload,
+      };
+    }
 
     default: {
       return state;
@@ -102,6 +107,7 @@ export const setAction = value => ({ type: actionTypes.SET_ACTION, payload: valu
 export const setURL = value => ({ type: actionTypes.SET_URL, payload: value });
 export const setOutputFolder = value => ({ type: actionTypes.SET_OUTPUT_FOLDER, payload: value });
 export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payload: value });
+export const setDefaultPDFTool = value => ({ type: actionTypes.SET_DEFAULT_PDF_TOOl, payload: value });
 export const updateJPEGTool = value => ({ type: actionTypes.UPDATE_JPEG_TOOL, payload: value });
 export const uploadFile = value => ({ type: actionTypes.SET_FILE_NAME, payload: value });
 export const setFilePath = value => ({ type: actionTypes.SET_FILE_PATH, payload: value });

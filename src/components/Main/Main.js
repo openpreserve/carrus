@@ -34,14 +34,10 @@ const Main = props => {
       toolId: activeAction.tool.filter(e => e.toolName === tool)[0].toolID,
       outputFolder: dirPath,
     };
-    console.log(dataToSend);
     ipcRenderer.send('create_new_window', dataToSend);
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    console.log(activeAction);
-  }, [props]);
   return !isLoading ? (
     <div className="container d-flex flex-column">
       <SemiHeader />

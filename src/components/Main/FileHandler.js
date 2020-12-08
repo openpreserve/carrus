@@ -18,7 +18,6 @@ const FileHandler = props => {
     <div className="mt-3">
       <Dropzone
         onDrop={e => {
-          console.log(e);
           props.uploadFile(e[0].name);
           props.setFilePath(e[0].path);
         }}
