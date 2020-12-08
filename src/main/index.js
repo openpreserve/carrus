@@ -80,7 +80,7 @@ app.on('ready', () => {
 
 ipcMain.on('create_new_window', (event, arg) => {
   const reportDate = spawn('python', [
-    './src/libs/script.py',
+    `./src/libs/${arg.toolId}.py`,
     arg.filePath,
     arg.outputFolder,
     arg.action.preservationActionName,

@@ -22,13 +22,15 @@ const resources = {
       mainPage: 'Main Page',
       defaultTool: 'Default Tool',
       Loading: 'Loading...',
-      DerivedFrom: 'Derived from software Copyright 2004-2011 by the President and Fellows of Harvard College.',
+      DerivedFrom:
+        'Derived from software Copyright 2004-2011 by the President and Fellows of Harvard College.',
       GNULicense: 'Released under the GNU Lesser General Public License.',
       Release: 'Release: {{date}}',
       outOfDate: 'Your version is out of date.',
       Update: 'Update',
       latestVersion: 'to the latest version',
       SelectFolder: 'Select folder',
+      noDefaultTools: 'No default tools for choosen action',
     },
   },
   fr: {
@@ -49,13 +51,15 @@ const resources = {
       mainPage: "Page D'accueil",
       defaultTool: 'Outil par défaut',
       Loading: 'Chargement...',
-      DerivedFrom: 'Dérivé du logiciel Copyright 2004-2011 par le Président et les Fellows du Harvard College.',
+      DerivedFrom:
+        'Dérivé du logiciel Copyright 2004-2011 par le Président et les Fellows du Harvard College.',
       GNULicense: 'Publié sous la licence publique générale limitée GNU.',
       Release: 'Libération: {{date}}',
       outOfDate: 'Votre version est obsolète.',
       Update: 'Mise à jour',
       latestVersion: 'à la dernière version',
       SelectFolder: 'Sélectionner le dossier',
+      noDefaultTools: `Pas d'outils par défaut pour l'action choisie`,
     },
   },
   ru: {
@@ -84,6 +88,7 @@ const resources = {
       Update: 'Обновить',
       latestVersion: 'до последней версии',
       SelectFolder: 'Выберите папку',
+      noDefaultTools: 'Нет подходящих инструментов',
     },
   },
 };

@@ -1,0 +1,23 @@
+{
+  "description": "Test Script 2",
+  "example": "",
+  "id": {
+    "guid": "111-222-333",
+    "name": "Dummy Script handler",
+    "namespace": "https://openpreservation.org"
+  },
+  "inputExtension": {
+    "accept": ["application/pdf", "application/msword"]
+  },
+  "preservationActionName": "Test script 2",
+  "tool": [
+    {
+      "toolID": "dummyScript1",
+      "toolName": "Test script2 1"
+    },
+    {
+      "toolID": "dummyScript2",
+      "toolName": "Test script2 2"
+    }
+  ]
+}

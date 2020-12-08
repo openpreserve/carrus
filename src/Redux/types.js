@@ -11,6 +11,7 @@ const actionTypes = {
   SET_FILE_NAME: 'SET_FILE_NAME',
   SET_DIR_PATH: 'SET_DIR_PATH',
   SWITCH_ACTION: 'SWITCH_ACTION',
+  SET_DEFAULT_PDF_TOOl: 'SET_DEFAULT_PDF_TOOl',
 };
 
 export default actionTypes;

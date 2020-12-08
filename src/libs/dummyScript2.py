@@ -4,7 +4,7 @@ import xml.etree.ElementTree as xml
 from time import strftime
 
 url = sys.argv[2] + '/' + os.path.basename(
-    sys.argv[1]) + '_' + sys.argv[3] + '_' + strftime("%Y.%m.%d-%H:%M:%S") + '.xml'
+    sys.argv[1]) + '_' + sys.argv[3] + '_' + strftime("%Y.%m.%d-%H:%M:%S") + '_second-script' + '.xml'
 
 
 def createXML(filename):

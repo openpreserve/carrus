@@ -1,23 +1,20 @@
 /* eslint-disable no-console */
+import { readdirSync, readFileSync } from 'fs';
+import { join } from 'path';
 import actionTypes from './types';
-import Validate from '../PAR/Actions/Validate.json';
-import Characterize from '../PAR/Actions/Characterize.json';
+
+const actionsPath = join(__dirname, '..', 'PAR', 'Actions');
 
 const initialState = {
-  actions: [
-    {
-      ...Validate,
-      active: true,
-    },
-    {
-      ...Characterize,
-      active: false,
-    },
-  ],
+  actions: readdirSync(actionsPath).map(e => ({
+    ...JSON.parse(readFileSync(join(actionsPath, e), 'utf-8')),
+    active: false,
+  })),
   tool: '',
   outputFolder: '',
   url: '',
   fileOrigin: 'file',
+  defaultPDFTool: '',
   defaultJPEGTool: 'JPEG hul',
   filePath: '',
   dirPath: '',
@@ -27,13 +24,14 @@ const initialState = {
 export const preproccessReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_ACTION: {
+      const newActions = state.actions.map(e => ({
+        ...e,
+        active: e.preservationActionName === action.payload,
+      }));
       return {
         ...state,
-        actions: state.actions.map(e => ({
-          ...e,
-          active: e.preservationActionName === action.payload,
-        })),
-        tool: state.actions.filter(e => e.active)[0].tool[0].toolName,
+        actions: newActions,
+        tool: newActions.filter(e => e.active)[0] ? newActions.filter(e => e.active)[0].tool[0].toolName : '',
       };
     }
     case actionTypes.SET_OPTIONS: {
@@ -90,6 +88,12 @@ export const preproccessReducer = (state = initialState, action) => {
         dirPath: action.payload,
       };
     }
+    case actionTypes.SET_DEFAULT_PDF_TOOl: {
+      return {
+        ...state,
+        defaultPDFTool: action.payload,
+      };
+    }
 
     default: {
       return state;
@@ -103,6 +107,7 @@ export const setAction = value => ({ type: actionTypes.SET_ACTION, payload: valu
 export const setURL = value => ({ type: actionTypes.SET_URL, payload: value });
 export const setOutputFolder = value => ({ type: actionTypes.SET_OUTPUT_FOLDER, payload: value });
 export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payload: value });
+export const setDefaultPDFTool = value => ({ type: actionTypes.SET_DEFAULT_PDF_TOOl, payload: value });
 export const updateJPEGTool = value => ({ type: actionTypes.UPDATE_JPEG_TOOL, payload: value });
 export const uploadFile = value => ({ type: actionTypes.SET_FILE_NAME, payload: value });
 export const setFilePath = value => ({ type: actionTypes.SET_FILE_PATH, payload: value });

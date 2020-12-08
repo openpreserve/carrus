@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
@@ -15,6 +16,19 @@ import { setTool } from '../../Redux/redux-reducers';
 const Tools = props => {
   const { actions } = props;
   const { t } = useTranslation();
+  const PDFArray = [];
+  const JPEGArray = [];
+  actions
+    .filter(e => e.inputExtension.accept.includes('application/pdf'))
+    .forEach(e => {
+      e.tool.forEach(tool => PDFArray.push(tool.toolName));
+    });
+  console.log(actions.filter(e => e.active));
+  actions
+    .filter(e => e.inputExtension.accept.includes('image/jpeg'))
+    .forEach(e => {
+      e.tool.forEach(tool => JPEGArray.push(tool.toolName));
+    });
   return (
     <Container>
       <div className="d-flex flex-column align-items-left">
@@ -34,21 +48,23 @@ const Tools = props => {
                 <span>{t('defaultTool')}:</span>
               </Label>
               <Input type="select">
-                {actions
-                  .filter(e => e.active)[0]
-                  .tool.map((e, i) => (
-                    <option key={i}>{e.toolName}</option>
-                  ))}
+                {PDFArray.map((e, i) => (
+                  <option key={i}>{e}</option>
+                ))}
               </Input>
             </FormGroup>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: green[500] }} />
-              <span className="ml-1">PDF hul</span>
-            </div>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: green[500] }} />
-              <span className="ml-1">veraPDF</span>
-            </div>
+            {actions.filter(e => e.active && e.inputExtension.accept.includes('application/pdf')).length ? (
+              actions
+                .filter(e => e.active && e.inputExtension.accept.includes('application/pdf'))[0]
+                .tool.map((e, i) => (
+                  <div className="d-flex flex-row w-50 mb-3" key={i + 10 / 0.4}>
+                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
+                    <span className="ml-1">{e.toolName}</span>
+                  </div>
+                ))
+            ) : (
+              <span>{t('noDefaultTools')}</span>
+            )}
           </CardBody>
         </Card>
         <Card className="w-50 border-0">
@@ -61,31 +77,23 @@ const Tools = props => {
                 <span>{t('defaultTool')}:</span>
               </Label>
               <Input type="select">
-                {actions
-                  .filter(e => e.active)[0]
-                  .tool.map((e, i) => (
-                    <option key={i}>{e.toolName}</option>
-                  ))}
+                {JPEGArray.map((e, i) => (
+                  <option key={(i * 2) / 0.4}>{e}</option>
+                ))}
               </Input>
             </FormGroup>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: green[500] }} />
-              <span className="ml-1">JPEG hul</span>
-            </div>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: 'white' }} />
-
-              <span className="ml-1">GIF hul</span>
-            </div>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: green[500] }} />
-              <span className="ml-1">PNG dgm</span>
-            </div>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: 'white' }} />
-
-              <span className="ml-1">JPEG2000 hul</span>
-            </div>
+            {actions.filter(e => e.active && e.inputExtension.accept.includes('image/jpeg')).length ? (
+              actions
+                .filter(e => e.active && e.inputExtension.accept.includes('image/jpeg'))[0]
+                .tool.map((e, i) => (
+                  <div className="d-flex flex-row w-50 mb-3" key={i}>
+                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
+                    <span className="ml-1">{e.toolName}</span>
+                  </div>
+                ))
+            ) : (
+              <span>{t('noDefaultTools')}</span>
+            )}
           </CardBody>
         </Card>
       </div>
