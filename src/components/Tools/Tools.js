@@ -63,7 +63,7 @@ const Tools = props => {
                   </div>
                 ))
             ) : (
-              <span>no default tools for choosen action</span>
+              <span>{t('noDefaultTools')}</span>
             )}
           </CardBody>
         </Card>
@@ -92,7 +92,7 @@ const Tools = props => {
                   </div>
                 ))
             ) : (
-              <span>no default tools for choosen action</span>
+              <span>{t('noDefaultTools')}</span>
             )}
           </CardBody>
         </Card>
