@@ -25,7 +25,7 @@ const Tools = props => {
     });
   console.log(actions.filter(e => e.active));
   actions
-    .filter(e => e.inputExtension.accept.includes('image/*'))
+    .filter(e => e.inputExtension.accept.includes('image/jpeg'))
     .forEach(e => {
       e.tool.forEach(tool => JPEGArray.push(tool.toolName));
     });
@@ -82,9 +82,9 @@ const Tools = props => {
                 ))}
               </Input>
             </FormGroup>
-            {actions.filter(e => e.active && e.inputExtension.accept.includes('image/*')).length ? (
+            {actions.filter(e => e.active && e.inputExtension.accept.includes('image/jpeg')).length ? (
               actions
-                .filter(e => e.active && e.inputExtension.accept.includes('image/*'))[0]
+                .filter(e => e.active && e.inputExtension.accept.includes('image/jpeg'))[0]
                 .tool.map((e, i) => (
                   <div className="d-flex flex-row w-50 mb-3" key={i}>
                     <CheckCircleOutlineIcon style={{ color: green[500] }} />
