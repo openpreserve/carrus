@@ -18,6 +18,7 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "bootstrap": "^4.5.3",
+    "clipboard-polyfill": "^3.0.1",
     "i18next": "^19.8.3",
     "jquery": "^3.5.1",
     "os-locale": "^5.0.0",
