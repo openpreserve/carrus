@@ -58,8 +58,8 @@ async function createMainWindow() {
   const translate = await setTranslate(isDevelopment);
   const config = await setConfig(isDevelopment);
   window.webContents.on('did-finish-load', () => {
-    window.webContents.send('config', config);
     window.webContents.send('translate', translate);
+    window.webContents.send('config', config);
   });
 
   return window;
