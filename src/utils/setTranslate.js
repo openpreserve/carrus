@@ -17,7 +17,7 @@ export default async function setTranslate(isDevelopment) {
   try {
     if (await isExists(path.join(configDir, 'resources.json'))) {
       const fileContent = await reader(path.join(configDir, 'resources.json'), 'utf8');
-      return fileContent;
+      return JSON.parse(fileContent);
     } else {
       await writer(path.join(configDir, 'resources.json'), JSON.stringify(resources));
       return resources;
