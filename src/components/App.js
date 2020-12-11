@@ -7,13 +7,12 @@ import Header from './Header/Header';
 import Tools from './Tools/Tools';
 import About from './About/About';
 import Report from './Report/Report';
-// import JobFailed from './Report/JobFailed';
 
 const App = () => {
   const { i18n } = useTranslation();
   const currentWindow = (() => remote.getCurrentWindow()._id)();
 
-  ipcRenderer.on('language', (event, config) => {
+  ipcRenderer.on('config', (event, config) => {
     if (config.language && (config.language === 'fr' || config.language === 'ru')) {
       i18n.changeLanguage(config.language);
     }

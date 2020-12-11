@@ -8,6 +8,7 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
 import setConfig from '../utils/setConfig';
+import setTranslate from '../utils/setTranslate';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -54,9 +55,11 @@ async function createMainWindow() {
     });
   });
 
+  const translate = await setTranslate(isDevelopment);
   const config = await setConfig(isDevelopment);
   window.webContents.on('did-finish-load', () => {
-    window.webContents.send('language', config);
+    window.webContents.send('translate', translate);
+    window.webContents.send('config', config);
   });
 
   return window;
