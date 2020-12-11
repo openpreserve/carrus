@@ -19,6 +19,7 @@ const initialState = {
   filePath: '',
   dirPath: '',
   fileName: '',
+  mimeType: '',
 };
 
 export const preproccessReducer = (state = initialState, action) => {
@@ -70,18 +71,7 @@ export const preproccessReducer = (state = initialState, action) => {
         defaultJPEGTool: action.payload,
       };
     }
-    case actionTypes.SET_FILE_PATH: {
-      return {
-        ...state,
-        filePath: action.payload,
-      };
-    }
-    case actionTypes.SET_FILE_NAME: {
-      return {
-        ...state,
-        fileName: action.payload,
-      };
-    }
+
     case actionTypes.SET_DIR_PATH: {
       return {
         ...state,
@@ -92,6 +82,19 @@ export const preproccessReducer = (state = initialState, action) => {
       return {
         ...state,
         defaultPDFTool: action.payload,
+      };
+    }
+
+    case actionTypes.SET_FILE_INFO: {
+      return {
+        ...state,
+        mimeType: action.payload.type,
+        fileName: action.payload.name,
+        filePath: action.payload.path,
+        actions: state.actions.map(e => ({
+          ...e,
+          active: false,
+        })),
       };
     }
 
@@ -109,6 +112,8 @@ export const setOutputFolder = value => ({ type: actionTypes.SET_OUTPUT_FOLDER, 
 export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payload: value });
 export const setDefaultPDFTool = value => ({ type: actionTypes.SET_DEFAULT_PDF_TOOl, payload: value });
 export const updateJPEGTool = value => ({ type: actionTypes.UPDATE_JPEG_TOOL, payload: value });
-export const uploadFile = value => ({ type: actionTypes.SET_FILE_NAME, payload: value });
-export const setFilePath = value => ({ type: actionTypes.SET_FILE_PATH, payload: value });
 export const setDirPath = value => ({ type: actionTypes.SET_DIR_PATH, payload: value });
+export const setFileInfo = (fileName, filePath, fileMimeType) => ({
+  type: actionTypes.SET_FILE_INFO,
+  payload: { name: fileName, path: filePath, type: fileMimeType },
+});

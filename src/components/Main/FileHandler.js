@@ -9,23 +9,24 @@ import Dropzone from 'react-dropzone';
 import { Jumbotron, Container } from 'reactstrap';
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import { green } from '@material-ui/core/colors';
-import { uploadFile, setFilePath } from '../../Redux/redux-reducers';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
+import { setFileInfo } from '../../Redux/redux-reducers';
 
 const FileHandler = props => {
   const { t } = useTranslation();
-  const { fileName, acceptedTypes } = props;
+  const { fileName, mimeType } = props;
   return (
     <div className="mt-3">
       <Dropzone
         onDrop={e => {
-          props.uploadFile(e[0].name);
-          props.setFilePath(e[0].path);
+          props.setFileInfo(e[0].name, e[0].path, e[0].type);
         }}
       >
         {({ getRootProps, getInputProps }) => (
           <section className="border bg-light dropzone-selection">
             <div {...getRootProps()}>
-              <input {...getInputProps()} accept={acceptedTypes} />
+              <input {...getInputProps()} />
               <Jumbotron fluid className="m-0 p-3 bg-light">
                 <Container fluid className="d-flex flex-column align-items-center">
                   <MoveToInboxIcon className="text-green" style={{ fontSize: 80, color: green[500] }} />
@@ -35,7 +36,11 @@ const FileHandler = props => {
                       <p className="text-muted">{t('DropzoneSubtitle')}</p>
                     </div>
                   ) : (
-                    <p>{fileName}</p>
+                    <div className="d-flex flex-row">
+                      {mimeType.includes('pdf') && <PictureAsPdfIcon />}
+                      {mimeType.includes('image') && <ImageOutlinedIcon />}
+                      <span className="ml-1">{fileName}</span>
+                    </div>
                   )}
                 </Container>
               </Jumbotron>
@@ -49,9 +54,7 @@ const FileHandler = props => {
 
 const mapStateToProps = state => ({
   fileName: state.fileName,
-  acceptedTypes: state.actions.filter(e => e.active)[0]
-    ? state.actions.filter(e => e.active)[0].inputExtension.accept.join(',')
-    : '',
+  mimeType: state.mimeType,
 });
 
-export default connect(mapStateToProps, { uploadFile, setFilePath })(FileHandler);
+export default connect(mapStateToProps, { setFileInfo })(FileHandler);

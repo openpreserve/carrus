@@ -9,9 +9,7 @@ export default async function useI18next(resources) {
     .init({
       resources,
       lng: 'en',
-
       keySeparator: false, // we do not use keys in form messages.welcome
-
       interpolation: {
         escapeValue: false, // react already safes from xss
       },

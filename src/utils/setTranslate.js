@@ -1,9 +1,9 @@
 /* eslint-disable quote-props */
 /* eslint-disable quotes */
 /* eslint-disable no-else-return */
-import path from "path";
-import util from "util";
-import fs from "fs";
+import path from 'path';
+import util from 'util';
+import fs from 'fs';
 import resources from '../i18next/translations';
 
 export default async function setTranslate(isDevelopment) {

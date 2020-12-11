@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-bitwise */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
@@ -20,11 +22,20 @@ import SemiHeader from '../Header/SemiHeader';
 import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '../../Redux/redux-reducers';
 import FolderInput from './FolderInput';
 
+const hashCode = s => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
+
 const Main = props => {
-  const { fileOrigin, filePath, actions, dirPath, tool } = props;
-  const activeAction = actions.filter(e => e.active)[0];
+  const {
+    fileOrigin,
+    filePath,
+    actions,
+    dirPath,
+    tool,
+    acceptedMimeType,
+    acceptedActions,
+    activeAction,
+  } = props;
   const { t } = useTranslation();
-  const directoryRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const handleExecute = () => {
     setIsLoading(true);
@@ -76,8 +87,21 @@ const Main = props => {
           onChange={e => props.setAction(e.target.value)}
           defaultValue={activeAction ? activeAction.preservationActionName : ''}
         >
-          <option hidden>Choose allowed action</option>
-          {actions && actions.map((e, i) => <option key={i + 1 * 2}>{e.preservationActionName}</option>)}
+          {acceptedMimeType.length ? (
+            <>
+              <option hidden>Choose allowed action</option>
+              {acceptedActions.map((e, i) => (
+                <option key={hashCode(e.preservationActionName[0] + acceptedMimeType)}>
+                  {e.preservationActionName}
+                </option>
+              ))}
+            </>
+          ) : (
+            <>
+              <option hidden>{t('fileNotChoosen')}</option>
+              <option disabled>{t('fileNotChoosenSub')}</option>
+            </>
+          )}
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
@@ -86,7 +110,7 @@ const Main = props => {
         </Label>
         <Input type="select" onChange={e => props.setTool(e.target.value)} defaultValue={tool}>
           {activeAction ? (
-            activeAction.tool.map((e, i) => <option key={i}>{e.toolName}</option>)
+            activeAction.tool.map((e, i) => <option key={hashCode(e.toolName)}>{e.toolName}</option>)
           ) : (
             <>
               <option hidden>Choose Tool</option>
@@ -139,6 +163,9 @@ const mapStateToProps = state => ({
   filePath: state.filePath,
   dirPath: state.dirPath,
   tool: state.tool,
+  acceptedMimeType: state.mimeType,
+  acceptedActions: state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)),
+  activeAction: state.actions.filter(e => e.active)[0],
 });
 
 export default connect(mapStateToProps, {
