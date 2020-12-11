@@ -31,6 +31,8 @@ const resources = {
       latestVersion: 'to the latest version',
       SelectFolder: 'Select folder',
       noDefaultTools: 'No default tools for choosen action',
+      fileNotChoosen: 'Choose file to see available actions',
+      fileNotChoosenSub: 'You have not choosen any files to proccess',
     },
   },
   fr: {
@@ -60,6 +62,8 @@ const resources = {
       latestVersion: 'à la dernière version',
       SelectFolder: 'Sélectionner le dossier',
       noDefaultTools: `Pas d'outils par défaut pour l'action choisie`,
+      fileNotChoosen: 'Choisissez un fichier pour voir les actions disponibles',
+      fileNotChoosenSub: "Vous n'avez choisi aucun fichier à traiter",
     },
   },
   ru: {
@@ -89,6 +93,8 @@ const resources = {
       latestVersion: 'до последней версии',
       SelectFolder: 'Выберите папку',
       noDefaultTools: 'Нет подходящих инструментов',
+      fileNotChoosen: 'Выберите файл, чтобы увидеть подходящие экшены',
+      fileNotChoosenSub: 'Вы не выбрали файл для обработки',
     },
   },
 };

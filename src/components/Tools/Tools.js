@@ -23,7 +23,6 @@ const Tools = props => {
     .forEach(e => {
       e.tool.forEach(tool => PDFArray.push(tool.toolName));
     });
-  console.log(actions.filter(e => e.active));
   actions
     .filter(e => e.inputExtension.accept.includes('image/jpeg'))
     .forEach(e => {

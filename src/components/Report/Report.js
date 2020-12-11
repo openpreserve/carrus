@@ -16,7 +16,6 @@ const Report = () => {
   ipcRenderer.on('receiver', (event, arg) => {
     setReport(arg.report);
     setPath(arg.path);
-    console.log(arg);
   });
 
   return (

@@ -100,7 +100,6 @@ ipcMain.on('create_new_window', (event, arg) => {
     win._id = 'report';
 
     win.webContents.once('did-finish-load', () => {
-      console.log(data);
       win.webContents.send('receiver', { report: data.toString(), path: arg.outputFolder });
     });
 
