@@ -8,7 +8,6 @@ import App from '../components/App';
 import store from '../Redux/redux-store';
 import useI18next from '../i18next/i18next';
 import '../styles/index.css';
-/* import resources from '../i18next/translates'; */
 
 ipcRenderer.on('translate', (event, translate) => {
   useI18next(translate).then(() => {
@@ -22,14 +21,3 @@ ipcRenderer.on('translate', (event, translate) => {
     );
   });
 });
-
-/* useI18next(resources).then(() => {
-  ReactDOM.render(
-    <Router>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </Router>,
-    document.getElementById('app'),
-  );
-}); */

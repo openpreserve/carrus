@@ -77,7 +77,7 @@ app.on('activate', () => {
   }
 });
 
-app.on('ready', async () => {
+app.on('ready', () => {
   mainWindow = createMainWindow();
 });
 

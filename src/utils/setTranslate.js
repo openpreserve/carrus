@@ -4,7 +4,7 @@
 import path from "path";
 import util from "util";
 import fs from "fs";
-import resources from '../i18next/translates';
+import resources from '../i18next/translations';
 
 export default async function setTranslate(isDevelopment) {
   if (isDevelopment) {
