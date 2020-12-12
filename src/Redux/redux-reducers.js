@@ -1,15 +1,12 @@
 /* eslint-disable no-console */
-import { readdirSync, readFileSync } from 'fs';
-import { join } from 'path';
+/* import { readdirSync, readFileSync } from 'fs';
+import { join } from 'path'; */
 import actionTypes from './types';
 
-const actionsPath = join(__dirname, '..', 'PAR', 'Actions');
+/* const actionsPath = join(__dirname, '..', 'PAR', 'Actions'); */
 
 const initialState = {
-  actions: readdirSync(actionsPath).map(e => ({
-    ...JSON.parse(readFileSync(join(actionsPath, e), 'utf-8')),
-    active: false,
-  })),
+  actions: [],
   tool: '',
   outputFolder: '',
   url: '',
@@ -24,6 +21,12 @@ const initialState = {
 
 export const preproccessReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_ACTIONS: {
+      return {
+        ...state,
+        actions: action.payload,
+      };
+    }
     case actionTypes.SET_ACTION: {
       const newActions = state.actions.map(e => ({
         ...e,
@@ -106,6 +109,7 @@ export const preproccessReducer = (state = initialState, action) => {
 
 export const setTool = value => ({ type: actionTypes.SET_TOOL, payload: value });
 export const setOptions = value => ({ type: actionTypes.SET_OPTIONS, payload: value });
+export const setActions = value => ({ type: actionTypes.SET_ACTIONS, payload: value });
 export const setAction = value => ({ type: actionTypes.SET_ACTION, payload: value });
 export const setURL = value => ({ type: actionTypes.SET_URL, payload: value });
 export const setOutputFolder = value => ({ type: actionTypes.SET_OUTPUT_FOLDER, payload: value });

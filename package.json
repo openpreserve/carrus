@@ -4,9 +4,17 @@
   "license": "MIT",
   "build": {
     "appId": "jhove2020",
+    "target": "NSIS",
     "win": {
       "icon": "build/icon.png"
-    }
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "extraResources": [
+      "src/PAR"
+    ]
   },
   "scripts": {
     "dev": "electron-webpack dev",

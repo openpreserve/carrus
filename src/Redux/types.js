@@ -1,4 +1,5 @@
 const actionTypes = {
+  SET_ACTIONS: 'SET_ACTIONS',
   SET_ACTION: 'SET_ACTION',
   SET_OPTIONS: 'SET_OPTIONS',
   SET_TOOL: 'SET_TOOL',
