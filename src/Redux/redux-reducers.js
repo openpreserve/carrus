@@ -3,8 +3,6 @@
 import { join } from 'path'; */
 import actionTypes from './types';
 
-/* const actionsPath = join(__dirname, '..', 'PAR', 'Actions'); */
-
 const initialState = {
   actions: [],
   tool: '',
