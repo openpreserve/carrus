@@ -9,6 +9,7 @@ import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
+import setPAR from '../utils/setPAR';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -57,9 +58,11 @@ async function createMainWindow() {
 
   const translate = await setTranslate(isDevelopment);
   const config = await setConfig(isDevelopment);
+  const PAR = await setPAR(isDevelopment);
   window.webContents.on('did-finish-load', () => {
     window.webContents.send('translate', translate);
     window.webContents.send('config', config);
+    window.webContents.send('PAR', PAR);
   });
 
   return window;
