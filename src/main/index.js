@@ -84,7 +84,7 @@ app.on('ready', () => {
   mainWindow = createMainWindow();
 });
 
-ipcMain.on('create_new_window', (event, arg) => {
+ipcMain.on('execute-file-action', (event, arg) => {
   const reportDate = spawn('python', [
     `./src/libs/${arg.toolId}.py`,
     arg.filePath,
@@ -105,7 +105,9 @@ ipcMain.on('create_new_window', (event, arg) => {
     });
     win._id = 'report';
 
-    win.webContents.once('did-finish-load', () => {
+    win.webContents.once('did-finish-load', async () => {
+      const translate = await setTranslate(isDevelopment);
+      win.webContents.send('translate', translate);
       win.webContents.send('receiver', { report: data.toString(), path: arg.outputFolder });
     });
 
@@ -114,7 +116,7 @@ ipcMain.on('create_new_window', (event, arg) => {
     }
 
     if (isDevelopment) {
-      win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/`);
+      win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
     } else {
       win.loadURL(
         formatUrl({

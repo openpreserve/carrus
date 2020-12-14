@@ -3,8 +3,8 @@ import os
 import xml.etree.ElementTree as xml
 from time import strftime
 
-url = sys.argv[2] + '/' + os.path.basename(
-    sys.argv[1]) + '_' + sys.argv[3] + '_' + strftime("%Y.%m.%d-%H:%M:%S") + '.xml'
+url = sys.argv[2] + '\\' + os.path.basename(
+    sys.argv[1]) + '_' + sys.argv[3] + '_' + strftime("%Y.%m.%d-%H-%M-%S") + '.xml'
 
 
 def createXML(filename):

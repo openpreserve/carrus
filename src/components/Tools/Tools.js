@@ -1,6 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 
 import React from 'react';
@@ -11,7 +9,6 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { green } from '@material-ui/core/colors';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import { setTool } from '../../Redux/redux-reducers';
 
 const Tools = props => {
   const { actions } = props;

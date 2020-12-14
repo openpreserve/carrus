@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React/* , { useEffect } */ from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
@@ -12,7 +13,10 @@ import { setActions } from '../Redux/redux-reducers';
 
 const App = (props) => {
   const { i18n } = useTranslation();
-  const currentWindow = (() => remote.getCurrentWindow()._id)();
+  const currentWindow = (() => {
+    console.log(remote.getCurrentWindow()._id);
+    return remote.getCurrentWindow()._id;
+  })();
 
   ipcRenderer.on('config', (event, config) => {
     if (config.language && (config.language === 'fr' || config.language === 'ru')) {

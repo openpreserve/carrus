@@ -1,28 +1,31 @@
-/* eslint-disable quote-props */
-/* eslint-disable quotes */
-/* eslint-disable no-else-return */
 import path from 'path';
 import util from 'util';
 import fs from 'fs';
-import resources from '../i18next/translations';
+import translations from '../i18next/translations';
+
+const reader = util.promisify(fs.readFile);
+const isExists = util.promisify(fs.exists);
+const writer = util.promisify(fs.writeFile);
 
 export default async function setTranslate(isDevelopment) {
   if (isDevelopment) {
-    return resources;
+    return translations;
   }
   const configDir = path.join(__dirname, '..');
-  const reader = util.promisify(fs.readFile);
-  const isExists = util.promisify(fs.exists);
-  const writer = util.promisify(fs.writeFile);
+
   try {
-    if (await isExists(path.join(configDir, 'resources.json'))) {
-      const fileContent = await reader(path.join(configDir, 'resources.json'), 'utf8');
-      return JSON.parse(fileContent);
-    } else {
-      await writer(path.join(configDir, 'resources.json'), JSON.stringify(resources));
-      return resources;
+    // check if we already have created translations file
+    // in this case only provide translations from translations.json
+    if (await isExists(path.join(configDir, 'translations.json'))) {
+      const translationsMap = await reader(path.join(configDir, 'translations.json'), 'utf8');
+      return JSON.parse(translationsMap);
     }
+
+    // in case when there is no translations file yet, we add it to sources for possibility of custom editing
+    await writer(path.join(configDir, 'translations.json'), JSON.stringify(translations));
+    // and return our translations template/map
+    return translations;
   } catch (err) {
-    return resources;
+    return translations;
   }
 }

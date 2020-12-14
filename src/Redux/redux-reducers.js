@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* import { readdirSync, readFileSync } from 'fs';
-import { join } from 'path'; */
 import actionTypes from './types';
 
 const initialState = {
