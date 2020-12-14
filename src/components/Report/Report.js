@@ -22,10 +22,10 @@ const Report = () => {
               <p>{report}</p>
               {report && path && (
                 <div className="d-flex flex-row ml-2 justify-content-center">
-                  <FileCopyIcon onClick={() => clipboard.writeText(report)} />
+                  <FileCopyIcon onClick={() => clipboard.writeText(report)} className="cursor-pointer" />
                 </div>
               )}
-              <FolderOpenIcon onClick={() => shell.openItem(path)} />
+              <FolderOpenIcon onClick={() => shell.openItem(path)} className="cursor-pointer" />
             </Jumbotron>
           </Container>
         </Container>

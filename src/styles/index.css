@@ -56,9 +56,9 @@ a:hover {
   border-bottom: 1px solid #dee2e6;
 }
 
-.dropzone-selection{
+.dropzone-selection {
   cursor: pointer;
-} 
+}
 
 .dropzone-selection p::selection {
   background: transparent;
@@ -86,7 +86,7 @@ a:hover {
   background-color: white;
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
@@ -98,10 +98,14 @@ label.custom-file-upload {
   border: 1px solid #ced4da;
   padding: 6px 16px;
   cursor: pointer;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
 .dir_path.dir_path:focus {
   border-color: #ced4da;
   box-shadow: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
