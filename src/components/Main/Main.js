@@ -42,10 +42,6 @@ const Main = props => {
   } = props;
   const { t } = useTranslation();
 
-  useEffect(() => {
-    console.log(props);
-  }, [props]);
-
   const [isLoading, setIsLoading] = useState(false);
   const handleExecute = () => {
     setIsLoading(true);

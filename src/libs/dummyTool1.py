@@ -2,39 +2,20 @@ import sys
 import os
 import xml.etree.ElementTree as xml
 from time import strftime
+from os import path
 
-url = sys.argv[2] + '/' + os.path.basename(
-    sys.argv[1]) + '_' + sys.argv[3] + '_' + strftime("%Y.%m.%d-%H:%M:%S") + '.txt'
+filePath = sys.argv[1]
+action = sys.argv[2]
+tool = sys.argv[3]
+option = sys.argv[4]
+dest = sys.argv[5]
 
-tool = sys.argv[1]
-
-def createXML(filename):
-    root = xml.Element("xml")
-    appt = xml.Element("report")
-
-    root.append(appt)
-
-    filePath = xml.SubElement(appt, "filePath")
-    filePath.text = sys.argv[1]
-
-    tool = xml.SubElement(appt, "tool")
-    tool.text = sys.argv[4]
-
-    action = xml.SubElement(appt, "action")
-    action.text = sys.argv[3]
-
-    timestamp = xml.SubElement(appt, "timestamp")
-    timestamp.text = strftime("%Y-%m-%d %H:%M:%S")
-
-    tree = xml.ElementTree(root)
-
-    with open(filename, "wb") as fh:
-        tree.write(fh)
-
-    print(xml.tostring(root, encoding='utf8', method='xml'))
+time = strftime("%Y-%m-%d %H-%M-%S")
+url = os.path.join(dest, f"{os.path.basename(filePath)}-{action}_{time}.txt")
+str_to_write = f'name - {os.path.basename(filePath)}, action - {action}, option - {option}, date - {time}, tool - dummytool1'
 
 
-str_to_write = 
+with open(url, "w") as fh:
+    fh.write(str_to_write)
 
-f = open(url,"w") 
-f.write()
+print(str_to_write)

@@ -11,5 +11,6 @@
     {
       "optionId": "dummyOption2"
     }
-  ]
+  ],
+  "path": "./src/libs/dummyTool1.py"
 }
