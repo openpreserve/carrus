@@ -21,12 +21,10 @@
   "preservationActionName": "Dummy script Handler",
   "tool": [
     {
-      "toolID": "dummyScript1",
-      "toolName": "Dummy script 1"
+      "toolID": "dummyTool1"
     },
     {
-      "toolID": "dummyScript2",
-      "toolName": "Dummy script 2"
+      "toolID": "dummyTool2"
     }
   ]
 }

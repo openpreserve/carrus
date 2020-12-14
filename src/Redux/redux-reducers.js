@@ -2,7 +2,8 @@ import actionTypes from './types';
 
 const initialState = {
   actions: [],
-  tool: '',
+  tools: [],
+  options: [],
   outputFolder: '',
   url: '',
   fileOrigin: 'file',
@@ -23,26 +24,42 @@ export const preproccessReducer = (state = initialState, action) => {
       };
     }
     case actionTypes.SET_ACTION: {
-      const newActions = state.actions.map(e => ({
-        ...e,
-        active: e.preservationActionName === action.payload,
-      }));
       return {
         ...state,
-        actions: newActions,
-        tool: newActions.filter(e => e.active)[0] ? newActions.filter(e => e.active)[0].tool[0].toolName : '',
+        actions: state.actions.map(e => ({
+          ...e,
+          active: e.preservationActionName === action.payload,
+        })),
+        tools: state.tools.map(e => ({
+          ...e,
+          active: false,
+        })),
+        options: state.options.map(e => ({
+          ...e,
+          active: false,
+        })),
       };
     }
     case actionTypes.SET_OPTIONS: {
       return {
         ...state,
-        options: action.payload,
+        options: state.options.map(e => ({
+          ...e,
+          active: e.optionName === action.payload,
+        })),
       };
     }
     case actionTypes.SET_TOOL: {
       return {
         ...state,
-        tool: action.payload,
+        tools: state.tools.map(e => ({
+          ...e,
+          active: e.toolName === action.payload,
+        })),
+        options: state.options.map(e => ({
+          ...e,
+          active: false,
+        })),
       };
     }
     case actionTypes.SET_URL: {
@@ -93,6 +110,17 @@ export const preproccessReducer = (state = initialState, action) => {
           ...e,
           active: false,
         })),
+        tools: state.tools.map(e => ({
+          ...e,
+          active: false,
+        })),
+      };
+    }
+
+    case actionTypes.SET_PAR_DATA: {
+      return {
+        ...state,
+        ...action.payload,
       };
     }
 
@@ -116,3 +144,4 @@ export const setFileInfo = (fileName, filePath, fileMimeType) => ({
   type: actionTypes.SET_FILE_INFO,
   payload: { name: fileName, path: filePath, type: fileMimeType },
 });
+export const setParData = value => ({ type: actionTypes.SET_PAR_DATA, payload: value });

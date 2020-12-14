@@ -4,8 +4,9 @@ import xml.etree.ElementTree as xml
 from time import strftime
 
 url = sys.argv[2] + '/' + os.path.basename(
-    sys.argv[1]) + '_' + sys.argv[3] + '_' + strftime("%Y.%m.%d-%H:%M:%S") + '.xml'
+    sys.argv[1]) + '_' + sys.argv[3] + '_' + strftime("%Y.%m.%d-%H:%M:%S") + '.txt'
 
+tool = sys.argv[1]
 
 def createXML(filename):
     root = xml.Element("xml")
@@ -33,7 +34,7 @@ def createXML(filename):
     print(xml.tostring(root, encoding='utf8', method='xml'))
 
 
-try:
-    createXML(url)
-except Exception as inst:
-    print(inst)
+str_to_write = 
+
+f = open(url,"w") 
+f.write()

@@ -1,7 +1,0 @@
-{
-  "id": "veraPDF",
-  "toolLabel": "veraPDF",
-  "toolName": "veraPDF",
-  "toolOperatingEnvironments": ["linux", "windows"],
-  "toolPublisher": "dual lab"
-}

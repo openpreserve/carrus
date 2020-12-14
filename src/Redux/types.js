@@ -12,6 +12,7 @@ const actionTypes = {
   SWITCH_ACTION: 'SWITCH_ACTION',
   SET_DEFAULT_PDF_TOOl: 'SET_DEFAULT_PDF_TOOl',
   SET_FILE_INFO: 'SET_FILE_INFO',
+  SET_PAR_DATA: 'SET_PAR_DATA',
 };
 
 export default actionTypes;

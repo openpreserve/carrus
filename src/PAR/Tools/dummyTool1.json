@@ -1,0 +1,15 @@
+{
+  "id": "dummyTool1",
+  "toolLabel": "dummyTool1",
+  "toolName": "Dummy Tool 1",
+  "toolOperatingEnvironments": ["linux", "windows"],
+  "toolPublisher": "dual lab",
+  "options": [
+    {
+      "optionId": "dummyOption1"
+    },
+    {
+      "optionId": "dummyOption2"
+    }
+  ]
+}

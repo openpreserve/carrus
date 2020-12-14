@@ -1,3 +1,5 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-bitwise */
@@ -26,16 +28,33 @@ import FolderInput from './FolderInput';
 const hashCode = s => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
 
 const Main = props => {
-  const { fileOrigin, filePath, dirPath, tool, mimeType, acceptedActions, activeAction } = props;
+  const {
+    fileOrigin,
+    filePath,
+    dirPath,
+    options,
+    mimeType,
+    acceptedActions,
+    activeAction,
+    tools,
+    activeTool,
+    activeOption,
+  } = props;
   const { t } = useTranslation();
+
+  useEffect(() => {
+    console.log(props);
+  }, [props]);
+
   const [isLoading, setIsLoading] = useState(false);
   const handleExecute = () => {
     setIsLoading(true);
     const dataToSend = {
       filePath,
       action: activeAction,
-      toolId: activeAction.tool.filter(e => e.toolName === tool)[0].toolID,
       outputFolder: dirPath,
+      tool: activeTool,
+      option: activeOption,
     };
     ipcRenderer.send('execute-file-action', dataToSend);
     setIsLoading(false);
@@ -107,12 +126,14 @@ const Main = props => {
         <Label for="tool" className="mr-1 my-auto w-25">
           <span>{t('Tool')}: </span>
         </Label>
-        <Input type="select" onChange={e => props.setTool(e.target.value)} defaultValue={tool}>
+        <Input type="select" onChange={e => props.setTool(e.target.value)} defaultValue="Choose tool">
+          <option hidden>Choose Tool</option>
           {activeAction ? (
-            activeAction.tool.map((e, i) => <option key={hashCode(e.toolName)}>{e.toolName}</option>)
+            tools
+              .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.toolID).includes(e.id))
+              .map((e, i) => <option key={hashCode(e.toolName)}>{e.toolName}</option>)
           ) : (
             <>
-              <option hidden>Choose Tool</option>
               <option disabled>No actions are chosen</option>
             </>
           )}
@@ -122,11 +143,21 @@ const Main = props => {
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Options')}: </span>
         </Label>
-        <Input type="select" onChange={e => props.setOptions(e.target.value)}>
+        <Input type="select" onChange={e => props.setOptions(e.target.value)} default="Choose Option">
           <option hidden>Choose Option</option>
-          <option>PDF/A-1</option>
-          <option>PDF/A-2</option>
-          <option>PDF/A-3</option>
+          {activeTool ? (
+            options
+              .filter(e =>
+                activeTool.options.map(activeToolOption => activeToolOption.optionId).includes(e.optionId),
+              )
+              .map((e, i) => (
+                <option key={hashCode(e.optionName + activeTool.toolName)}>{e.optionName}</option>
+              ))
+          ) : (
+            <>
+              <option disabled>No Tools are chosen</option>
+            </>
+          )}
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-100 d-flex flex-row align-center">
@@ -141,7 +172,7 @@ const Main = props => {
       <Button
         color="success"
         value="Execute"
-        disabled={!filePath.length || !dirPath.length || !tool.length}
+        disabled={!filePath.length || !dirPath.length || !activeTool || !activeOption}
         className="mt-3 align-self-center"
         onClick={handleExecute}
       >
@@ -165,6 +196,10 @@ const mapStateToProps = state => ({
   mimeType: state.mimeType,
   acceptedActions: state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)),
   activeAction: state.actions.filter(e => e.active)[0],
+  tools: state.tools,
+  activeTool: state.tools.filter(e => e.active)[0],
+  options: state.options,
+  activeOption: state.options.filter(e => e.active)[0],
 });
 
 export default connect(mapStateToProps, {

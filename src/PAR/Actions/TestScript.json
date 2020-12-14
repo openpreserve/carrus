@@ -12,16 +12,10 @@
   "preservationActionName": "Test script",
   "tool": [
     {
-      "toolID": "dummyScript1",
-      "toolName": "Test tool 1"
+      "toolID": "TestTool1"
     },
     {
-      "toolID": "dummyScript2",
-      "toolName": "Test tool 2"
-    },
-    {
-      "toolID": "dummyScript2",
-      "toolName": "Test tool 3"
+      "toolID": "TestTool2"
     }
   ]
 }
