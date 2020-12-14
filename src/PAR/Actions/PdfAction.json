@@ -1,15 +1,15 @@
 {
-  "description": "Test Action",
+  "description": "PDF Action",
   "example": "",
   "id": {
     "guid": "111-222-333",
-    "name": "Action",
+    "name": "PDF Action",
     "namespace": "https://openpreservation.org"
   },
   "inputExtension": {
     "accept": ["application/pdf", "application/msword"]
   },
-  "preservationActionName": "Test Action",
+  "preservationActionName": "PDF Action",
   "tool": [
     {
       "toolID": "testTool2_1"

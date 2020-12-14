@@ -1,0 +1,13 @@
+{
+  "id": "testToolMax",
+  "toolLabel": "",
+  "toolName": "Max custom Tool",
+  "toolOperatingEnvironments": ["linux", "windows"],
+  "toolPublisher": "dual lab",
+  "options": [
+    {
+      "optionId": "testOptionMax"
+    }
+  ],
+  "path": "./src/libs/dummyTool2.py"
+}
