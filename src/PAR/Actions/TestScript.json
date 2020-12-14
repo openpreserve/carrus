@@ -1,24 +1,21 @@
 {
-  "description": "Image Action",
+  "description": "Test Action",
   "example": "",
   "id": {
     "guid": "111-222-333",
-    "name": "Image Action",
+    "name": "Test Action",
     "namespace": "https://openpreservation.org"
   },
   "inputExtension": {
     "accept": ["image/jpeg", "image/pjpeg", "image/png", "image/svg+xml", "image/gif", "image/*"]
   },
-  "preservationActionName": "Image Action",
+  "preservationActionName": "Test Action",
   "tool": [
     {
       "toolID": "TestTool1"
     },
     {
       "toolID": "TestTool2"
-    },
-	{
-      "toolID": "testToolMax"
     }
   ]
 }

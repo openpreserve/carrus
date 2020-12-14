@@ -7,6 +7,7 @@ import path from 'path';
 import { readdirSync, readFileSync } from 'fs';
 
 export default async function setPAR(isDevelopment) {
+  const PAR = {};
   let actionsPath = path.join(__dirname, '..', 'src', 'PAR', 'Actions');
   let toolsPath = path.join(__dirname, '..', 'src', 'PAR', 'Tools');
   let optionsPath = path.join(__dirname, '..', 'src', 'PAR', 'Options');
@@ -14,22 +15,27 @@ export default async function setPAR(isDevelopment) {
     actionsPath = path.join(__dirname, '..', 'PAR', 'Actions');
     toolsPath = path.join(__dirname, '..', 'PAR', 'Tools');
     optionsPath = path.join(__dirname, '..', 'PAR', 'Options');
+    const actions = readdirSync(actionsPath).map(e => ({
+      ...JSON.parse(readFileSync(path.join(actionsPath, e), 'utf-8')),
+      active: false,
+    }));
+    const tools = readdirSync(toolsPath).map(e => ({
+      ...JSON.parse(readFileSync(path.join(toolsPath, e), 'utf-8')),
+      active: false,
+    }));
+    const options = readdirSync(optionsPath).map(e => ({
+      ...JSON.parse(readFileSync(path.join(optionsPath, e), 'utf-8')),
+      active: false,
+    }));
+    return {
+      actions,
+      tools,
+      options,
+    };
   }
-  const actions = readdirSync(actionsPath).map(e => ({
+  PAR.actions = readdirSync(actionsPath).map(e => ({
     ...JSON.parse(readFileSync(path.join(actionsPath, e), 'utf-8')),
     active: false,
   }));
-  const tools = readdirSync(toolsPath).map(e => ({
-    ...JSON.parse(readFileSync(path.join(toolsPath, e), 'utf-8')),
-    active: false,
-  }));
-  const options = readdirSync(optionsPath).map(e => ({
-    ...JSON.parse(readFileSync(path.join(optionsPath, e), 'utf-8')),
-    active: false,
-  }));
-  return {
-    actions,
-    tools,
-    options,
-  };
+  return PAR;
 }
