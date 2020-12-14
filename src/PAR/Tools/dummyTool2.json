@@ -1,0 +1,16 @@
+{
+  "id": "dummyTool2",
+  "toolLabel": "dummyTool2",
+  "toolName": "Dummy Tool 2",
+  "toolOperatingEnvironments": ["linux", "windows"],
+  "toolPublisher": "dual lab",
+  "options": [
+    {
+      "optionId": "dummyOption1"
+    },
+    {
+      "optionId": "dummyOption2"
+    }
+  ],
+  "path": "./src/libs/dummyTool2.py"
+}

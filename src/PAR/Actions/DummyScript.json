@@ -1,9 +1,9 @@
 {
-  "description": "Dummy script handler",
+  "description": "Dummy Action",
   "example": "",
   "id": {
     "guid": "111-222-333",
-    "name": "Dummy Script handler",
+    "name": "Dummy Action",
     "namespace": "http://openpreservation.org"
   },
   "inputExtension": {
@@ -18,15 +18,13 @@
       "image/*"
     ]
   },
-  "preservationActionName": "Dummy script Handler",
+  "preservationActionName": "Dummy Action",
   "tool": [
     {
-      "toolID": "dummyScript1",
-      "toolName": "Dummy script 1"
+      "toolID": "dummyTool1"
     },
     {
-      "toolID": "dummyScript2",
-      "toolName": "Dummy script 2"
+      "toolID": "dummyTool2"
     }
   ]
 }

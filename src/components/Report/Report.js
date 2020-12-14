@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ipcRenderer, shell } from 'electron';
 import { Jumbotron, Container } from 'reactstrap';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import * as clipboard from 'clipboard-polyfill/text';
 /* eslint-disable no-console */
 const Report = () => {
@@ -21,11 +21,11 @@ const Report = () => {
             <Jumbotron className="p-4 bg-light align-self-center m-0 d-flex flex-row">
               <p>{report}</p>
               {report && path && (
-                <div className="d-flex flex-row justify-content-center">
-                  <FileCopyIcon onClick={() => clipboard.writeText(report)} />
+                <div className="d-flex flex-row ml-2 justify-content-center">
+                  <FileCopyIcon onClick={() => clipboard.writeText(report)} className="cursor-pointer" />
                 </div>
               )}
-              <GetAppIcon onClick={() => shell.openItem(path)} />
+              <FolderOpenIcon onClick={() => shell.openItem(path)} className="cursor-pointer" />
             </Jumbotron>
           </Container>
         </Container>

@@ -1,0 +1,12 @@
+{
+  "id": "testTool2_2",
+  "toolLabel": "",
+  "toolName": "Test Tool 2_2",
+  "toolOperatingEnvironments": ["linux", "windows"],
+  "toolPublisher": "dual lab",
+  "options": [
+    {
+      "optionId": "testOption"
+    }
+  ]
+}

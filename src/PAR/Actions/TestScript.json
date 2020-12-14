@@ -1,27 +1,21 @@
 {
-  "description": "Test Script",
+  "description": "Test Action",
   "example": "",
   "id": {
     "guid": "111-222-333",
-    "name": "Dummy Script handler",
+    "name": "Test Action",
     "namespace": "https://openpreservation.org"
   },
   "inputExtension": {
     "accept": ["image/jpeg", "image/pjpeg", "image/png", "image/svg+xml", "image/gif", "image/*"]
   },
-  "preservationActionName": "Test script",
+  "preservationActionName": "Test Action",
   "tool": [
     {
-      "toolID": "dummyScript1",
-      "toolName": "Test tool 1"
+      "toolID": "TestTool1"
     },
     {
-      "toolID": "dummyScript2",
-      "toolName": "Test tool 2"
-    },
-    {
-      "toolID": "dummyScript2",
-      "toolName": "Test tool 3"
+      "toolID": "TestTool2"
     }
   ]
 }

@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import React/* , { useEffect } */ from 'react';
+import React /* , { useEffect } */ from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
@@ -9,9 +8,9 @@ import Header from './Header/Header';
 import Tools from './Tools/Tools';
 import About from './About/About';
 import Report from './Report/Report';
-import { setActions } from '../Redux/redux-reducers';
+import { setParData } from '../Redux/redux-reducers';
 
-const App = (props) => {
+const App = props => {
   const { i18n } = useTranslation();
   const currentWindow = (() => remote.getCurrentWindow()._id)();
 
@@ -21,7 +20,7 @@ const App = (props) => {
     }
   });
   ipcRenderer.on('PAR', (event, PAR) => {
-    props.setActions(PAR.actions);
+    props.setParData(PAR);
   });
 
   return (
@@ -47,5 +46,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  setActions,
+  setParData,
 })(App);

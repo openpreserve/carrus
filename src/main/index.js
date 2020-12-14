@@ -85,12 +85,14 @@ app.on('ready', () => {
 });
 
 ipcMain.on('execute-file-action', (event, arg) => {
+  console.log(arg);
   const reportDate = spawn('python', [
-    `./src/libs/${arg.toolId}.py`,
+    arg.tool.path,
     arg.filePath,
-    arg.outputFolder,
     arg.action.preservationActionName,
-    arg.tool,
+    arg.tool.toolID,
+    arg.option.optionId,
+    arg.outputFolder,
   ]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
