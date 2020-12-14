@@ -13,7 +13,7 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/destructuring-assignment */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
@@ -55,6 +55,10 @@ const Main = props => {
     ipcRenderer.send('execute-file-action', dataToSend);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    console.log(props);
+  }, [props]);
 
   return !isLoading ? (
     <div className="container d-flex flex-column">

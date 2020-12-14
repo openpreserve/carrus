@@ -15,7 +15,8 @@ import { setFileInfo } from '../../Redux/redux-reducers';
 
 const FileHandler = props => {
   const { t } = useTranslation();
-  const { fileName, mimeType } = props;
+  const { fileName, mimeType, isTypeAccepted } = props;
+  console.log(isTypeAccepted);
   return (
     <div className="mt-3">
       <Dropzone
@@ -24,7 +25,13 @@ const FileHandler = props => {
         }}
       >
         {({ getRootProps, getInputProps }) => (
-          <section className="border bg-light dropzone-selection">
+          <section
+            className={
+              isTypeAccepted && fileName.length
+                ? 'border border-danger bg-light dropzone-selection'
+                : 'border bg-light dropzone-selection'
+            }
+          >
             <div {...getRootProps()}>
               <input {...getInputProps()} />
               <Jumbotron fluid className="m-0 p-3 bg-light">
@@ -55,6 +62,7 @@ const FileHandler = props => {
 const mapStateToProps = state => ({
   fileName: state.fileName,
   mimeType: state.mimeType,
+  isTypeAccepted: !state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)).length,
 });
 
 export default connect(mapStateToProps, { setFileInfo })(FileHandler);
