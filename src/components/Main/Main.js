@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-bitwise */
 /* eslint-disable react/no-array-index-key */
@@ -25,16 +26,7 @@ import FolderInput from './FolderInput';
 const hashCode = s => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
 
 const Main = props => {
-  const {
-    fileOrigin,
-    filePath,
-    actions,
-    dirPath,
-    tool,
-    acceptedMimeType,
-    acceptedActions,
-    activeAction,
-  } = props;
+  const { fileOrigin, filePath, dirPath, tool, mimeType, acceptedActions, activeAction } = props;
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const handleExecute = () => {
@@ -87,15 +79,22 @@ const Main = props => {
           onChange={e => props.setAction(e.target.value)}
           defaultValue={activeAction ? activeAction.preservationActionName : ''}
         >
-          {acceptedMimeType.length ? (
-            <>
-              <option hidden>Choose allowed action</option>
-              {acceptedActions.map((e, i) => (
-                <option key={hashCode(e.preservationActionName[0] + acceptedMimeType)}>
-                  {e.preservationActionName}
-                </option>
-              ))}
-            </>
+          {mimeType.length ? (
+            acceptedActions.length ? (
+              <>
+                <option hidden>Choose allowed action</option>
+                {acceptedActions.map((e, i) => (
+                  <option key={hashCode(e.preservationActionName[0] + mimeType)}>
+                    {e.preservationActionName}
+                  </option>
+                ))}
+              </>
+            ) : (
+              <>
+                <option hidden>{t('inappropriateType')} </option>
+                <option disabled>{t('noActions')}</option>
+              </>
+            )
           ) : (
             <>
               <option hidden>{t('fileNotChoosen')}</option>
@@ -163,7 +162,7 @@ const mapStateToProps = state => ({
   filePath: state.filePath,
   dirPath: state.dirPath,
   tool: state.tool,
-  acceptedMimeType: state.mimeType,
+  mimeType: state.mimeType,
   acceptedActions: state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)),
   activeAction: state.actions.filter(e => e.active)[0],
 });
