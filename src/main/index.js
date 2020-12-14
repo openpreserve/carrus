@@ -86,7 +86,7 @@ app.on('ready', () => {
 
 ipcMain.on('execute-file-action', (event, arg) => {
   console.log(arg);
-  const reportDate = spawn('python3', [
+  const reportDate = spawn('python', [
     arg.tool.path,
     arg.filePath,
     arg.action.preservationActionName,
