@@ -21,10 +21,16 @@
   "preservationActionName": "Dummy Action",
   "tool": [
     {
-      "toolID": "dummyTool1"
+      "toolID": "dummyTool1",
+      "toolName" : "Dummy Tool 1"
     },
     {
-      "toolID": "dummyTool2"
+      "toolID": "dummyTool2",
+      "toolName" : "Dummy Tool 2"
+    },
+    {
+      "toolID": "dummyTool3",
+      "toolName" : "Dummy Tool 3"
     }
   ]
 }
