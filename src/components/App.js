@@ -13,10 +13,7 @@ import { setActions } from '../Redux/redux-reducers';
 
 const App = (props) => {
   const { i18n } = useTranslation();
-  const currentWindow = (() => {
-    console.log(remote.getCurrentWindow()._id);
-    return remote.getCurrentWindow()._id;
-  })();
+  const currentWindow = (() => remote.getCurrentWindow()._id)();
 
   ipcRenderer.on('config', (event, config) => {
     if (config.language && (config.language === 'fr' || config.language === 'ru')) {
