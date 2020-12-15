@@ -7,13 +7,13 @@ import path from 'path';
 import { readdirSync, readFileSync } from 'fs';
 
 export default async function setPAR(isDevelopment) {
-  let actionsPath = path.join(__dirname, '..', 'src', 'PAR', 'Actions');
-  let toolsPath = path.join(__dirname, '..', 'src', 'PAR', 'Tools');
-  let optionsPath = path.join(__dirname, '..', 'src', 'PAR', 'Options');
+  let actionsPath = path.join(__dirname, '..', 'PAR', 'Actions');
+  let toolsPath = path.join(__dirname, '..', 'PAR', 'Tools');
+  let optionsPath = path.join(__dirname, '..', 'PAR', 'Options');
   if (isDevelopment) {
-    actionsPath = path.join(__dirname, '..', 'PAR', 'Actions');
-    toolsPath = path.join(__dirname, '..', 'PAR', 'Tools');
-    optionsPath = path.join(__dirname, '..', 'PAR', 'Options');
+    actionsPath = './PAR/Actions';
+    toolsPath = './PAR/Tools';
+    optionsPath = './PAR/Options';
   }
   const actions = readdirSync(actionsPath).map(e => ({
     ...JSON.parse(readFileSync(path.join(actionsPath, e), 'utf-8')),

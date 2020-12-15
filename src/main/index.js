@@ -86,8 +86,11 @@ app.on('ready', () => {
 
 ipcMain.on('execute-file-action', (event, arg) => {
   console.log(arg);
+  const toolPath = isDevelopment ? (
+    `./libs/${arg.tool.path}`) : (
+    path.join(__dirname, '..', 'libs', arg.tool.path));
   const reportDate = spawn('python', [
-    arg.tool.path,
+    toolPath,
     arg.filePath,
     arg.action.preservationActionName,
     arg.tool.toolID,
