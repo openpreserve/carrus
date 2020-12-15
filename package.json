@@ -13,7 +13,8 @@
       "allowToChangeInstallationDirectory": true
     },
     "extraResources": [
-      "src/PAR"
+      "PAR",
+      "libs"
     ]
   },
   "scripts": {
