@@ -4,7 +4,6 @@ const initialState = {
   actions: [],
   tools: [],
   options: [],
-  outputFolder: '',
   url: '',
   fileOrigin: 'file',
   defaultPDFTool: '',
@@ -68,16 +67,26 @@ export const preproccessReducer = (state = initialState, action) => {
         url: action.payload,
       };
     }
-    case actionTypes.SET_OUTPUT_FOLDER: {
-      return {
-        ...state,
-        outputFolder: action.payload,
-      };
-    }
     case actionTypes.SET_FILE_ORIGIN: {
       return {
         ...state,
         fileOrigin: action.payload,
+        actions: state.actions.map(e => ({
+          ...e,
+          active: false,
+        })),
+        tools: state.tools.map(e => ({
+          ...e,
+          active: false,
+        })),
+        options: state.options.map(e => ({
+          ...e,
+          active: false,
+        })),
+        mimeType: '',
+        fileName: '',
+        filePath: '',
+        url: '',
       };
     }
     case actionTypes.UPDATE_JPEG_TOOL: {
@@ -124,6 +133,13 @@ export const preproccessReducer = (state = initialState, action) => {
       };
     }
 
+    case actionTypes.SET_MIME_TYPE: {
+      return {
+        ...state,
+        mimeType: action.payload,
+      };
+    }
+
     default: {
       return state;
     }
@@ -135,7 +151,6 @@ export const setOptions = value => ({ type: actionTypes.SET_OPTIONS, payload: va
 export const setActions = value => ({ type: actionTypes.SET_ACTIONS, payload: value });
 export const setAction = value => ({ type: actionTypes.SET_ACTION, payload: value });
 export const setURL = value => ({ type: actionTypes.SET_URL, payload: value });
-export const setOutputFolder = value => ({ type: actionTypes.SET_OUTPUT_FOLDER, payload: value });
 export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payload: value });
 export const setDefaultPDFTool = value => ({ type: actionTypes.SET_DEFAULT_PDF_TOOl, payload: value });
 export const updateJPEGTool = value => ({ type: actionTypes.UPDATE_JPEG_TOOL, payload: value });
@@ -144,4 +159,5 @@ export const setFileInfo = (fileName, filePath, fileMimeType) => ({
   type: actionTypes.SET_FILE_INFO,
   payload: { name: fileName, path: filePath, type: fileMimeType },
 });
+export const setMimeType = value => ({ type: actionTypes.SET_MIME_TYPE, payload: value });
 export const setParData = value => ({ type: actionTypes.SET_PAR_DATA, payload: value });

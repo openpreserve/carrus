@@ -30,6 +30,8 @@ export default {
       fileNotChoosenSub: 'You have not choosen any files to proccess',
       inappropriateType: 'There is no action for such file mime type',
       noActions: 'No actions',
+      invalidUrl: 'Invalid URL',
+      corsErrorText: 'Cant proccess link due to the cors policy error',
     },
   },
   fr: {
@@ -63,6 +65,8 @@ export default {
       fileNotChoosenSub: "Vous n'avez choisi aucun fichier à traiter",
       inappropriateType: "Il n'y a pas d'action pour ce type de fichier mime",
       noActions: "Il n'y a aucune action",
+      invalidUrl: 'URL invalide',
+      corsErrorText: "Lien de processus Cant en raison de l'erreur de politique cors",
     },
   },
   ru: {
@@ -96,6 +100,8 @@ export default {
       fileNotChoosenSub: 'Вы не выбрали файл для обработки',
       inappropriateType: 'Нет действий для выбранного mime типа',
       noActions: 'Действий нет',
+      invalidUrl: 'Недействительная ссылка',
+      corsErrorText: 'Невозможно обработать ссылку из-за cors ошибки',
     },
   },
 };

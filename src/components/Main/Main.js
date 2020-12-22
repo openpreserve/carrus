@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable func-names */
+/* eslint-disable operator-linebreak */
 /* eslint-disable function-paren-newline */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-nested-ternary */
@@ -13,16 +16,36 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
+import {
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Alert,
+} from 'reactstrap';
 import { ipcRenderer } from 'electron';
+import FileType from 'file-type/browser';
+import isURL from 'validator/lib/isURL';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from '../Header/SemiHeader';
-import { setTool, setOptions, setAction, setOutputFolder, setFileOrigin } from '../../Redux/redux-reducers';
+import {
+  setTool,
+  setOptions,
+  setAction,
+  setFileOrigin,
+  setMimeType,
+  setFileInfo,
+} from '../../Redux/redux-reducers';
 import FolderInput from './FolderInput';
 
 const hashCode = s => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
@@ -39,14 +62,19 @@ const Main = props => {
     tools,
     activeTool,
     activeOption,
+    url,
+    fileName,
   } = props;
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const handleExecute = () => {
     setIsLoading(true);
     const dataToSend = {
-      filePath,
+      fileName,
+      fileOrigin,
+      path: fileOrigin === 'url' ? url : filePath,
       action: activeAction,
       outputFolder: dirPath,
       tool: activeTool,
@@ -57,8 +85,27 @@ const Main = props => {
   };
 
   useEffect(() => {
-    console.log(props);
-  }, [props]);
+    props.setMimeType('');
+    if (isURL(url)) {
+      fetch(url)
+        .then(data => {
+          if (data.ok) {
+            FileType.fromStream(data.body).then(type => {
+              setError('');
+              props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', type.mime);
+            });
+          }
+        })
+        .catch(() => {
+          props.setMimeType('');
+          setError(t('corsErrorText'));
+        });
+    } else if (url.length !== 0) {
+      setError(t('invalidUrl'));
+    } else {
+      setError('');
+    }
+  }, [url]);
 
   return !isLoading ? (
     <div className="container d-flex flex-column">
@@ -86,7 +133,7 @@ const Main = props => {
           <FileHandler />
         </TabPane>
         <TabPane tabId="url">
-          <UrlHandler />
+          <UrlHandler isValid={!error.length} isEmpty={!url.length} feedback={error} />
         </TabPane>
       </TabContent>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
@@ -172,7 +219,13 @@ const Main = props => {
       <Button
         color="success"
         value="Execute"
-        disabled={!filePath.length || !dirPath.length || !activeTool || !activeOption}
+        disabled={
+          (fileOrigin === 'file' && !filePath.length) ||
+          (fileOrigin === 'url' && !isURL(url)) ||
+          !dirPath.length ||
+          !activeTool ||
+          !activeOption
+        }
         className="mt-3 align-self-center"
         onClick={handleExecute}
       >
@@ -186,13 +239,11 @@ const Main = props => {
 
 const mapStateToProps = state => ({
   actions: state.actions,
-  outputFolder: state.outputFolder,
   url: state.url,
   fileOrigin: state.fileOrigin,
   fileName: state.fileName,
   filePath: state.filePath,
   dirPath: state.dirPath,
-  tool: state.tool,
   mimeType: state.mimeType,
   acceptedActions: state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)),
   activeAction: state.actions.filter(e => e.active)[0],
@@ -206,6 +257,7 @@ export default connect(mapStateToProps, {
   setTool,
   setOptions,
   setAction,
-  setOutputFolder,
   setFileOrigin,
+  setMimeType,
+  setFileInfo,
 })(Main);

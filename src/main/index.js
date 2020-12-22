@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
@@ -7,6 +9,8 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
+import fs from 'fs';
+import request from 'request';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
@@ -84,12 +88,45 @@ app.on('ready', () => {
   mainWindow = createMainWindow();
 });
 
+const download = (url, dest, cb) => {
+  const file = fs.createWriteStream(dest);
+  const sendReq = request.get(url);
+
+  sendReq.on('response', response => {
+    if (response.statusCode !== 200) {
+      return cb(`Response status was ${response.statusCode}`);
+    }
+
+    sendReq.pipe(file);
+  });
+
+  file.on('finish', () => file.close(cb));
+
+  sendReq.on('error', err => {
+    fs.unlink(dest);
+    return cb(err.message);
+  });
+
+  file.on('error', err => {
+    fs.unlink(dest);
+    return cb(err.message);
+  });
+};
+
 ipcMain.on('execute-file-action', (event, arg) => {
-  console.log(arg);
-  const toolPath = isDevelopment ? (
-    `./libs/${arg.tool.path}`) : (
-    path.join(__dirname, '..', 'libs', arg.tool.path));
-  const reportDate = spawn('python', [
+  if (arg.fileOrigin === 'url') {
+    arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', arg.fileName);
+    download(arg.path, arg.filePath, message => {
+      console.log(message);
+    });
+  } else {
+    arg.filePath = arg.path;
+  }
+
+  const toolPath = isDevelopment
+    ? `./libs/${arg.tool.path}`
+    : path.join(__dirname, '..', 'libs', arg.tool.path);
+  const reportDate = spawn('python3', [
     toolPath,
     arg.filePath,
     arg.action.preservationActionName,
