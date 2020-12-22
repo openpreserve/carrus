@@ -1,36 +1,7 @@
-/* eslint-disable no-useless-escape */
-/* eslint-disable func-names */
-/* eslint-disable operator-linebreak */
-/* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-bitwise */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-else-return */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable react/jsx-closing-tag-location */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import {
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-  Alert,
-} from 'reactstrap';
+import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
 import { ipcRenderer } from 'electron';
 import FileType from 'file-type/browser';
 import isURL from 'validator/lib/isURL';
@@ -149,7 +120,7 @@ const Main = props => {
             acceptedActions.length ? (
               <>
                 <option hidden>Choose allowed action</option>
-                {acceptedActions.map((e, i) => (
+                {acceptedActions.map(e => (
                   <option key={hashCode(e.preservationActionName[0] + mimeType)}>
                     {e.preservationActionName}
                   </option>
@@ -178,7 +149,7 @@ const Main = props => {
           {activeAction ? (
             tools
               .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.toolID).includes(e.id))
-              .map((e, i) => <option key={hashCode(e.toolName)}>{e.toolName}</option>)
+              .map(e => <option key={hashCode(e.toolName)}>{e.toolName}</option>)
           ) : (
             <>
               <option disabled>No actions are chosen</option>
@@ -194,12 +165,8 @@ const Main = props => {
           <option hidden>Choose Option</option>
           {activeTool ? (
             options
-              .filter(e =>
-                activeTool.options.map(activeToolOption => activeToolOption.optionId).includes(e.optionId),
-              )
-              .map((e, i) => (
-                <option key={hashCode(e.optionName + activeTool.toolName)}>{e.optionName}</option>
-              ))
+              .filter(e => activeTool.options.map(activeToolOption => activeToolOption.optionId).includes(e.optionId))
+              .map(e => <option key={hashCode(e.optionName + activeTool.toolName)}>{e.optionName}</option>)
           ) : (
             <>
               <option disabled>No Tools are chosen</option>
@@ -212,7 +179,7 @@ const Main = props => {
           <Label for="customFile" className="mr-1 my-auto w-25">
             {t('OutputFolder')}:
           </Label>
-          <Input className="dir_path" readOnly placeholder={props.dirPath} />
+          <Input className="dir_path" readOnly placeholder={dirPath} />
         </div>
         <FolderInput />
       </FormGroup>
@@ -220,11 +187,11 @@ const Main = props => {
         color="success"
         value="Execute"
         disabled={
-          (fileOrigin === 'file' && !filePath.length) ||
-          (fileOrigin === 'url' && !isURL(url)) ||
-          !dirPath.length ||
-          !activeTool ||
-          !activeOption
+          (fileOrigin === 'file' && !filePath.length)
+          || (fileOrigin === 'url' && !isURL(url))
+          || !dirPath.length
+          || !activeTool
+          || !activeOption
         }
         className="mt-3 align-self-center"
         onClick={handleExecute}

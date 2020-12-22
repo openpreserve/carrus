@@ -1,7 +1,4 @@
-/* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
-
 import { Navbar, NavbarBrand, DropdownToggle, Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 import { remote } from 'electron';
 import { Link } from 'react-router-dom';

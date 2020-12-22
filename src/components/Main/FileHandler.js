@@ -1,7 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-bitwise */
-/* eslint-disable no-plusplus */
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';

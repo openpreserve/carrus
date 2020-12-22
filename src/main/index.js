@@ -113,27 +113,8 @@ const download = (url, dest, cb) => {
   });
 };
 
-ipcMain.on('execute-file-action', (event, arg) => {
-  if (arg.fileOrigin === 'url') {
-    arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', arg.fileName);
-    download(arg.path, arg.filePath, message => {
-      console.log(message);
-    });
-  } else {
-    arg.filePath = arg.path;
-  }
-
-  const toolPath = isDevelopment
-    ? `./libs/${arg.tool.path}`
-    : path.join(__dirname, '..', 'libs', arg.tool.path);
-  const reportDate = spawn('python3', [
-    toolPath,
-    arg.filePath,
-    arg.action.preservationActionName,
-    arg.tool.toolID,
-    arg.option.optionId,
-    arg.outputFolder,
-  ]);
+const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol) => {
+  const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
       minWidth: 1037,
@@ -150,7 +131,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
     win.webContents.once('did-finish-load', async () => {
       const translate = await setTranslate(isDevelopment);
       win.webContents.send('translate', translate);
-      win.webContents.send('receiver', { report: data.toString(), path: arg.outputFolder });
+      win.webContents.send('receiver', { report: data.toString(), path: outFol });
     });
 
     if (isDevelopment) {
@@ -169,4 +150,35 @@ ipcMain.on('execute-file-action', (event, arg) => {
       );
     }
   });
+};
+
+ipcMain.on('execute-file-action', (event, arg) => {
+  const toolPath = isDevelopment
+    ? `./libs/${arg.tool.path}`
+    : path.join(__dirname, '..', 'libs', arg.tool.path);
+  if (arg.fileOrigin === 'url') {
+    arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', arg.fileName);
+    download(
+      arg.path,
+      arg.filePath,
+      runScript(
+        toolPath,
+        arg.filePath,
+        arg.action.preservationActionName,
+        arg.tool.toolID,
+        arg.option.optionId,
+        arg.outputFolder,
+      ),
+    );
+  } else {
+    arg.filePath = arg.path;
+    runScript(
+      toolPath,
+      arg.filePath,
+      arg.action.preservationActionName,
+      arg.tool.toolID,
+      arg.option.optionId,
+      arg.outputFolder,
+    );
+  }
 });
