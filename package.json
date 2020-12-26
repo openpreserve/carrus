@@ -2,11 +2,24 @@
   "name": "jhove2020",
   "version": "1.0.0",
   "license": "MIT",
+  "homepage": "https://www.electron.build/configuration/configuration#Metadata-homepage",
+  "author": {
+    "name": "jhove2020",
+    "email": "duallab@gmail.com"
+  },
   "build": {
     "appId": "jhove2020",
     "target": "NSIS",
     "win": {
       "icon": "build/icon.png"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "snap"
+      ],
+      "icon": "build/icon.icns",
+      "category": "Utility"
     },
     "nsis": {
       "oneClick": false,
@@ -21,7 +34,8 @@
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "dist:linux": "yarn dist --linux"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
