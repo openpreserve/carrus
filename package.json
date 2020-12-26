@@ -11,7 +11,10 @@
     "appId": "jhove2020",
     "target": "NSIS",
     "win": {
-      "icon": "build/icon.png"
+      "icon": "assets/icon.png"
+    },
+    "directories": {
+      "buildResources": "src/components/assets"
     },
     "linux": {
       "target": [
