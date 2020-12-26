@@ -21,7 +21,7 @@
         "deb",
         "snap"
       ],
-      "icon": "build/icon.icns",
+      "icon": "assets/icon.icns",
       "category": "Utility"
     },
     "nsis": {
