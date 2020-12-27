@@ -94,7 +94,7 @@ const download = (url, dest, cb) => {
 
   sendReq.on('response', response => {
     if (response.statusCode !== 200) {
-      return cb(`Response status was ${response.statusCode}`);
+      throw new Error(`Response status was ${response.statusCode}`);
     }
 
     sendReq.pipe(file);
@@ -104,12 +104,12 @@ const download = (url, dest, cb) => {
 
   sendReq.on('error', err => {
     fs.unlink(dest);
-    return cb(err.message);
+    throw new Error(err.message);
   });
 
   file.on('error', err => {
     fs.unlink(dest);
-    return cb(err.message);
+    throw new Error(err.message);
   });
 };
 
@@ -158,18 +158,22 @@ ipcMain.on('execute-file-action', (event, arg) => {
     : path.join(__dirname, '..', 'libs', arg.tool.path);
   if (arg.fileOrigin === 'url') {
     arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', arg.fileName);
-    download(
-      arg.path,
-      arg.filePath,
-      runScript(
-        toolPath,
+    try {
+      download(
+        arg.path,
         arg.filePath,
-        arg.action.preservationActionName,
-        arg.tool.toolID,
-        arg.option.optionId,
-        arg.outputFolder,
-      ),
-    );
+        runScript(
+          toolPath,
+          arg.filePath,
+          arg.action.preservationActionName,
+          arg.tool.toolID,
+          arg.option.optionId,
+          arg.outputFolder,
+        ),
+      );
+    } catch (err) {
+      console.log(err);
+    }
   } else {
     arg.filePath = arg.path;
     runScript(
