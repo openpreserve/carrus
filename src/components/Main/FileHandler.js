@@ -1,12 +1,9 @@
-/* eslint-disable no-console */
-/* eslint-disable no-bitwise */
-/* eslint-disable no-plusplus */
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Dropzone from 'react-dropzone';
 import { Jumbotron, Container } from 'reactstrap';
+import FileType from 'file-type';
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import { green } from '@material-ui/core/colors';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
@@ -16,12 +13,13 @@ import { setFileInfo } from '../../Redux/redux-reducers';
 const FileHandler = props => {
   const { t } = useTranslation();
   const { fileName, mimeType, isTypeAccepted } = props;
-  console.log(isTypeAccepted);
   return (
     <div className="mt-3">
       <Dropzone
         onDrop={e => {
-          props.setFileInfo(e[0].name, e[0].path, e[0].type);
+          FileType.fromFile(e[0].path).then(MT => {
+            props.setFileInfo(e[0].name, e[0].path, MT.mime);
+          });
         }}
       >
         {({ getRootProps, getInputProps }) => (

@@ -25,7 +25,6 @@ const Tools = props => {
     .forEach(e => {
       e.tool.forEach(tool => JPEGArray.push(tool.toolName));
     });
-  console.log(actions.filter(e => e.active && e.inputExtension.accept.includes('application/pdf'))[0]);
   return (
     <Container>
       <div className="d-flex flex-column align-items-left">

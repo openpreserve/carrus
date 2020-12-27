@@ -2,11 +2,27 @@
   "name": "jhove2020",
   "version": "1.0.0",
   "license": "MIT",
+  "homepage": "https://www.electron.build/configuration/configuration#Metadata-homepage",
+  "author": {
+    "name": "jhove2020",
+    "email": "duallab@gmail.com"
+  },
   "build": {
     "appId": "jhove2020",
     "target": "NSIS",
     "win": {
-      "icon": "build/icon.png"
+      "icon": "assets/icon.png"
+    },
+    "directories": {
+      "buildResources": "src/components/assets"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "snap"
+      ],
+      "icon": "assets/icon.icns",
+      "category": "Utility"
     },
     "nsis": {
       "oneClick": false,
@@ -21,13 +37,17 @@
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "dist:linux": "yarn dist --linux"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@types/valid-url": "^1.0.3",
     "bootstrap": "^4.5.3",
     "clipboard-polyfill": "^3.0.1",
+    "file-type": "^16.0.1",
+    "got": "^11.8.1",
     "i18next": "^19.8.3",
     "jquery": "^3.5.1",
     "os-locale": "^5.0.0",
@@ -39,7 +59,10 @@
     "react-router-dom": "^5.2.0",
     "reactstrap": "^8.7.1",
     "redux": "^4.0.5",
-    "source-map-support": "0.5.9"
+    "request": "^2.88.2",
+    "source-map-support": "0.5.9",
+    "valid-url": "^1.0.9",
+    "validator": "^13.5.2"
   },
   "resolutions": {
     "upath": "1.0.5"

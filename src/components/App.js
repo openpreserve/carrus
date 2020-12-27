@@ -1,4 +1,4 @@
-import React /* , { useEffect } */ from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ const App = props => {
       i18n.changeLanguage(config.language);
     }
   });
+
   ipcRenderer.on('PAR', (event, PAR) => {
     props.setParData(PAR);
   });
