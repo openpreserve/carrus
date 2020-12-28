@@ -11,6 +11,7 @@ import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
 import fs from 'fs';
 import request from 'request';
+import { FileType } from 'file-type';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
@@ -84,10 +85,6 @@ app.on('activate', () => {
   }
 });
 
-app.on('ready', () => {
-  mainWindow = createMainWindow();
-});
-
 const download = (url, dest, cb) => {
   const file = fs.createWriteStream(dest);
   const sendReq = request.get(url);
@@ -111,6 +108,18 @@ const download = (url, dest, cb) => {
     throw new Error(err.message);
   });
 };
+
+app.on('ready', () => {
+  const test = request.get('http://www.africau.edu/images/default/sample.pdf');
+  download(
+    'http://www.africau.edu/images/default/sample.pdf',
+    '/home/sycale/Documents/projects/jhove2020/test.pdf',
+    () => {
+      console.log('downloaded');
+    },
+  );
+  mainWindow = createMainWindow();
+});
 
 const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol) => {
   const reportDate = spawn('python', [toolPath, filePath, actionName, toolID, optionID, outFol]);
