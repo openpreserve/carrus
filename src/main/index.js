@@ -96,7 +96,6 @@ const download = (url, dest, cb) => {
     if (response.statusCode !== 200) {
       throw new Error(`Response status was ${response.statusCode}`);
     }
-
     sendReq.pipe(file);
   });
 
@@ -114,7 +113,7 @@ const download = (url, dest, cb) => {
 };
 
 const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol) => {
-  const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol]);
+  const reportDate = spawn('python', [toolPath, filePath, actionName, toolID, optionID, outFol]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
       minWidth: 1037,
@@ -158,6 +157,9 @@ ipcMain.on('execute-file-action', (event, arg) => {
     : path.join(__dirname, '..', 'libs', arg.tool.path);
   if (arg.fileOrigin === 'url') {
     arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', arg.fileName);
+    if (isDevelopment) {
+      arg.filePath = path.join(__dirname, 'DownloadedFiles', arg.fileName);
+    }
     try {
       download(
         arg.path,

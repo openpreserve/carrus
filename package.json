@@ -30,7 +30,8 @@
     },
     "extraResources": [
       "PAR",
-      "libs"
+      "libs",
+      "DownloadedFiles"
     ]
   },
   "scripts": {
