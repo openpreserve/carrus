@@ -180,8 +180,6 @@ ipcMain.on('execute-file-action', (event, arg) => {
         'DownloadedFiles',
         `${new Date().toISOString()}_${arg.fileName}`,
       );
-    } else {
-      
     }
     try {
       download(
