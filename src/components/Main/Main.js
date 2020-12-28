@@ -1,9 +1,10 @@
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
 import { ipcRenderer } from 'electron';
-import FileType from 'file-type/browser';
+// import FileType from 'file-type/browser';
 import isURL from 'validator/lib/isURL';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
@@ -56,21 +57,12 @@ const Main = props => {
   };
 
   useEffect(() => {
-    props.setMimeType('');
     if (isURL(url)) {
-      fetch(url)
-        .then(data => {
-          if (data.ok) {
-            FileType.fromStream(data.body).then(type => {
-              setError('');
-              props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', type.mime);
-            });
-          }
-        })
-        .catch(() => {
-          props.setMimeType('');
-          setError(t('corsErrorText'));
-        });
+      ipcRenderer.send('check-mime-type', url);
+      ipcRenderer.on('receive-mime-type', (event, arg) => {
+        if (arg) props.setMimeType(arg.mime);
+        else props.setMimeType('');
+      });
     } else if (url.length !== 0) {
       setError(t('invalidUrl'));
     } else {

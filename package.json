@@ -7,6 +7,9 @@
     "name": "jhove2020",
     "email": "duallab@gmail.com"
   },
+  "engines": {
+    "node": ">=12"
+  },
   "build": {
     "appId": "jhove2020",
     "target": "NSIS",
@@ -71,7 +74,7 @@
   "devDependencies": {
     "@babel/preset-react": "7.0.0",
     "babel-eslint": "^10.1.0",
-    "electron": "2.0.9",
+    "electron": "^11.1.1",
     "electron-builder": "20.28.1",
     "electron-webpack": "2.1.2",
     "electron-webpack-eslint": "3.0.0",

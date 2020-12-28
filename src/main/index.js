@@ -11,10 +11,12 @@ import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
 import fs from 'fs';
 import request from 'request';
-import { FileType } from 'file-type';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
+
+const got = require('got');
+const FileType = require('file-type');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -29,6 +31,7 @@ async function createMainWindow() {
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
 
@@ -99,30 +102,29 @@ const download = (url, dest, cb) => {
   file.on('finish', () => file.close(cb));
 
   sendReq.on('error', err => {
-    fs.unlink(dest);
+    fs.unlink(dest, () => {});
     throw new Error(err.message);
   });
 
   file.on('error', err => {
-    fs.unlink(dest);
+    fs.unlink(dest, () => {});
     throw new Error(err.message);
   });
 };
 
+ipcMain.on('check-mime-type', async (event, arg) => {
+  const stream = got.stream(arg);
+  const type = await FileType.fromStream(stream);
+  console.log(type);
+  event.sender.send('receive-mime-type', type);
+});
+
 app.on('ready', () => {
-  const test = request.get('http://www.africau.edu/images/default/sample.pdf');
-  download(
-    'http://www.africau.edu/images/default/sample.pdf',
-    '/home/sycale/Documents/projects/jhove2020/test.pdf',
-    () => {
-      console.log('downloaded');
-    },
-  );
   mainWindow = createMainWindow();
 });
 
 const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol) => {
-  const reportDate = spawn('python', [toolPath, filePath, actionName, toolID, optionID, outFol]);
+  const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
       minWidth: 1037,
@@ -132,6 +134,7 @@ const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol) => 
       titleBarStyle: 'hidden',
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
       },
     });
     win._id = 'report';
@@ -170,6 +173,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
       arg.filePath = path.join(__dirname, 'DownloadedFiles', arg.fileName);
     }
     try {
+      console.log(arg);
       download(
         arg.path,
         arg.filePath,
