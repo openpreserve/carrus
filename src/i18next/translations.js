@@ -32,6 +32,7 @@ export default {
       noActions: 'No actions',
       invalidUrl: 'Invalid URL',
       corsErrorText: 'Cant proccess link due to the cors policy error',
+      fileTypesUnavailable: "text-based formats like .txt, .csv, .svg aren't available",
     },
   },
   fr: {
@@ -67,6 +68,7 @@ export default {
       noActions: "Il n'y a aucune action",
       invalidUrl: 'URL invalide',
       corsErrorText: "Lien de processus Cant en raison de l'erreur de politique cors",
+      fileTypesUnavailable: 'Les formats textuels tels que .txt, .csv, .svg ne sont pas disponibles',
     },
   },
   ru: {
@@ -102,6 +104,7 @@ export default {
       noActions: 'Действий нет',
       invalidUrl: 'Недействительная ссылка',
       corsErrorText: 'Невозможно обработать ссылку из-за cors ошибки',
+      fileTypesUnavailable: 'Текстовые форматы, такие как .txt, .csv, .svg, не поддерживаются',
     },
   },
 };

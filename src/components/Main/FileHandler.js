@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Dropzone from 'react-dropzone';
@@ -13,12 +13,20 @@ import { setFileInfo } from '../../Redux/redux-reducers';
 const FileHandler = props => {
   const { t } = useTranslation();
   const { fileName, mimeType, isTypeAccepted } = props;
+  const [error, setError] = useState('');
   return (
     <div className="mt-3">
       <Dropzone
         onDrop={e => {
           FileType.fromFile(e[0].path).then(MT => {
-            props.setFileInfo(e[0].name, e[0].path, MT.mime);
+            try {
+              if (MT) props.setFileInfo(e[0].name, e[0].path, MT.mime);
+              else throw new Error(t('fileTypesUnavailable'));
+              setError('');
+            } catch (err) {
+              props.setFileInfo('', '', '');
+              setError(err.message);
+            }
           });
         }}
       >
@@ -36,10 +44,14 @@ const FileHandler = props => {
                 <Container fluid className="d-flex flex-column align-items-center">
                   <MoveToInboxIcon className="text-green" style={{ fontSize: 80, color: green[500] }} />
                   {fileName === '' ? (
-                    <div>
-                      <p className="lead">{t('DropzoneTitle')}</p>
-                      <p className="text-muted">{t('DropzoneSubtitle')}</p>
-                    </div>
+                    error.length ? (
+                      <div style={{ color: 'red' }}>{error}</div>
+                    ) : (
+                      <div>
+                        <p className="lead">{t('DropzoneTitle')}</p>
+                        <p className="text-muted">{t('DropzoneSubtitle')}</p>
+                      </div>
+                    )
                   ) : (
                     <div className="d-flex flex-row">
                       {mimeType.includes('pdf') && <PictureAsPdfIcon />}
