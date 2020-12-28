@@ -169,15 +169,20 @@ ipcMain.on('execute-file-action', (event, arg) => {
     ? `./libs/${arg.tool.path}`
     : path.join(__dirname, '..', 'libs', arg.tool.path);
   if (arg.fileOrigin === 'url') {
-    if (!fs.existsSync(path.join(__dirname, '..', 'DownloadedFiles'))) {
-      fs.mkdirSync(path.join(__dirname, '..', 'DownloadedFiles'));
+    arg.filePath = path.join(__dirname, '..', `${new Date().toISOString()}_${arg.fileName}`);
+    if (isDevelopment) {
+      if (!fs.existsSync(path.join(__dirname, '..', 'DownloadedFiles'))) {
+        fs.mkdirSync(path.join(__dirname, '..', 'DownloadedFiles'));
+      }
+      arg.filePath = path.join(
+        __dirname,
+        '..',
+        'DownloadedFiles',
+        `${new Date().toISOString()}_${arg.fileName}`,
+      );
+    } else {
+      
     }
-    arg.filePath = path.join(
-      __dirname,
-      '..',
-      'DownloadedFiles',
-      `${new Date().toISOString()}_${arg.fileName}`,
-    );
     try {
       download(
         arg.path,
