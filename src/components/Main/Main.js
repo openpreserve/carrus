@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
 import { ipcRenderer } from 'electron';
-// import FileType from 'file-type/browser';
 import isURL from 'validator/lib/isURL';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
@@ -45,6 +44,7 @@ const Main = props => {
     setIsLoading(true);
     const dataToSend = {
       fileName,
+      mimeType,
       fileOrigin,
       path: fileOrigin === 'url' ? url : filePath,
       action: activeAction,
@@ -60,8 +60,8 @@ const Main = props => {
     if (isURL(url)) {
       ipcRenderer.send('check-mime-type', url);
       ipcRenderer.on('receive-mime-type', (event, arg) => {
-        if (arg) props.setMimeType(arg.mime);
-        else props.setMimeType('');
+        if (arg) props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', arg.mime);
+        else props.setMimeType('', '', '');
       });
     } else if (url.length !== 0) {
       setError(t('invalidUrl'));

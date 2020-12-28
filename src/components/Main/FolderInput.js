@@ -1,25 +1,24 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import * as path from 'path';
 import { setDirPath } from '../../Redux/redux-reducers';
 
 const FolderInput = props => {
   const { t } = useTranslation();
   const directoryRef = useRef();
-  function getfolder() {
-    props.setDirPath(directoryRef.current.files[0].path);
-  }
 
   return (
     <div className="w-50 d-flex flex-row">
       <label className="custom-file-upload ml-3">
         <input
-          className="ml-3"
-          directory=""
           webkitdirectory=""
+          directory=""
+          mozdirectory=""
           type="file"
-          onChange={getfolder}
+          onChange={() => props.setDirPath(path.dirname(directoryRef.current.files[0].path))}
           ref={directoryRef}
         />
         {t('SelectFolder')}

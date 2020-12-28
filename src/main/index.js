@@ -99,7 +99,9 @@ const download = (url, dest, cb) => {
     sendReq.pipe(file);
   });
 
-  file.on('finish', () => file.close(cb));
+  file.on('finish', () => {
+    file.close(cb);
+  });
 
   sendReq.on('error', err => {
     fs.unlink(dest, () => {});
@@ -115,7 +117,6 @@ const download = (url, dest, cb) => {
 ipcMain.on('check-mime-type', async (event, arg) => {
   const stream = got.stream(arg);
   const type = await FileType.fromStream(stream);
-  console.log(type);
   event.sender.send('receive-mime-type', type);
 });
 
@@ -123,8 +124,8 @@ app.on('ready', () => {
   mainWindow = createMainWindow();
 });
 
-const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol) => {
-  const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol]);
+const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mimeType) => {
+  const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
       minWidth: 1037,
@@ -168,12 +169,16 @@ ipcMain.on('execute-file-action', (event, arg) => {
     ? `./libs/${arg.tool.path}`
     : path.join(__dirname, '..', 'libs', arg.tool.path);
   if (arg.fileOrigin === 'url') {
-    arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', arg.fileName);
-    if (isDevelopment) {
-      arg.filePath = path.join(__dirname, 'DownloadedFiles', arg.fileName);
+    if (!fs.existsSync(path.join(__dirname, '..', 'DownloadedFiles'))) {
+      fs.mkdirSync(path.join(__dirname, '..', 'DownloadedFiles'));
     }
+    arg.filePath = path.join(
+      __dirname,
+      '..',
+      'DownloadedFiles',
+      `${new Date().toISOString()}_${arg.fileName}`,
+    );
     try {
-      console.log(arg);
       download(
         arg.path,
         arg.filePath,
@@ -184,6 +189,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
           arg.tool.toolID,
           arg.option.optionId,
           arg.outputFolder,
+          arg.mimeType,
         ),
       );
     } catch (err) {
@@ -198,6 +204,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
       arg.tool.toolID,
       arg.option.optionId,
       arg.outputFolder,
+      arg.mimeType,
     );
   }
 });
