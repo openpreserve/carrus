@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
@@ -10,13 +11,13 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
 import fs from 'fs';
-import request from 'request';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
 
 const got = require('got');
 const FileType = require('file-type');
+const http = require('http');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -88,31 +89,41 @@ app.on('activate', () => {
   }
 });
 
-const download = (url, dest, cb) => {
-  const file = fs.createWriteStream(dest);
-  const sendReq = request.get(url);
+const download = (url, dest) => new Promise((resolve, reject) => {
+  const file = fs.createWriteStream(dest, { flags: 'wx' });
 
-  sendReq.on('response', response => {
-    if (response.statusCode !== 200) {
-      throw new Error(`Response status was ${response.statusCode}`);
+  const request = http.get(url, response => {
+    if (response.statusCode === 200) {
+      response.pipe(file);
+    } else {
+      file.close();
+      fs.unlink(dest, () => {}); // Delete temp file
+      reject(`Server responded with ${response.statusCode}: ${response.statusMessage}`);
     }
-    sendReq.pipe(file);
+  });
+
+  request.on('error', err => {
+    file.close();
+    fs.unlink(dest, () => {}); // Delete temp file
+    reject(err.message);
   });
 
   file.on('finish', () => {
-    file.close(cb);
-  });
-
-  sendReq.on('error', err => {
-    fs.unlink(dest, () => {});
-    throw new Error(err.message);
+    console.log('here');
+    resolve();
   });
 
   file.on('error', err => {
-    fs.unlink(dest, () => {});
-    throw new Error(err.message);
+    file.close();
+
+    if (err.code === 'EEXIST') {
+      reject('File already exists');
+    } else {
+      fs.unlink(dest, () => {}); // Delete temp file
+      reject(err.message);
+    }
   });
-};
+});
 
 ipcMain.on('check-mime-type', async (event, arg) => {
   const stream = got.stream(arg);
@@ -125,6 +136,7 @@ app.on('ready', () => {
 });
 
 const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mimeType) => {
+  console.log('here2');
   const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
@@ -165,6 +177,7 @@ const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mim
 };
 
 ipcMain.on('execute-file-action', (event, arg) => {
+  console.log(arg.fileOrigin);
   const toolPath = isDevelopment
     ? `./libs/${arg.tool.path}`
     : path.join(__dirname, '..', 'libs', arg.tool.path);
@@ -184,17 +197,16 @@ ipcMain.on('execute-file-action', (event, arg) => {
     try {
       download(
         arg.path,
+        arg.filePath
+      ).then(() => runScript(
+        toolPath,
         arg.filePath,
-        runScript(
-          toolPath,
-          arg.filePath,
-          arg.action.preservationActionName,
-          arg.tool.toolID,
-          arg.option.optionId,
-          arg.outputFolder,
-          arg.mimeType,
-        ),
-      );
+        arg.action.preservationActionName,
+        arg.tool.toolID,
+        arg.option.optionId,
+        arg.outputFolder,
+        arg.mimeType,
+      )).catch(err => console.log(err));
     } catch (err) {
       console.log(err);
     }
