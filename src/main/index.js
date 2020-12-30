@@ -177,7 +177,6 @@ const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mim
 };
 
 ipcMain.on('execute-file-action', (event, arg) => {
-  console.log(arg.fileOrigin);
   const toolPath = isDevelopment
     ? `./libs/${arg.tool.path}`
     : path.join(__dirname, '..', 'libs', arg.tool.path);

@@ -17,7 +17,9 @@ const FolderInput = props => {
           directory=""
           webkitdirectory=""
           type="file"
-          onChange={e => props.setDirPath(path.dirname(e.target.files[0].path))}
+          onChange={e => {
+            if (e.target.files.length) props.setDirPath(path.dirname(e.target.files[0].path));
+          }}
         />
         {t('SelectFolder')}
       </label>
