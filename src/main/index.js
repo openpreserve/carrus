@@ -15,9 +15,9 @@ import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
 
-const got = require('got');
 const FileType = require('file-type');
 const request = require('request');
+const fetch = require('node-fetch');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -127,8 +127,8 @@ const download = (url, dest) => new Promise((resolve, reject) => {
 });
 
 ipcMain.on('check-mime-type', async (event, arg) => {
-  const stream = got.stream(arg);
-  const type = await FileType.fromStream(stream);
+  const fStream = await fetch(arg);
+  const type = await FileType.fromStream(fStream.body);
   event.sender.send('receive-mime-type', type);
 });
 
