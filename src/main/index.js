@@ -89,43 +89,42 @@ app.on('activate', () => {
   }
 });
 
-const download = (url, dest) =>
-  new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(dest);
+const download = (url, dest) => new Promise((resolve, reject) => {
+  const file = fs.createWriteStream(dest);
 
-    const sendReq = request.get(url);
+  const sendReq = request.get(url);
 
-    sendReq.on('response', response => {
-      if (response.statusCode === 200) {
-        sendReq.pipe(file);
-      } else {
-        file.close();
-        fs.unlink(dest, () => {});
-        reject(`Server responded with ${response.statusCode}: ${response.statusMessage}`);
-      }
-    });
-
-    sendReq.on('error', err => {
+  sendReq.on('response', response => {
+    if (response.statusCode === 200) {
+      sendReq.pipe(file);
+    } else {
       file.close();
       fs.unlink(dest, () => {});
-      reject(err.message);
-    });
-
-    file.on('finish', () => {
-      resolve();
-    });
-
-    file.on('error', err => {
-      file.close();
-
-      if (err.code === 'EEXIST') {
-        reject('File already exists');
-      } else {
-        fs.unlink(dest, () => {});
-        reject(err.message);
-      }
-    });
+      reject(`Server responded with ${response.statusCode}: ${response.statusMessage}`);
+    }
   });
+
+  sendReq.on('error', err => {
+    file.close();
+    fs.unlink(dest, () => {});
+    reject(err.message);
+  });
+
+  file.on('finish', () => {
+    resolve();
+  });
+
+  file.on('error', err => {
+    file.close();
+
+    if (err.code === 'EEXIST') {
+      reject('File already exists');
+    } else {
+      fs.unlink(dest, () => {});
+      reject(err.message);
+    }
+  });
+});
 
 ipcMain.on('check-mime-type', async (event, arg) => {
   const stream = got.stream(arg);
@@ -196,17 +195,15 @@ ipcMain.on('execute-file-action', (event, arg) => {
     }
     try {
       download(arg.path, arg.filePath)
-        .then(() =>
-          runScript(
-            toolPath,
-            arg.filePath,
-            arg.action.preservationActionName,
-            arg.tool.toolID,
-            arg.option.optionId,
-            arg.outputFolder,
-            arg.mimeType,
-          ),
-        )
+        .then(() => runScript(
+          toolPath,
+          arg.filePath,
+          arg.action.preservationActionName,
+          arg.tool.toolID,
+          arg.option.optionId,
+          arg.outputFolder,
+          arg.mimeType,
+        ),)
         .catch(err => console.log(err));
     } catch (err) {
       console.log(err);

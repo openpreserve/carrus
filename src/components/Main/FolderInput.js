@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import * as path from 'path';
@@ -16,8 +16,10 @@ const FolderInput = props => {
         <input
           directory=""
           webkitdirectory=""
+          multiple=""
           type="file"
           onChange={e => {
+            console.log(e.target.files);
             if (e.target.files.length) props.setDirPath(path.dirname(e.target.files[0].path));
           }}
         />
