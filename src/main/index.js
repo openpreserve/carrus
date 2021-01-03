@@ -14,6 +14,7 @@ import fs from 'fs';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
+/* import { NewReleases } from '@material-ui/icons'; */
 
 const FileType = require('file-type');
 const request = require('request');
@@ -137,7 +138,7 @@ app.on('ready', () => {
 });
 
 const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mimeType) => {
-  const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
+  const reportDate = spawn('python', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
       minWidth: 1037,
@@ -181,18 +182,19 @@ ipcMain.on('execute-file-action', (event, arg) => {
     ? `./libs/${arg.tool.path}`
     : path.join(__dirname, '..', 'libs', arg.tool.path);
   if (arg.fileOrigin === 'url') {
-    arg.filePath = path.join(__dirname, '..', `${new Date().toISOString()}_${arg.fileName}`);
-    if (isDevelopment) {
-      if (!fs.existsSync(path.join(__dirname, '..', 'DownloadedFiles'))) {
-        fs.mkdirSync(path.join(__dirname, '..', 'DownloadedFiles'));
-      }
-      arg.filePath = path.join(
-        __dirname,
-        '..',
-        'DownloadedFiles',
-        `${new Date().toISOString()}_${arg.fileName}`,
-      );
+    if (!fs.existsSync(path.join(__dirname, '..', 'DownloadedFiles'))) {
+      fs.mkdirSync(path.join(__dirname, '..', 'DownloadedFiles'));
     }
+    arg.filePath = path.join(
+      __dirname,
+      '..',
+      'DownloadedFiles',
+      `${new Date()
+        .toLocaleDateString()}.${new Date()
+        .getHours()}.${new Date()
+        .getMinutes()}.${new Date()
+        .getSeconds()}.${arg.fileName}`,
+    );
     try {
       download(arg.path, arg.filePath)
         .then(() => runScript(
