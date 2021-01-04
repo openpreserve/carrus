@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
@@ -177,6 +178,16 @@ const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mim
   });
 };
 
+const getDateString = () => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+  const hours = `${date.getHours()}`.padStart(2, '0');
+  const mins = `${date.getMinutes()}`.padStart(2, '0');
+  return `${year}${month}${day}${hours}${mins}`;
+};
+
 ipcMain.on('execute-file-action', (event, arg) => {
   const toolPath = isDevelopment
     ? `./libs/${arg.tool.path}`
@@ -185,14 +196,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
     if (!fs.existsSync(path.join(__dirname, '..', 'DownloadedFiles'))) {
       fs.mkdirSync(path.join(__dirname, '..', 'DownloadedFiles'));
     }
-    arg.filePath = path.join(
-      __dirname,
-      '..',
-      'DownloadedFiles',
-      `${new Date().toLocaleDateString()}.${new Date().getHours()}.${new Date().getMinutes()}.${new Date().getSeconds()}.${
-        arg.fileName
-      }`,
-    );
+    arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
         .then(() => runScript(
