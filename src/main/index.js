@@ -24,6 +24,7 @@ const fetch = require('node-fetch');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
+const factor = screen.getPrimaryDisplay().scaleFactor;
 
 async function createMainWindow() {
   const window = new BrowserWindow({
@@ -35,6 +36,7 @@ async function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      zoomFactor: 1.0 / factor,
     },
   });
 
