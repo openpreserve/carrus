@@ -15,7 +15,7 @@
     "target": "NSIS",
     "win": {
       "icon": "assets/icon.png",
-      "publish": ["https://github.com/openpreserve/"]
+      "publisherName": "https://github.com/openpreserve/"
     },
     "directories": {
       "buildResources": "src/components/assets"
