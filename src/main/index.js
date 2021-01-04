@@ -142,7 +142,7 @@ app.on('ready', () => {
 });
 
 const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mimeType) => {
-  const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
+  const reportDate = spawn('python', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
       minWidth: 1037,
