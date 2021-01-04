@@ -138,7 +138,7 @@ app.on('ready', () => {
 });
 
 const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mimeType) => {
-  const reportDate = spawn('python', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
+  const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
       minWidth: 1037,
@@ -156,7 +156,7 @@ const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mim
     win.webContents.once('did-finish-load', async () => {
       const translate = await setTranslate(isDevelopment);
       win.webContents.send('translate', translate);
-      win.webContents.send('receiver', { report: data.toString(), path: outFol });
+      win.webContents.send('receiver', { report: data.toString(), path: filePath });
     });
 
     if (isDevelopment) {
@@ -189,11 +189,9 @@ ipcMain.on('execute-file-action', (event, arg) => {
       __dirname,
       '..',
       'DownloadedFiles',
-      `${new Date()
-        .toLocaleDateString()}.${new Date()
-        .getHours()}.${new Date()
-        .getMinutes()}.${new Date()
-        .getSeconds()}.${arg.fileName}`,
+      `${new Date().toLocaleDateString()}.${new Date().getHours()}.${new Date().getMinutes()}.${new Date().getSeconds()}.${
+        arg.fileName
+      }`,
     );
     try {
       download(arg.path, arg.filePath)

@@ -11,6 +11,7 @@ const Report = () => {
   ipcRenderer.on('receiver', (event, arg) => {
     setReport(arg.report);
     setPath(arg.path);
+    console.log(arg.path);
   });
 
   return (
@@ -19,16 +20,16 @@ const Report = () => {
         <Container fluid className="d-flex flex-column align-items-center">
           <Container>
             <Jumbotron className="p-4 bg-light align-self-center m-0 d-flex flex-row">
-              <p>{report}</p>
+              <pre className="w-75 text-center">{report}</pre>
               {report && path && (
-                <div className="d-flex flex-row ml-2 justify-content-center">
+                <div className="d-flex flex-row ml-2 justify-content-end w-25">
                   <FileCopyIcon onClick={() => clipboard.writeText(report)} className="cursor-pointer" />
+                  <FolderOpenIcon
+                    onClick={() => shell.openExternal(`file://${path}/`)}
+                    className="cursor-pointer"
+                  />
                 </div>
               )}
-              <FolderOpenIcon
-                onClick={() => shell.openExternal(`file://${path}`)}
-                className="cursor-pointer"
-              />
             </Jumbotron>
           </Container>
         </Container>
