@@ -7,7 +7,7 @@
 /* eslint-disable no-console */
 /* eslint-disable comma-dangle */
 /* eslint-disable prefer-destructuring */
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
@@ -24,9 +24,10 @@ const fetch = require('node-fetch');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
-const factor = screen.getPrimaryDisplay().scaleFactor;
 
 async function createMainWindow() {
+  const factor = screen.getPrimaryDisplay().scaleFactor;
+
   const window = new BrowserWindow({
     minWidth: 1280,
     minHeight: 800,
