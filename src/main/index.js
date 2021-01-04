@@ -10,7 +10,7 @@
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
-import { spawn } from 'child_process';
+import { PythonShell } from 'python-shell';
 import fs from 'fs';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
@@ -141,46 +141,6 @@ app.on('ready', () => {
   mainWindow = createMainWindow();
 });
 
-const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mimeType) => {
-  const reportDate = spawn('python3', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
-  reportDate.stdout.on('data', data => {
-    const win = new BrowserWindow({
-      minWidth: 1037,
-      minHeight: 700,
-      title: 'JHove 2020',
-      frame: false,
-      titleBarStyle: 'hidden',
-      webPreferences: {
-        nodeIntegration: true,
-        enableRemoteModule: true,
-      },
-    });
-    win._id = 'report';
-
-    win.webContents.once('did-finish-load', async () => {
-      const translate = await setTranslate(isDevelopment);
-      win.webContents.send('translate', translate);
-      win.webContents.send('receiver', { report: data.toString(), path: filePath });
-    });
-
-    if (isDevelopment) {
-      win.webContents.openDevTools();
-    }
-
-    if (isDevelopment) {
-      win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
-    } else {
-      win.loadURL(
-        formatUrl({
-          pathname: path.join(__dirname, 'index.html'),
-          protocol: 'file',
-          slashes: true,
-        }),
-      );
-    }
-  });
-};
-
 const getDateString = () => {
   const date = new Date();
   const year = date.getFullYear();
@@ -191,10 +151,56 @@ const getDateString = () => {
   return `${year}${month}${day}${hours}${mins}`;
 };
 
+const runScript = (tool, filePath, actionName, toolID, optionID, outFol, mimeType) => {
+  const options = {
+    scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
+    args: [filePath, actionName, toolID, optionID, mimeType],
+  };
+  PythonShell.run(tool.path, options, (err, data) => {
+    if (err) throw err;
+    const reportText = data.join('\n');
+    const dest = path.join(outFol, `${path.basename(filePath)}-${actionName}_${getDateString()}.txt`);
+    fs.writeFile(dest, reportText, error => {
+      if (error) throw error;
+      const win = new BrowserWindow({
+        minWidth: 1037,
+        minHeight: 700,
+        title: 'JHove 2020',
+        frame: false,
+        titleBarStyle: 'hidden',
+        webPreferences: {
+          nodeIntegration: true,
+          enableRemoteModule: true,
+        },
+      });
+      win._id = 'report';
+
+      win.webContents.once('did-finish-load', async () => {
+        const translate = await setTranslate(isDevelopment);
+        win.webContents.send('translate', translate);
+        win.webContents.send('receiver', { report: reportText, path: dest });
+      });
+
+      if (isDevelopment) {
+        win.webContents.openDevTools();
+      }
+
+      if (isDevelopment) {
+        win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+      } else {
+        win.loadURL(
+          formatUrl({
+            pathname: path.join(__dirname, 'index.html'),
+            protocol: 'file',
+            slashes: true,
+          }),
+        );
+      }
+    });
+  });
+};
+
 ipcMain.on('execute-file-action', (event, arg) => {
-  const toolPath = isDevelopment
-    ? `./libs/${arg.tool.path}`
-    : path.join(__dirname, '..', 'libs', arg.tool.path);
   if (arg.fileOrigin === 'url') {
     if (!fs.existsSync(path.join(__dirname, '..', 'DownloadedFiles'))) {
       fs.mkdirSync(path.join(__dirname, '..', 'DownloadedFiles'));
@@ -203,7 +209,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
     try {
       download(arg.path, arg.filePath)
         .then(() => runScript(
-          toolPath,
+          arg.tool,
           arg.filePath,
           arg.action.preservationActionName,
           arg.tool.toolID,
@@ -218,7 +224,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
   } else {
     arg.filePath = arg.path;
     runScript(
-      toolPath,
+      arg.tool,
       arg.filePath,
       arg.action.preservationActionName,
       arg.tool.toolID,

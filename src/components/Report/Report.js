@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { ipcRenderer, shell } from 'electron';
+import * as os from 'os';
 import { Jumbotron, Container } from 'reactstrap';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import * as clipboard from 'clipboard-polyfill/text';
+import showItemInFolder from '../../utils/linuxShowItem';
 /* eslint-disable no-console */
 const Report = () => {
   const [report, setReport] = useState('');
@@ -25,7 +27,11 @@ const Report = () => {
                 <div className="d-flex flex-row ml-2 justify-content-end w-25">
                   <FileCopyIcon onClick={() => clipboard.writeText(report)} className="cursor-pointer" />
                   <FolderOpenIcon
-                    onClick={() => shell.openExternal(`file://${path}/`)}
+                    onClick={() => {
+                      if (os.platform() === 'linux') {
+                        showItemInFolder(path);
+                      } else shell.showItemInFolder(path);
+                    }}
                     className="cursor-pointer"
                   />
                 </div>
