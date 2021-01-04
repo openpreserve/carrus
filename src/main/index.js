@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
@@ -10,11 +11,14 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { spawn } from 'child_process';
 import fs from 'fs';
-import request from 'request';
-import { FileType } from 'file-type';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
+/* import { NewReleases } from '@material-ui/icons'; */
+
+const FileType = require('file-type');
+const request = require('request');
+const fetch = require('node-fetch');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -29,6 +33,7 @@ async function createMainWindow() {
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
 
@@ -85,44 +90,55 @@ app.on('activate', () => {
   }
 });
 
-const download = (url, dest, cb) => {
+const download = (url, dest) => new Promise((resolve, reject) => {
   const file = fs.createWriteStream(dest);
+
   const sendReq = request.get(url);
 
   sendReq.on('response', response => {
-    if (response.statusCode !== 200) {
-      throw new Error(`Response status was ${response.statusCode}`);
+    if (response.statusCode === 200) {
+      sendReq.pipe(file);
+    } else {
+      file.close();
+      fs.unlink(dest, () => {});
+      reject(`Server responded with ${response.statusCode}: ${response.statusMessage}`);
     }
-    sendReq.pipe(file);
   });
 
-  file.on('finish', () => file.close(cb));
-
   sendReq.on('error', err => {
-    fs.unlink(dest);
-    throw new Error(err.message);
+    file.close();
+    fs.unlink(dest, () => {});
+    reject(err.message);
+  });
+
+  file.on('finish', () => {
+    resolve();
   });
 
   file.on('error', err => {
-    fs.unlink(dest);
-    throw new Error(err.message);
+    file.close();
+
+    if (err.code === 'EEXIST') {
+      reject('File already exists');
+    } else {
+      fs.unlink(dest, () => {});
+      reject(err.message);
+    }
   });
-};
+});
+
+ipcMain.on('check-mime-type', async (event, arg) => {
+  const fStream = await fetch(arg);
+  const type = await FileType.fromStream(fStream.body);
+  event.sender.send('receive-mime-type', type);
+});
 
 app.on('ready', () => {
-  const test = request.get('http://www.africau.edu/images/default/sample.pdf');
-  download(
-    'http://www.africau.edu/images/default/sample.pdf',
-    '/home/sycale/Documents/projects/jhove2020/test.pdf',
-    () => {
-      console.log('downloaded');
-    },
-  );
   mainWindow = createMainWindow();
 });
 
-const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol) => {
-  const reportDate = spawn('python', [toolPath, filePath, actionName, toolID, optionID, outFol]);
+const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol, mimeType) => {
+  const reportDate = spawn('python', [toolPath, filePath, actionName, toolID, optionID, outFol, mimeType]);
   reportDate.stdout.on('data', data => {
     const win = new BrowserWindow({
       minWidth: 1037,
@@ -132,6 +148,7 @@ const runScript = (toolPath, filePath, actionName, toolID, optionID, outFol) => 
       titleBarStyle: 'hidden',
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
       },
     });
     win._id = 'report';
@@ -165,23 +182,31 @@ ipcMain.on('execute-file-action', (event, arg) => {
     ? `./libs/${arg.tool.path}`
     : path.join(__dirname, '..', 'libs', arg.tool.path);
   if (arg.fileOrigin === 'url') {
-    arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', arg.fileName);
-    if (isDevelopment) {
-      arg.filePath = path.join(__dirname, 'DownloadedFiles', arg.fileName);
+    if (!fs.existsSync(path.join(__dirname, '..', 'DownloadedFiles'))) {
+      fs.mkdirSync(path.join(__dirname, '..', 'DownloadedFiles'));
     }
+    arg.filePath = path.join(
+      __dirname,
+      '..',
+      'DownloadedFiles',
+      `${new Date()
+        .toLocaleDateString()}.${new Date()
+        .getHours()}.${new Date()
+        .getMinutes()}.${new Date()
+        .getSeconds()}.${arg.fileName}`,
+    );
     try {
-      download(
-        arg.path,
-        arg.filePath,
-        runScript(
+      download(arg.path, arg.filePath)
+        .then(() => runScript(
           toolPath,
           arg.filePath,
           arg.action.preservationActionName,
           arg.tool.toolID,
           arg.option.optionId,
           arg.outputFolder,
-        ),
-      );
+          arg.mimeType,
+        ),)
+        .catch(err => console.log(err));
     } catch (err) {
       console.log(err);
     }
@@ -194,6 +219,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
       arg.tool.toolID,
       arg.option.optionId,
       arg.outputFolder,
+      arg.mimeType,
     );
   }
 });

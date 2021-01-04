@@ -43,7 +43,7 @@ const FileHandler = props => {
               <Jumbotron fluid className="m-0 p-3 bg-light">
                 <Container fluid className="d-flex flex-column align-items-center">
                   <MoveToInboxIcon className="text-green" style={{ fontSize: 80, color: green[500] }} />
-                  {fileName === '' ? (
+                  {!fileName.length ? (
                     error.length ? (
                       <div style={{ color: 'red' }}>{error}</div>
                     ) : (

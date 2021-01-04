@@ -25,7 +25,10 @@ const Report = () => {
                   <FileCopyIcon onClick={() => clipboard.writeText(report)} className="cursor-pointer" />
                 </div>
               )}
-              <FolderOpenIcon onClick={() => shell.openItem(path)} className="cursor-pointer" />
+              <FolderOpenIcon
+                onClick={() => shell.openExternal(`file://${path}`)}
+                className="cursor-pointer"
+              />
             </Jumbotron>
           </Container>
         </Container>

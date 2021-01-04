@@ -9,10 +9,11 @@ action = sys.argv[2]
 tool = sys.argv[3]
 option = sys.argv[4]
 dest = sys.argv[5]
+mime = sys.argv[6]
 
 time = strftime("%Y-%m-%d %H-%M-%S")
 url = os.path.join(dest, f"{os.path.basename(filePath)}-{action}_{time}.txt")
-str_to_write = f'name - {os.path.basename(filePath)}, action - {action}, option - {option}, date - {time}, tool - dummytool2'
+str_to_write = f'name - {os.path.basename(filePath)}, action - {action}, option - {option}, date - {time}, tool - dummytool2, mime - {mime}'
 
 
 with open(url, "w") as fh:
