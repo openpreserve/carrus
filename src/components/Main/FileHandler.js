@@ -41,7 +41,7 @@ const FileHandler = props => {
             <div {...getRootProps()}>
               <input {...getInputProps()} />
               <Jumbotron fluid className="m-0 p-3 bg-light">
-                <Container fluid className="d-flex flex-column align-items-center">
+                <Container fluid className="d-flex flex-column align-items-center" style={{ height: 166 }}>
                   <MoveToInboxIcon className="text-green" style={{ fontSize: 80, color: green[500] }} />
                   {!fileName.length ? (
                     error.length ? (
@@ -53,10 +53,12 @@ const FileHandler = props => {
                       </div>
                     )
                   ) : (
-                    <div className="d-flex flex-row">
+                    <div className="d-flex flex-row mt-3 align-items-center">
                       {mimeType.includes('pdf') && <PictureAsPdfIcon />}
                       {mimeType.includes('image') && <ImageOutlinedIcon />}
-                      <span className="ml-1">{fileName}</span>
+                      <span className="ml-1" style={{ fontSize: 20 }}>
+                        {fileName}
+                      </span>
                     </div>
                   )}
                 </Container>
