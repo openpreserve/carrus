@@ -1,0 +1,8 @@
+{
+    "id": {
+      "guid": "a89fd9e7-5532-4675-9298-6ca3ceaf977e",
+      "name": "DummyActionPdfType",
+      "namespace": "https://openpreservation.org"
+    },
+    "label": "DummyActionPdfType"
+  }

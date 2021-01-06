@@ -1,0 +1,52 @@
+{
+    "description": "Dummy Action PDF",
+    "id": {
+      "guid": "44a8b696-95c3-482e-80e1-fdcded0a0575",
+      "name": "Dummy Action PDF",
+      "namespace": "http://openpreservation.org"
+    },
+    "constraints": [{
+        "allowedFormats": [
+          {"id": {
+            "guid": "7dcbd4bc-e1cd-4b71-bb01-b953281706e9",
+            "name": "pdf",
+            "namespace": "https://openpreservation.org"
+          }}
+        ]
+      }
+    ],
+    "inputFiles": [{
+        "description": "A file input to a preservation action",
+        "file": {
+          "filepath": ""
+        },
+        "name": "inputfile"
+      }
+    ],
+    "outputFiles": [{
+        "description": "A file output of a preservation action",
+        "file": {
+          "filepath": ""
+        },
+        "name": "report"
+      }
+    ],
+    "preservationActionName": "Dummy Action PDF",
+    "tool": [{
+        "id": {
+          "guid": "4c9c0b79-d73e-4c35-83fd-3e9f20b4e395",
+          "name": "DummyToolPDF",
+          "namespace": "https://openpreservation.org"
+        }
+      }
+    ],
+    "type": {
+        "id": {
+            "guid": "a89fd9e7-5532-4675-9298-6ca3ceaf977e",
+            "name": "DummyActionPdfType",
+            "namespace": "https://openpreservation.org"
+          },
+          "label": "DummyActionPdfType"
+    }
+}
+  

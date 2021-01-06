@@ -4,6 +4,7 @@ const initialState = {
   actions: [],
   tools: [],
   options: [],
+  fileFormats: [],
   url: '',
   fileOrigin: 'file',
   defaultPDFTool: '',

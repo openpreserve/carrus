@@ -4,21 +4,22 @@
     "name": "image",
     "namespace": "https://openpreservation.org"
   },
-  "aliases": [
-    "Image"
-  ],
+  "aliases": ["Image"],
   "name": "Image format",
-  "lastUpdatedDate": "2021-01-04T13:45:30",
-  "identifiers": [{
+  "identifiers": [
+    {
       "identifier": "image/png",
       "identifierType": "MIME"
-    }, {
+    },
+    {
       "identifier": "image/jpg",
       "identifierType": "MIME"
-    }, {
+    },
+    {
       "identifier": "image/jpeg",
       "identifierType": "MIME"
-    }, {
+    },
+    {
       "identifier": "image/gif",
       "identifierType": "MIME"
     }

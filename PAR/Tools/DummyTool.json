@@ -1,0 +1,33 @@
+{
+    "id": {
+      "guid": "1951024f-e90f-41f4-8dd3-157f2cc10238",
+      "name": "DummyTool",
+      "namespace": "https://openpreservation.org"
+    },
+    "localLastModifiedDate": "2021-01-04T13:45:30",
+    "toolAcceptedParameters": [
+        {
+          "description": "parameter to a tool, controlling the behaviour of that tool",
+          "type": "command line argument",
+          "value": "dummyOption1"
+        },
+        {
+          "description": "parameter to a tool, controlling the behaviour of that tool",
+          "type": "command line argument",
+          "value": "dummyOption2"
+        }
+    ],
+    "toolLabel": "DummyTool",
+    "toolName": "DummyTool",
+    "toolOperatingEnvironments": [
+        "windows",
+        "linux",
+        "MacOS"
+    ],
+    "toolPublisher": "Open Preservation Foundation",
+    "toolVersion": "1.0",
+    "path": {
+        "value": "dummyTool1.py",
+        "description": "unsupported field. TODO find out how to find exact tool."
+    }
+}

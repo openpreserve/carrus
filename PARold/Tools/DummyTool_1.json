@@ -14,7 +14,7 @@
       "value": "-b dummyOption2"
     }
   ],
-  "toolLabel": "DummyTool_1",
+  "toolLabel": "Dummy Tool 1",
   "toolName": "DummyTool_1",
   "toolOperatingEnvironments": [
     "windows",

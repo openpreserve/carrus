@@ -1,5 +1,7 @@
-
 /* eslint-disable prefer-destructuring */
+/* eslint-disable no-console */
+/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable no-param-reassign */
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
@@ -69,6 +71,7 @@ async function createMainWindow() {
   const translate = await setTranslate(isDevelopment);
   const config = await setConfig(isDevelopment);
   const PAR = await setPAR(isDevelopment);
+  console.log(PAR);
   window.webContents.on('did-finish-load', () => {
     window.webContents.send('translate', translate);
     window.webContents.send('config', config);
@@ -212,7 +215,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
           arg.option.optionId,
           arg.outputFolder,
           arg.mimeType,
-        ),)
+        ))
         .catch(err => console.log(err));
     } catch (err) {
       console.log(err);
