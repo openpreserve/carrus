@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -36,6 +37,7 @@ const Main = props => {
     activeOption,
     url,
     fileName,
+    fileFormats,
   } = props;
   const { t } = useTranslation();
 
@@ -114,8 +116,8 @@ const Main = props => {
               <>
                 <option hidden>Choose allowed action</option>
                 {acceptedActions.map(e => (
-                  <option key={hashCode(e.preservationActionName[0] + mimeType)}>
-                    {e.preservationActionName}
+                  <option key={hashCode(e.id.guid + mimeType)}>
+                    {e.id.name}
                   </option>
                 ))}
               </>
@@ -141,8 +143,8 @@ const Main = props => {
           <option hidden>Choose Tool</option>
           {activeAction ? (
             tools
-              .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.toolID).includes(e.id))
-              .map(e => <option key={hashCode(e.toolName)}>{e.toolName}</option>)
+              .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.id.guid).includes(e.id.guid))
+              .map(e => <option key={hashCode(e.id.guid)}>{e.id.name}</option>)
           ) : (
             <>
               <option disabled>No actions are chosen</option>
@@ -157,9 +159,8 @@ const Main = props => {
         <Input type="select" onChange={e => props.setOptions(e.target.value)} default="Choose Option">
           <option hidden>Choose Option</option>
           {activeTool ? (
-            options
-              .filter(e => activeTool.options.map(activeToolOption => activeToolOption.optionId).includes(e.optionId))
-              .map(e => <option key={hashCode(e.optionName + activeTool.toolName)}>{e.optionName}</option>)
+            activeTool.toolAcceptedParameters
+              .map(activeToolOption => <option key={hashCode(activeToolOption.value)}>{activeToolOption.value}</option>)
           ) : (
             <>
               <option disabled>No Tools are chosen</option>

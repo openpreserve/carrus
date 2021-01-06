@@ -1,7 +1,7 @@
 {
   "description": "Dummy Action",
   "id": {
-    "guid": "18190752-d5c0-4ac9-aa5a-38c0df764a6b",
+    "guid": "18190752-d5c0-4ac9-ab5a-38c0df764a6b",
     "name": "Dummy Action",
     "namespace": "http://openpreservation.org"
   },
@@ -40,13 +40,13 @@
   "tool": [{
       "id": {
         "guid": "1951024f-e90f-41f4-8dd3-157f2cc10238",
-        "name": "DummyTool_1",
+        "name": "DummyTool",
         "namespace": "https://openpreservation.org"
       }
     }, {
       "id": {
-        "guid": "2951024f-e90f-41f4-8dd3-157f2cc10238",
-        "name": "DummyTool_2",
+        "guid": "8900b8c8-3f78-462a-930f-92a4d746e934",
+        "name": "DummyTool_1",
         "namespace": "https://openpreservation.org"
       }
     }
