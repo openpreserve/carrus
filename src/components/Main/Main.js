@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
 import { ipcRenderer } from 'electron';
 import isURL from 'validator/lib/isURL';
+import setAcceptedActions from '../../utils/setAcceptedActions';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
@@ -198,13 +199,15 @@ const Main = props => {
 
 const mapStateToProps = state => ({
   actions: state.actions,
+  fileFormats: state.fileFormats,
   url: state.url,
   fileOrigin: state.fileOrigin,
   fileName: state.fileName,
   filePath: state.filePath,
   dirPath: state.dirPath,
   mimeType: state.mimeType,
-  acceptedActions: state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)),
+  // acceptedActions: state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)),
+  acceptedActions: setAcceptedActions(state.actions, state.fileFormats, state.mimeType),
   activeAction: state.actions.filter(e => e.active)[0],
   tools: state.tools,
   activeTool: state.tools.filter(e => e.active)[0],
