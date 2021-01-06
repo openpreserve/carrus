@@ -12,8 +12,6 @@ async function getOsLang() {
   return data.split('-')[0];
 }
 
-// template for initial config
-// for now we only set English as default language in config
 const initialConfig = {
   language: 'en',
 };

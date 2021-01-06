@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
@@ -14,15 +14,17 @@ const App = props => {
   const { i18n } = useTranslation();
   const currentWindow = (() => remote.getCurrentWindow()._id)();
 
-  ipcRenderer.on('config', (event, config) => {
-    if (config.language && (config.language === 'fr' || config.language === 'ru')) {
-      i18n.changeLanguage(config.language);
-    }
-  });
+  useEffect(() => {
+    ipcRenderer.once('config', (event, config) => {
+      if (config.language && (config.language === 'fr' || config.language === 'ru')) {
+        i18n.changeLanguage(config.language);
+      }
+    });
 
-  ipcRenderer.on('PAR', (event, PAR) => {
-    props.setParData(PAR);
-  });
+    ipcRenderer.once('PAR', (event, PAR) => {
+      props.setParData(PAR);
+    });
+  }, []);
 
   return (
     <div className="mb-3">
