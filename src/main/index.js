@@ -1,11 +1,4 @@
-/* eslint-disable max-len */
-/* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable consistent-return */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-console */
-/* eslint-disable comma-dangle */
+
 /* eslint-disable prefer-destructuring */
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
@@ -15,7 +8,8 @@ import fs from 'fs';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
-/* import { NewReleases } from '@material-ui/icons'; */
+
+require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 const FileType = require('file-type');
 const request = require('request');
@@ -27,6 +21,8 @@ let mainWindow;
 
 async function createMainWindow() {
   const factor = screen.getPrimaryDisplay().scaleFactor;
+
+  process.setMaxListeners(Infinity);
 
   const window = new BrowserWindow({
     minWidth: 1280,
