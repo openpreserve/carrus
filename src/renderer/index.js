@@ -8,6 +8,7 @@ import App from '../components/App';
 import store from '../Redux/redux-store';
 import useI18next from '../i18next/i18next';
 import '../styles/index.css';
+import '../utils/contextMenu';
 
 ipcRenderer.on('translate', (event, translate) => {
   useI18next(translate).then(() => {
