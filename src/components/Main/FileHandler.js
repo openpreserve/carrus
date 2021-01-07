@@ -75,7 +75,9 @@ const FileHandler = props => {
 const mapStateToProps = state => ({
   fileName: state.fileName,
   mimeType: state.mimeType,
-  isTypeAccepted: setAcceptedType(state.actions, state.mimeType),
+  fileFormats: state.fileFormats,
+  actions: state.actions,
+  isTypeAccepted: !setAcceptedType(state.actions, state.mimeType, state.fileFormats),
 });
 // isTypeAccepted: !state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)).length,
 export default connect(mapStateToProps, { setFileInfo })(FileHandler);

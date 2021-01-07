@@ -185,7 +185,7 @@ const Main = props => {
           || (fileOrigin === 'url' && !isURL(url))
           || !dirPath.length
           || !activeTool
-          || !activeOption
+          /* || !activeOption */
         }
         className="mt-3 align-self-center"
         onClick={handleExecute}
