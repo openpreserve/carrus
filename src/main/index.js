@@ -150,12 +150,12 @@ const getDateString = () => {
   return `${year}${month}${day}${hours}${mins}`;
 };
 
-const runScript = (tool, filePath, actionName, toolID, optionID, outFol, mimeType) => {
+const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) => {
   const options = {
     scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
-    args: [filePath, actionName, toolID, optionID, mimeType],
+    args: [filePath, actionName, toolID, value, mimeType],
   };
-  PythonShell.run(tool.path, options, (err, data) => {
+  PythonShell.run(tool.path.value, options, (err, data) => {
     if (err) throw err;
     const reportText = data.join('\n');
     const dest = path.join(outFol, `${path.basename(filePath)}-${actionName}_${getDateString()}.txt`);
@@ -212,7 +212,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
           arg.filePath,
           arg.action.preservationActionName,
           arg.tool.toolID,
-          arg.option.optionId,
+          arg.option.value,
           arg.outputFolder,
           arg.mimeType,
         ))
@@ -222,12 +222,13 @@ ipcMain.on('execute-file-action', (event, arg) => {
     }
   } else {
     arg.filePath = arg.path;
+    console.log(arg);
     runScript(
       arg.tool,
       arg.filePath,
       arg.action.preservationActionName,
       arg.tool.toolID,
-      arg.option.optionId,
+      arg.option.value,
       arg.outputFolder,
       arg.mimeType,
     );

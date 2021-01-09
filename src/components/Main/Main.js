@@ -139,7 +139,11 @@ const Main = props => {
         <Label for="tool" className="mr-1 my-auto w-25">
           <span>{t('Tool')}: </span>
         </Label>
-        <Input type="select" onChange={e => props.setTool(e.target.value)} defaultValue="Choose tool">
+        <Input
+          type="select"
+          onChange={e => { props.setTool(e.target.value); }}
+          defaultValue="Choose tool"
+        >
           <option hidden>Choose Tool</option>
           {activeAction ? (
             tools
@@ -156,7 +160,13 @@ const Main = props => {
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Options')}: </span>
         </Label>
-        <Input type="select" onChange={e => props.setOptions(e.target.value)} default="Choose Option">
+        <Input
+          type="select"
+          onChange={e => {
+            props.setOptions(props?.activeTool?.toolAcceptedParameters.filter(item => item.value === e.target.value));
+          }}
+          default="Choose Option"
+        >
           <option hidden>Choose Option</option>
           {activeTool ? (
             activeTool.toolAcceptedParameters
@@ -177,6 +187,9 @@ const Main = props => {
         </div>
         <FolderInput />
       </FormGroup>
+      { console.log(props)}
+      { console.log(activeTool)}
+      { console.log(activeOption)}
       <Button
         color="success"
         value="Execute"
@@ -185,7 +198,7 @@ const Main = props => {
           || (fileOrigin === 'url' && !isURL(url))
           || !dirPath.length
           || !activeTool
-          /* || !activeOption */
+          || !activeOption
         }
         className="mt-3 align-self-center"
         onClick={handleExecute}
@@ -213,7 +226,8 @@ const mapStateToProps = state => ({
   tools: state.tools,
   activeTool: state.tools.filter(e => e.active)[0],
   options: state.options,
-  activeOption: state.options.filter(e => e.active)[0],
+  // activeOption: state.options.filter(e => e.active)[0],
+  activeOption: state.options[0],
 });
 
 export default connect(mapStateToProps, {
