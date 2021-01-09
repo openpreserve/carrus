@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-param-reassign */
+/* eslint-disable no-unused-vars */
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
@@ -27,16 +28,16 @@ async function createMainWindow() {
   process.setMaxListeners(Infinity);
 
   const window = new BrowserWindow({
-    minWidth: 1280,
-    minHeight: 800,
+    minWidth: 1080,
+    minHeight: 650,
     title: 'JHove 2020',
     frame: false,
     titleBarStyle: 'hidden',
-    webPreferences: {
+    /* webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
       zoomFactor: 1.0 / factor,
-    },
+    }, */
   });
 
   window._id = 'main';
