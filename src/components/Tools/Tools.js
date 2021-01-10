@@ -23,6 +23,8 @@ const Tools = props => {
   setAcceptedActions(props.actions, props.fileFormats, 'image/jpeg').forEach(e => {
     e.tool.forEach(tool => JPEGArray.push(tool.id.name));
   });
+  console.log(PDFArray);
+  console.log(JPEGArray);
   return (
     <Container>
       <div className="d-flex flex-column align-items-left">
@@ -60,10 +62,10 @@ const Tools = props => {
               <span>{t('noDefaultTools')}</span>
             )} */}
             {actions.filter(e => e.active && e.constraints[0].allowedFormats
-              .filter(item => item.id.name === 'application/pdf')).length ? (
+              .filter(item => item.id.name === 'pdf')).length ? (
                 actions
                   .filter(e => e.active && e.constraints[0].allowedFormats
-                    .filter(item => item.id.name === 'application/pdf'))[0]
+                    .find(item => item.id.name === 'pdf'))[0]
                   .tool.map((e, i) => (
                     <div className="d-flex flex-row w-50 mb-3" key={i + 10 / 0.4}>
                       <CheckCircleOutlineIcon style={{ color: green[500] }} />
@@ -91,10 +93,10 @@ const Tools = props => {
               </Input>
             </FormGroup>
             {actions.filter(e => e.active && e.constraints[0].allowedFormats
-              .filter(item => item.id.name === 'image/jpeg')).length ? (
+              .find(item => item.id.name === 'image')).length ? (
                 actions
                   .filter(e => e.active && e.constraints[0].allowedFormats
-                    .filter(item => item.id.name === 'image/jpeg'))[0]
+                    .filter(item => item.id.name === 'image'))[0]
                   .tool.map((e, i) => (
                     <div className="d-flex flex-row w-50 mb-3" key={i + 10 / 0.4}>
                       <CheckCircleOutlineIcon style={{ color: green[500] }} />
