@@ -59,7 +59,7 @@ const Main = props => {
     setIsLoading(false);
   };
 
-  useEffect(() => console.log(props), [props]);
+  /* useEffect(() => console.log(props), [props]); */
 
   useEffect(() => {
     if (isURL(url)) {
