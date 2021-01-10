@@ -59,18 +59,25 @@ const Main = props => {
     setIsLoading(false);
   };
 
+  useEffect(() => console.log(props), [props]);
+
   useEffect(() => {
     if (isURL(url)) {
       ipcRenderer.send('check-mime-type', url);
       ipcRenderer.on('receive-mime-type', (event, arg) => {
-        if (arg) props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', arg.mime);
-        else props.setMimeType('', '', '');
+        if (arg !== null) props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', arg.mime);
+        else {
+          props.setFileInfo('', '', '');
+          setError(t('fileTypesUnavailable'));
+        }
       });
     } else if (url.length !== 0) {
       setError(t('invalidUrl'));
     } else {
       setError('');
     }
+
+    console.log(mimeType);
   }, [url]);
 
   return !isLoading ? (
@@ -116,9 +123,7 @@ const Main = props => {
               <>
                 <option hidden>Choose allowed action</option>
                 {acceptedActions.map(e => (
-                  <option key={hashCode(e.id.guid + mimeType)}>
-                    {e.id.name}
-                  </option>
+                  <option key={hashCode(e.id.guid + mimeType)}>{e.id.name}</option>
                 ))}
               </>
             ) : (
@@ -141,14 +146,16 @@ const Main = props => {
         </Label>
         <Input
           type="select"
-          onChange={e => { props.setTool(e.target.value); }}
+          onChange={e => {
+            props.setTool(e.target.value);
+          }}
           defaultValue="Choose tool"
         >
           <option hidden>Choose Tool</option>
           {activeAction ? (
             tools
               .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.id.guid).includes(e.id.guid))
-              .map(e => <option key={hashCode(e.id.guid)}>{e.id.name}</option>)
+              .map(e => <option key={hashCode(e.id.guid + mimeType)}>{e.id.name}</option>)
           ) : (
             <>
               <option disabled>No actions are chosen</option>
@@ -163,14 +170,17 @@ const Main = props => {
         <Input
           type="select"
           onChange={e => {
-            props.setOptions(props?.activeTool?.toolAcceptedParameters.filter(item => item.value === e.target.value));
+            props.setOptions(
+              props?.activeTool?.toolAcceptedParameters.filter(item => item.value === e.target.value),
+            );
           }}
           default="Choose Option"
         >
           <option hidden>Choose Option</option>
           {activeTool ? (
-            activeTool.toolAcceptedParameters
-              .map(activeToolOption => <option key={hashCode(activeToolOption.value)}>{activeToolOption.value}</option>)
+            activeTool.toolAcceptedParameters.map(activeToolOption => (
+              <option key={hashCode(activeToolOption.value + mimeType)}>{activeToolOption.value}</option>
+            ))
           ) : (
             <>
               <option disabled>No Tools are chosen</option>
@@ -187,9 +197,6 @@ const Main = props => {
         </div>
         <FolderInput />
       </FormGroup>
-      { console.log(props)}
-      { console.log(activeTool)}
-      { console.log(activeOption)}
       <Button
         color="success"
         value="Execute"
