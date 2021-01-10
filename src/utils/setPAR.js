@@ -9,11 +9,11 @@ import { readdirSync, readFileSync } from 'fs';
 export default async function setPAR(isDevelopment) {
   let actionsPath = path.join(__dirname, '..', 'PAR', 'Actions');
   let toolsPath = path.join(__dirname, '..', 'PAR', 'Tools');
-  let optionsPath = path.join(__dirname, '..', 'PAR', 'Options');
+  let fileFormatsPath = path.join(__dirname, '..', 'PAR', 'FileFormats');
   if (isDevelopment) {
     actionsPath = './PAR/Actions';
     toolsPath = './PAR/Tools';
-    optionsPath = './PAR/Options';
+    fileFormatsPath = './PAR/FileFormats';
   }
   const actions = readdirSync(actionsPath).map(e => ({
     ...JSON.parse(readFileSync(path.join(actionsPath, e), 'utf-8')),
@@ -23,13 +23,13 @@ export default async function setPAR(isDevelopment) {
     ...JSON.parse(readFileSync(path.join(toolsPath, e), 'utf-8')),
     active: false,
   }));
-  const options = readdirSync(optionsPath).map(e => ({
-    ...JSON.parse(readFileSync(path.join(optionsPath, e), 'utf-8')),
+  const fileFormats = readdirSync(fileFormatsPath).map(e => ({
+    ...JSON.parse(readFileSync(path.join(fileFormatsPath, e), 'utf-8')),
     active: false,
   }));
   return {
     actions,
     tools,
-    options,
+    fileFormats,
   };
 }

@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
 import { ipcRenderer } from 'electron';
 import isURL from 'validator/lib/isURL';
+import setAcceptedActions from '../../utils/setAcceptedActions';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
@@ -35,6 +37,7 @@ const Main = props => {
     activeOption,
     url,
     fileName,
+    fileFormats,
   } = props;
   const { t } = useTranslation();
 
@@ -56,12 +59,17 @@ const Main = props => {
     setIsLoading(false);
   };
 
+  /* useEffect(() => console.log(props), [props]); */
+
   useEffect(() => {
     if (isURL(url)) {
       ipcRenderer.send('check-mime-type', url);
       ipcRenderer.on('receive-mime-type', (event, arg) => {
-        if (arg) props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', arg.mime);
-        else props.setMimeType('', '', '');
+        if (arg !== null) props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', arg.mime);
+        else {
+          props.setFileInfo('', '', '');
+          setError(t('fileTypesUnavailable'));
+        }
       });
     } else if (url.length !== 0) {
       setError(t('invalidUrl'));
@@ -113,9 +121,7 @@ const Main = props => {
               <>
                 <option hidden>Choose allowed action</option>
                 {acceptedActions.map(e => (
-                  <option key={hashCode(e.preservationActionName[0] + mimeType)}>
-                    {e.preservationActionName}
-                  </option>
+                  <option key={hashCode(e.id.guid + mimeType)}>{e.id.name}</option>
                 ))}
               </>
             ) : (
@@ -136,12 +142,18 @@ const Main = props => {
         <Label for="tool" className="mr-1 my-auto w-25">
           <span>{t('Tool')}: </span>
         </Label>
-        <Input type="select" onChange={e => props.setTool(e.target.value)} defaultValue="Choose tool">
+        <Input
+          type="select"
+          onChange={e => {
+            props.setTool(e.target.value);
+          }}
+          defaultValue="Choose tool"
+        >
           <option hidden>Choose Tool</option>
           {activeAction ? (
             tools
-              .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.toolID).includes(e.id))
-              .map(e => <option key={hashCode(e.toolName)}>{e.toolName}</option>)
+              .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.id.guid).includes(e.id.guid))
+              .map(e => <option key={hashCode(e.id.guid + mimeType)}>{e.id.name}</option>)
           ) : (
             <>
               <option disabled>No actions are chosen</option>
@@ -153,12 +165,20 @@ const Main = props => {
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Options')}: </span>
         </Label>
-        <Input type="select" onChange={e => props.setOptions(e.target.value)} default="Choose Option">
+        <Input
+          type="select"
+          onChange={e => {
+            props.setOptions(
+              props?.activeTool?.toolAcceptedParameters.filter(item => item.value === e.target.value),
+            );
+          }}
+          default="Choose Option"
+        >
           <option hidden>Choose Option</option>
           {activeTool ? (
-            options
-              .filter(e => activeTool.options.map(activeToolOption => activeToolOption.optionId).includes(e.optionId))
-              .map(e => <option key={hashCode(e.optionName + activeTool.toolName)}>{e.optionName}</option>)
+            activeTool.toolAcceptedParameters.map(activeToolOption => (
+              <option key={hashCode(activeToolOption.value + mimeType)}>{activeToolOption.value}</option>
+            ))
           ) : (
             <>
               <option disabled>No Tools are chosen</option>
@@ -198,18 +218,19 @@ const Main = props => {
 
 const mapStateToProps = state => ({
   actions: state.actions,
+  fileFormats: state.fileFormats,
   url: state.url,
   fileOrigin: state.fileOrigin,
   fileName: state.fileName,
   filePath: state.filePath,
   dirPath: state.dirPath,
   mimeType: state.mimeType,
-  acceptedActions: state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)),
+  acceptedActions: setAcceptedActions(state.actions, state.fileFormats, state.mimeType),
   activeAction: state.actions.filter(e => e.active)[0],
   tools: state.tools,
   activeTool: state.tools.filter(e => e.active)[0],
   options: state.options,
-  activeOption: state.options.filter(e => e.active)[0],
+  activeOption: state.options[0],
 });
 
 export default connect(mapStateToProps, {

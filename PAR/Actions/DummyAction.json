@@ -1,36 +1,62 @@
 {
   "description": "Dummy Action",
-  "example": "",
   "id": {
-    "guid": "111-222-333",
+    "guid": "18190752-d5c0-4ac9-ab5a-38c0df764a6b",
     "name": "Dummy Action",
     "namespace": "http://openpreservation.org"
   },
-  "inputExtension": {
-    "accept": [
-      "application/pdf",
-      "application/msword",
-      "image/jpeg",
-      "image/pjpeg",
-      "image/png",
-      "image/svg+xml",
-      "image/gif",
-      "image/*"
-    ]
-  },
-  "preservationActionName": "Dummy Action",
-  "tool": [
-    {
-      "toolID": "dummyTool1",
-      "toolName" : "Dummy Tool 1"
-    },
-    {
-      "toolID": "dummyTool2",
-      "toolName" : "Dummy Tool 2"
-    },
-    {
-      "toolID": "dummyTool3",
-      "toolName" : "Dummy Tool 3"
+  "constraints": [{
+      "allowedFormats": [
+        {"id": {
+          "guid": "7dcbd4bc-e1cd-4b71-bb01-b953281706e9",
+          "name": "pdf",
+          "namespace": "https://openpreservation.org"
+        }},
+        {"id": {
+          "guid": "383bb372-00b9-4421-b8e1-03fa4a423370",
+          "name": "image",
+          "namespace": "https://openpreservation.org"
+        }}
+      ]
     }
-  ]
+  ],
+  "inputFiles": [{
+      "description": "A file input to a preservation action",
+      "file": {
+        "filepath": ""
+      },
+      "name": "inputfile"
+    }
+  ],
+  "outputFiles": [{
+      "description": "A file output of a preservation action",
+      "file": {
+        "filepath": ""
+      },
+      "name": "report"
+    }
+  ],
+  "preservationActionName": "Dummy Action",
+  "tool": [{
+      "id": {
+        "guid": "1951024f-e90f-41f4-8dd3-157f2cc10238",
+        "name": "DummyTool1",
+        "namespace": "https://openpreservation.org"
+      }
+    }, {
+      "id": {
+        "guid": "8900b8c8-3f78-462a-930f-92a4d746e934",
+        "name": "DummyTool2",
+        "namespace": "https://openpreservation.org"
+      }
+    }
+  ],
+  "type": {
+    "id": {
+      "guid": "898db06d-75d9-4038-9b72-046ac8bd0af5",
+      "name": "DummyActionType",
+      "namespace": "https://openpreservation.org"
+    },
+    "label": "DummyActionType"
+  }
 }

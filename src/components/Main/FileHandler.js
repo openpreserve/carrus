@@ -9,6 +9,7 @@ import { green } from '@material-ui/core/colors';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import { setFileInfo } from '../../Redux/redux-reducers';
+import setAcceptedType from '../../utils/setAcceptedType';
 
 const FileHandler = props => {
   const { t } = useTranslation();
@@ -74,7 +75,8 @@ const FileHandler = props => {
 const mapStateToProps = state => ({
   fileName: state.fileName,
   mimeType: state.mimeType,
-  isTypeAccepted: !state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)).length,
+  fileFormats: state.fileFormats,
+  actions: state.actions,
+  isTypeAccepted: !setAcceptedType(state.actions, state.mimeType, state.fileFormats),
 });
-
 export default connect(mapStateToProps, { setFileInfo })(FileHandler);

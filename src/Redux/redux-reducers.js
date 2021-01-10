@@ -4,6 +4,7 @@ const initialState = {
   actions: [],
   tools: [],
   options: [],
+  fileFormats: [],
   url: '',
   fileOrigin: 'file',
   defaultPDFTool: '',
@@ -42,10 +43,7 @@ export const preproccessReducer = (state = initialState, action) => {
     case actionTypes.SET_OPTIONS: {
       return {
         ...state,
-        options: state.options.map(e => ({
-          ...e,
-          active: e.optionName === action.payload,
-        })),
+        options: action.payload,
       };
     }
     case actionTypes.SET_TOOL: {

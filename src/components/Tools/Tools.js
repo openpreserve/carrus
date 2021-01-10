@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable react/no-array-index-key */
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label } from 'reactstrap';
@@ -9,22 +10,21 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { green } from '@material-ui/core/colors';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import setAcceptedActions from '../../utils/setAcceptedActions';
 
 const Tools = props => {
   const { actions } = props;
   const { t } = useTranslation();
   const PDFArray = [];
   const JPEGArray = [];
-  actions
-    .filter(e => e.inputExtension.accept.includes('application/pdf'))
-    .forEach(e => {
-      e.tool.forEach(tool => PDFArray.push(tool.toolName));
-    });
-  actions
-    .filter(e => e.inputExtension.accept.includes('image/jpeg'))
-    .forEach(e => {
-      e.tool.forEach(tool => JPEGArray.push(tool.toolName));
-    });
+  setAcceptedActions(props.actions, props.fileFormats, 'application/pdf').forEach(e => {
+    e.tool.forEach(tool => PDFArray.push(tool.id.name));
+  });
+  setAcceptedActions(props.actions, props.fileFormats, 'image/jpeg').forEach(e => {
+    e.tool.forEach(tool => JPEGArray.push(tool.id.name));
+  });
+  console.log(PDFArray);
+  console.log(JPEGArray);
   return (
     <Container>
       <div className="d-flex flex-column align-items-left">
@@ -49,18 +49,20 @@ const Tools = props => {
                 ))}
               </Input>
             </FormGroup>
-            {actions.filter(e => e.active && e.inputExtension.accept.includes('application/pdf')).length ? (
-              actions
-                .filter(e => e.active && e.inputExtension.accept.includes('application/pdf'))[0]
-                .tool.map((e, i) => (
-                  <div className="d-flex flex-row w-50 mb-3" key={i + 10 / 0.4}>
-                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                    <span className="ml-1">{e.toolName}</span>
-                  </div>
-                ))
-            ) : (
-              <span>{t('noDefaultTools')}</span>
-            )}
+            {actions.filter(e => e.active && e.constraints[0].allowedFormats
+              .filter(item => item.id.name === 'pdf')).length ? (
+                actions
+                  .filter(e => e.active && e.constraints[0].allowedFormats
+                    .find(item => item.id.name === 'pdf'))[0]
+                  .tool.map((e, i) => (
+                    <div className="d-flex flex-row w-50 mb-3" key={i + 10 / 0.4}>
+                      <CheckCircleOutlineIcon style={{ color: green[500] }} />
+                      <span className="ml-1">{e.id.name}</span>
+                    </div>
+                  ))
+              ) : (
+                <span>{t('noDefaultTools')}</span>
+              )}
           </CardBody>
         </Card>
         <Card className="w-50 border-0">
@@ -78,18 +80,20 @@ const Tools = props => {
                 ))}
               </Input>
             </FormGroup>
-            {actions.filter(e => e.active && e.inputExtension.accept.includes('image/jpeg')).length ? (
-              actions
-                .filter(e => e.active && e.inputExtension.accept.includes('image/jpeg'))[0]
-                .tool.map((e, i) => (
-                  <div className="d-flex flex-row w-50 mb-3" key={i}>
-                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                    <span className="ml-1">{e.toolName}</span>
-                  </div>
-                ))
-            ) : (
-              <span>{t('noDefaultTools')}</span>
-            )}
+            {actions.filter(e => e.active && e.constraints[0].allowedFormats
+              .find(item => item.id.name === 'image')).length ? (
+                actions
+                  .filter(e => e.active && e.constraints[0].allowedFormats
+                    .filter(item => item.id.name === 'image'))[0]
+                  .tool.map((e, i) => (
+                    <div className="d-flex flex-row w-50 mb-3" key={i + 10 / 0.4}>
+                      <CheckCircleOutlineIcon style={{ color: green[500] }} />
+                      <span className="ml-1">{e.id.name}</span>
+                    </div>
+                  ))
+              ) : (
+                <span>{t('noDefaultTools')}</span>
+              )}
           </CardBody>
         </Card>
       </div>
@@ -99,6 +103,7 @@ const Tools = props => {
 
 const mapStateToProps = state => ({
   actions: state.actions,
+  fileFormats: state.fileFormats,
   outputFolder: state.outputFolder,
   url: state.url,
   fileOrigin: state.fileOrigin,

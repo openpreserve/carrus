@@ -1,5 +1,8 @@
-
 /* eslint-disable prefer-destructuring */
+/* eslint-disable no-console */
+/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-unused-vars */
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
@@ -18,6 +21,7 @@ const fetch = require('node-fetch');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
+let pythonPath;
 
 async function createMainWindow() {
   const factor = screen.getPrimaryDisplay().scaleFactor;
@@ -25,8 +29,8 @@ async function createMainWindow() {
   process.setMaxListeners(Infinity);
 
   const window = new BrowserWindow({
-    minWidth: 1280,
-    minHeight: 800,
+    minWidth: 1080,
+    minHeight: 650,
     title: 'JHove 2020',
     frame: false,
     titleBarStyle: 'hidden',
@@ -68,6 +72,7 @@ async function createMainWindow() {
 
   const translate = await setTranslate(isDevelopment);
   const config = await setConfig(isDevelopment);
+  pythonPath = config.pythonPath;
   const PAR = await setPAR(isDevelopment);
   window.webContents.on('did-finish-load', () => {
     window.webContents.send('translate', translate);
@@ -144,15 +149,17 @@ const getDateString = () => {
   const day = `${date.getDate()}`.padStart(2, '0');
   const hours = `${date.getHours()}`.padStart(2, '0');
   const mins = `${date.getMinutes()}`.padStart(2, '0');
-  return `${year}${month}${day}${hours}${mins}`;
+  const sec = `${date.getSeconds()}`.padStart(2, '0');
+  return `${year}${month}${day}${hours}${mins}${sec}`;
 };
 
-const runScript = (tool, filePath, actionName, toolID, optionID, outFol, mimeType) => {
+const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) => {
   const options = {
     scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
-    args: [filePath, actionName, toolID, optionID, mimeType],
+    args: [filePath, actionName, toolID, value, mimeType],
+    pythonPath,
   };
-  PythonShell.run(tool.path, options, (err, data) => {
+  PythonShell.run(tool.path.value, options, (err, data) => {
     if (err) throw err;
     const reportText = data.join('\n');
     const dest = path.join(outFol, `${path.basename(filePath)}-${actionName}_${getDateString()}.txt`);
@@ -209,10 +216,10 @@ ipcMain.on('execute-file-action', (event, arg) => {
           arg.filePath,
           arg.action.preservationActionName,
           arg.tool.toolID,
-          arg.option.optionId,
+          arg.option.value,
           arg.outputFolder,
           arg.mimeType,
-        ),)
+        ))
         .catch(err => console.log(err));
     } catch (err) {
       console.log(err);
@@ -224,7 +231,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
       arg.filePath,
       arg.action.preservationActionName,
       arg.tool.toolID,
-      arg.option.optionId,
+      arg.option.value,
       arg.outputFolder,
       arg.mimeType,
     );
