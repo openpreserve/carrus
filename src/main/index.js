@@ -21,6 +21,7 @@ const fetch = require('node-fetch');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
+let pythonPath;
 
 async function createMainWindow() {
   const factor = screen.getPrimaryDisplay().scaleFactor;
@@ -71,6 +72,7 @@ async function createMainWindow() {
 
   const translate = await setTranslate(isDevelopment);
   const config = await setConfig(isDevelopment);
+  pythonPath = config.pythonPath;
   const PAR = await setPAR(isDevelopment);
   window.webContents.on('did-finish-load', () => {
     window.webContents.send('translate', translate);
@@ -154,6 +156,7 @@ const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) 
   const options = {
     scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
     args: [filePath, actionName, toolID, value, mimeType],
+    pythonPath,
   };
   PythonShell.run(tool.path.value, options, (err, data) => {
     if (err) throw err;
