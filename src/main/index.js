@@ -33,11 +33,11 @@ async function createMainWindow() {
     title: 'JHove 2020',
     frame: false,
     titleBarStyle: 'hidden',
-    /* webPreferences: {
+    webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
       zoomFactor: 1.0 / factor,
-    }, */
+    },
   });
 
   window._id = 'main';
@@ -72,7 +72,6 @@ async function createMainWindow() {
   const translate = await setTranslate(isDevelopment);
   const config = await setConfig(isDevelopment);
   const PAR = await setPAR(isDevelopment);
-  console.log(PAR);
   window.webContents.on('did-finish-load', () => {
     window.webContents.send('translate', translate);
     window.webContents.send('config', config);
@@ -223,7 +222,6 @@ ipcMain.on('execute-file-action', (event, arg) => {
     }
   } else {
     arg.filePath = arg.path;
-    console.log(arg);
     runScript(
       arg.tool,
       arg.filePath,

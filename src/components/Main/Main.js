@@ -76,8 +76,7 @@ const Main = props => {
     } else {
       setError('');
     }
-
-    console.log(mimeType);
+    /* console.log(mimeType); */
   }, [url]);
 
   return !isLoading ? (

@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable react/no-array-index-key */
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label } from 'reactstrap';
@@ -9,22 +10,21 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { green } from '@material-ui/core/colors';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import setAcceptedActions from '../../utils/setAcceptedActions';
 
 const Tools = props => {
   const { actions } = props;
   const { t } = useTranslation();
   const PDFArray = [];
   const JPEGArray = [];
-  actions
-    .filter(e => e.inputExtension.accept.includes('application/pdf'))
-    .forEach(e => {
-      e.tool.forEach(tool => PDFArray.push(tool.toolName));
-    });
-  actions
-    .filter(e => e.inputExtension.accept.includes('image/jpeg'))
-    .forEach(e => {
-      e.tool.forEach(tool => JPEGArray.push(tool.toolName));
-    });
+  const pdfActions = setAcceptedActions(props.actions, props.fileFormats, 'application/pdf');
+  const imageActions = setAcceptedActions(props.actions, props.fileFormats, 'image/jpeg');
+  pdfActions.forEach(e => {
+    e.tool.forEach(tool => PDFArray.push(tool.id.name));
+  });
+  imageActions.forEach(e => {
+    e.tool.forEach(tool => JPEGArray.push(tool.id.name));
+  });
   return (
     <Container>
       <div className="d-flex flex-column align-items-left">
@@ -99,6 +99,7 @@ const Tools = props => {
 
 const mapStateToProps = state => ({
   actions: state.actions,
+  fileFormats: state.fileFormats,
   outputFolder: state.outputFolder,
   url: state.url,
   fileOrigin: state.fileOrigin,
