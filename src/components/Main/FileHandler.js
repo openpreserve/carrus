@@ -79,5 +79,4 @@ const mapStateToProps = state => ({
   actions: state.actions,
   isTypeAccepted: !setAcceptedType(state.actions, state.mimeType, state.fileFormats),
 });
-// isTypeAccepted: !state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)).length,
 export default connect(mapStateToProps, { setFileInfo })(FileHandler);

@@ -1,8 +1,0 @@
-{
-  "id": {
-    "guid": "898db06d-75d9-4038-9b72-046ac8bd0af5",
-    "name": "DummyActionType",
-    "namespace": "https://openpreservation.org"
-  },
-  "label": "DummyActionType"
-}

@@ -76,7 +76,6 @@ const Main = props => {
     } else {
       setError('');
     }
-    /* console.log(mimeType); */
   }, [url]);
 
   return !isLoading ? (
@@ -226,13 +225,11 @@ const mapStateToProps = state => ({
   filePath: state.filePath,
   dirPath: state.dirPath,
   mimeType: state.mimeType,
-  // acceptedActions: state.actions.filter(e => e.inputExtension.accept.includes(state.mimeType)),
   acceptedActions: setAcceptedActions(state.actions, state.fileFormats, state.mimeType),
   activeAction: state.actions.filter(e => e.active)[0],
   tools: state.tools,
   activeTool: state.tools.filter(e => e.active)[0],
   options: state.options,
-  // activeOption: state.options.filter(e => e.active)[0],
   activeOption: state.options[0],
 });
 

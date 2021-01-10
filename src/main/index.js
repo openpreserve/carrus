@@ -149,7 +149,8 @@ const getDateString = () => {
   const day = `${date.getDate()}`.padStart(2, '0');
   const hours = `${date.getHours()}`.padStart(2, '0');
   const mins = `${date.getMinutes()}`.padStart(2, '0');
-  return `${year}${month}${day}${hours}${mins}`;
+  const sec = `${date.getSeconds()}`.padStart(2, '0');
+  return `${year}${month}${day}${hours}${mins}${sec}`;
 };
 
 const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) => {

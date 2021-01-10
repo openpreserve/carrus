@@ -46,15 +46,6 @@ export const preproccessReducer = (state = initialState, action) => {
         options: action.payload,
       };
     }
-    /* case actionTypes.SET_ACTIVE_OPTION: {
-      return {
-        ...state,
-        options: state.options.map(e => ({
-          ...e,
-          active: e.optionName === action.payload,
-        })),
-      };
-    } */
     case actionTypes.SET_TOOL: {
       return {
         ...state,

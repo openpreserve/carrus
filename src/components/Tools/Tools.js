@@ -49,18 +49,6 @@ const Tools = props => {
                 ))}
               </Input>
             </FormGroup>
-            {/* {actions.filter(e => e.active && e.inputExtension.accept.includes('application/pdf')).length ? (
-              actions
-                .filter(e => e.active && e.inputExtension.accept.includes('application/pdf'))[0]
-                .tool.map((e, i) => (
-                  <div className="d-flex flex-row w-50 mb-3" key={i + 10 / 0.4}>
-                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                    <span className="ml-1">{e.toolName}</span>
-                  </div>
-                ))
-            ) : (
-              <span>{t('noDefaultTools')}</span>
-            )} */}
             {actions.filter(e => e.active && e.constraints[0].allowedFormats
               .filter(item => item.id.name === 'pdf')).length ? (
                 actions

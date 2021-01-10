@@ -20,7 +20,6 @@ export default function setAcceptedType(actions, mimeType, fileFormats) {
   });
   const allTypes = flatDeep(actions.map(action => action.constraints[0].allowedFormats), 2);
   AcceptedType = AcceptedType.find(e => e?.name);
-  /* console.log(AcceptedType); */
   const isAccepted = !!allTypes.find(item => item.id.name === AcceptedType?.name);
   return isAccepted;
 }

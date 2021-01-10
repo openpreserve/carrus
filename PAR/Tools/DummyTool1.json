@@ -1,7 +1,7 @@
 {
     "id": {
       "guid": "1951024f-e90f-41f4-8dd3-157f2cc10238",
-      "name": "DummyTool",
+      "name": "DummyTool1",
       "namespace": "https://openpreservation.org"
     },
     "localLastModifiedDate": "2021-01-04T13:45:30",
@@ -17,8 +17,8 @@
           "value": "dummyOption2"
         }
     ],
-    "toolLabel": "DummyTool",
-    "toolName": "DummyTool",
+    "toolLabel": "DummyTool1",
+    "toolName": "DummyTool1",
     "toolOperatingEnvironments": [
         "windows",
         "linux",
