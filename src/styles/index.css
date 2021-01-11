@@ -1,12 +1,19 @@
 .titlebar {
   -webkit-user-select: none;
   -webkit-app-region: drag;
-  background-color: whisper;
+  background-color: white;
+  width: 100%;
+  position: fixed;
+  top: 0;
 }
 
 button,
 svg {
   -webkit-app-region: no-drag;
+}
+
+.main-content {
+  margin-top: 75px;
 }
 
 .btn:focus {
@@ -115,7 +122,7 @@ label.custom-file-upload {
   padding-left: 30px;
 }
 
-@media(min-width: 1200px) {
+@media (min-width: 1200px) {
   .container.container {
     max-width: 100%;
   }

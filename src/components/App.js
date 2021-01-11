@@ -29,17 +29,19 @@ const App = props => {
   return (
     <div className="mb-3">
       <Header />
-      <Switch>
-        <Route exact path="/">
-          {currentWindow === 'main' ? <Main /> : <Report />}
-        </Route>
-        <Route exact path="/tools">
-          <Tools />
-        </Route>
-        <Route exact path="/about">
-          <About />
-        </Route>
-      </Switch>
+      <div className="main-content">
+        <Switch>
+          <Route exact path="/">
+            {currentWindow === 'main' ? <Main /> : <Report />}
+          </Route>
+          <Route exact path="/tools">
+            <Tools />
+          </Route>
+          <Route exact path="/about">
+            <About />
+          </Route>
+        </Switch>
+      </div>
     </div>
   );
 };
