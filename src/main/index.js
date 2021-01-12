@@ -37,7 +37,7 @@ async function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
-      zoomFactor: 1.0 / factor,
+      zoomFactor: 2.0 / factor,
     },
   });
 
