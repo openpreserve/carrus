@@ -30,10 +30,9 @@ async function createMainWindow() {
   if (factor === 1) {
     minWidth = 1080 - 100 * factor;
     minHeight = 550 + 100 * factor;
-    if (!isDevelopment) {
-      minWidth = 1180 - 100 * factor;
-      minHeight = 750 + 100 * factor;
-    }
+  } else if (factor >= 1.25 && factor < 1.5) {
+    minWidth = 1080 - 100 * factor;
+    minHeight = 550 + 100 * factor;
   } else if (factor >= 1.5) {
     minWidth = 1080 - 100 * factor;
     minHeight = 650 + 10 * factor;
@@ -50,7 +49,7 @@ async function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
-      /* zoomFactor: 1.1 / factor, */
+      zoomFactor: 1.0 / factor,
     },
   });
 
