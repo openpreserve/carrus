@@ -25,19 +25,32 @@ let pythonPath;
 
 async function createMainWindow() {
   const factor = screen.getPrimaryDisplay().scaleFactor;
+  let minWidth = 1080;
+  let minHeight = 550;
+  if (factor === 1) {
+    minWidth = 1080 - 100 * factor;
+    minHeight = 550 + 100 * factor;
+    if (!isDevelopment) {
+      minWidth = 1180 - 100 * factor;
+      minHeight = 750 + 100 * factor;
+    }
+  } else if (factor >= 1.5) {
+    minWidth = 1080 - 100 * factor;
+    minHeight = 650 + 10 * factor;
+  }
 
   process.setMaxListeners(Infinity);
 
   const window = new BrowserWindow({
-    minWidth: 1080,
-    minHeight: 650,
+    minWidth,
+    minHeight,
     title: 'JHove 2020',
     frame: false,
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
-      zoomFactor: 1.0 / factor,
+      /* zoomFactor: 1.1 / factor, */
     },
   });
 
