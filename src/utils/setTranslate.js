@@ -1,17 +1,15 @@
 import path from 'path';
 import util from 'util';
 import fs from 'fs';
-import translations from '../i18next/translations';
 
 const reader = util.promisify(fs.readFile);
 const isExists = util.promisify(fs.exists);
-const writer = util.promisify(fs.writeFile);
 
 export default async function setTranslate(isDevelopment) {
+  let configDir = path.join(__dirname, '..', 'translations');
   if (isDevelopment) {
-    return translations;
+    configDir = path.join(__dirname, '..', '..', 'translations');
   }
-  const configDir = path.join(__dirname, '..');
 
   try {
     // check if we already have created translations file
@@ -22,10 +20,9 @@ export default async function setTranslate(isDevelopment) {
     }
 
     // in case when there is no translations file yet, we add it to sources for possibility of custom editing
-    await writer(path.join(configDir, 'translations.json'), JSON.stringify(translations));
     // and return our translations template/map
-    return translations;
+    return '';
   } catch (err) {
-    return translations;
+    throw new Error(err);
   }
 }

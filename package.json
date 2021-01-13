@@ -42,7 +42,9 @@
     "extraResources": [
       "PAR",
       "libs",
-      "DownloadedFiles"
+      "DownloadedFiles",
+      "config",
+      "translations"
     ]
   },
   "scripts": {
