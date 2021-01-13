@@ -8,8 +8,6 @@ node_modules/
 dist/
 src/DownloadedFiles/
 
-.config.json
-
 # Compiled Java class files
 *.class
 
