@@ -3,6 +3,7 @@
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
+/* eslint-disable operator-assignment */
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
@@ -26,16 +27,16 @@ let pythonPath;
 async function createMainWindow() {
   const factor = screen.getPrimaryDisplay().scaleFactor;
   let minWidth = 1080;
-  let minHeight = 550;
+  let minHeight = 680;
   if (factor === 1) {
-    minWidth = 1080 - 100 * factor;
-    minHeight = 550 + 100 * factor;
+    minWidth = 1080;
+    minHeight = 650;
   } else if (factor >= 1.25 && factor < 1.5) {
-    minWidth = 1080 - 100 * factor;
-    minHeight = 550 + 100 * factor;
+    minWidth = 865;
+    minHeight = 650;
   } else if (factor >= 1.5) {
-    minWidth = 1080 - 100 * factor;
-    minHeight = 650 + 10 * factor;
+    minWidth = 780;
+    minHeight = 650;
   }
 
   process.setMaxListeners(Infinity);
