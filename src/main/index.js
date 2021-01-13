@@ -30,12 +30,12 @@ async function createMainWindow() {
   let minHeight = 680;
   if (factor === 1) {
     minWidth = 1080;
-    minHeight = 650;
+    minHeight = 800;
   } else if (factor >= 1.25 && factor < 1.5) {
     minWidth = 865;
-    minHeight = 650;
+    minHeight = 700;
   } else if (factor >= 1.5) {
-    minWidth = 780;
+    minWidth = 740;
     minHeight = 650;
   }
 
