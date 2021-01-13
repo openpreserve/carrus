@@ -35,8 +35,8 @@ async function createMainWindow() {
     minWidth = 865;
     minHeight = 700;
   } else if (factor >= 1.5) {
-    minWidth = 700;
-    minHeight = 620;
+    minWidth = 740;
+    minHeight = 670;
   }
 
   process.setMaxListeners(Infinity);
