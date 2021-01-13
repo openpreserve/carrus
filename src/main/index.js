@@ -35,7 +35,7 @@ async function createMainWindow() {
     minWidth = 865;
     minHeight = 700;
   } else if (factor >= 1.5) {
-    minWidth = 740;
+    minWidth = 700;
     minHeight = 650;
   }
 
