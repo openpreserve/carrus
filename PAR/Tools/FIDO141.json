@@ -1,0 +1,42 @@
+{
+    "id": {
+        "guid": "e41fd267-627a-4a79-ac8f-725f3bdcfc1d",
+        "name": "FIDO-1.4.1",
+        "namespace": "https://github.com/openpreserve/fido/releases/tag/v1.4.1"
+    },
+    "localLastModifiedDate": "2021-01-15T01:55:13",
+    "toolAcceptedParameters": [{
+            "description": "parameter to a tool, controlling the behaviour of that tool",
+            "type": "command line argument",
+            "value": "-recurse"
+        },
+        {
+            "description": "parameter to a tool, controlling the behaviour of that tool",
+            "type": "command line argument",
+            "value": "-nocontainer"
+        },
+        {
+            "description": "parameter to a tool, controlling the behaviour of that tool",
+            "type": "command line argument",
+            "value": "-pronom_only"
+        },
+        {
+            "description": "parameter to a tool, controlling the behaviour of that tool",
+            "type": "command line argument",
+            "value": "-zip"
+        }
+    ],
+    "toolLabel": "FIDO-1.4.1",
+    "toolName": "FIDO-1.4.1",
+    "toolOperatingEnvironments": [
+        "windows",
+        "linux",
+        "MacOS"
+    ],
+    "toolPublisher": "Open Preservation Foundation",
+    "toolVersion": "1.4.1",
+    "path": {
+        "value": "fido/fido.py",
+        "description": "unsupported field. TODO find out how to find exact tool."
+    }
+}

@@ -114,7 +114,7 @@ const Main = props => {
         <Input
           type="select"
           onChange={e => props.setAction(e.target.value)}
-          defaultValue={activeAction ? activeAction.preservationActionName : ''}
+          defaultValue={activeAction ? activeAction.name : ''}
         >
           {mimeType.length ? (
             acceptedActions.length ? (

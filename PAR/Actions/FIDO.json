@@ -1,0 +1,51 @@
+{
+    "description": "The main (and only) purpose of FIDO is to identify the file format of a digital object (a computerfile), hence the abbrevation F ormat I dentification for D igital O bjects.",
+    "id": {
+      "guid": "d5d3be7a-2ca8-444c-9388-a5a432d3e22c",
+      "name": "FIDO",
+      "namespace": "https://openpreservation.org/products/fido/"
+    },
+    "constraints": [{
+        "allowedFormats": [
+          {"id": {
+            "guid": "7dcbd4bc-e1cd-4b71-bb01-b953281706e9",
+            "name": "pdf",
+            "namespace": "https://openpreservation.org"
+          }}
+        ]
+      }
+    ],
+    "inputFiles": [{
+        "description": "A file input to a fido action",
+        "file": {
+          "filepath": ""
+        },
+        "name": "inputfile"
+      }
+    ],
+    "outputFiles": [{
+        "description": "A file output of a fido action",
+        "file": {
+          "filepath": ""
+        },
+        "name": "report"
+      }
+    ],
+    "preservationActionName": "FIDO",
+    "tool": [{
+        "id": {
+          "guid": "e41fd267-627a-4a79-ac8f-725f3bdcfc1d",
+          "name": "FIDO-1.4.1",
+          "namespace": "https://github.com/openpreserve/fido/releases/tag/v1.4.1"
+        }
+      }
+    ],
+    "type": {
+      "id": {
+        "guid": "cc27c2de-5e63-478b-8905-1d4713f14f2d",
+        "name": "FidoType",
+        "namespace": "https://openpreservation.org/products/fido/"
+      },
+      "label": "FidoType"
+    }
+  }
