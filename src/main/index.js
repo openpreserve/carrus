@@ -169,7 +169,7 @@ const getDateString = () => {
 const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) => {
   const options = {
     scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
-    args: [filePath],
+    args: tool.path.value === 'fido/fido/fido.py' ? [filePath] : [filePath, actionName, toolID, value, mimeType],
     pythonPath,
   };
   PythonShell.run(tool.path.value, options, (err, data) => {
