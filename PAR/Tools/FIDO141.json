@@ -36,7 +36,7 @@
     "toolPublisher": "Open Preservation Foundation",
     "toolVersion": "1.4.1",
     "path": {
-        "value": "fido/fido.py",
+        "value": "fido/fido/fido.py",
         "description": "unsupported field. TODO find out how to find exact tool."
     }
 }

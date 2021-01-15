@@ -22,6 +22,7 @@ from __future__ import absolute_import
 import os
 import re
 import sys
+from os.path import abspath, dirname, join
 from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import parse, ParseError
 from xml.parsers.expat import ExpatError, ParserCreate
@@ -29,7 +30,10 @@ from xml.parsers.expat import ExpatError, ParserCreate
 import six
 from six.moves import http_client
 
-from . import __version__, CONFIG_DIR
+__version__ = '1.4.1'
+
+
+CONFIG_DIR = join(abspath(dirname(__file__)), 'conf')
 
 
 def check_well_formedness(filename, error=False):

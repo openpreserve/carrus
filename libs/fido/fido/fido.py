@@ -13,6 +13,7 @@ from __future__ import absolute_import
 from argparse import ArgumentParser, RawTextHelpFormatter
 from contextlib import closing
 import os
+from os.path import abspath, dirname, join
 import re
 import sys
 import tarfile
@@ -27,10 +28,15 @@ import zipfile
 
 from six.moves import range
 
-from . import __version__, CONFIG_DIR
-from .package import OlePackage, ZipPackage
-from .pronomutils import get_local_pronom_versions
-from .char_handler import escape
+__version__ = '1.4.1'
+
+
+CONFIG_DIR = join(abspath(dirname(__file__)), 'conf')
+
+
+from package import OlePackage, ZipPackage
+from pronomutils import get_local_pronom_versions
+from char_handler import escape
 
 
 defaults = {

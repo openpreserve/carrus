@@ -1,0 +1,17 @@
+*.egg-info
+*.py[co]
+
+/MANIFEST
+/dist
+/build
+/.cache
+/.eggs
+.coverage
+.env/
+
+/fmtinfo.csv
+/exp
+/.settings
+/.externalToolBuilders
+
+!*.zip

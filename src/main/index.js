@@ -169,7 +169,7 @@ const getDateString = () => {
 const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) => {
   const options = {
     scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
-    args: [filePath, actionName, toolID, value, mimeType],
+    args: [filePath],
     pythonPath,
   };
   PythonShell.run(tool.path.value, options, (err, data) => {
