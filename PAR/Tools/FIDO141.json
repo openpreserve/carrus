@@ -5,23 +5,28 @@
         "namespace": "https://github.com/openpreserve/fido/releases/tag/v1.4.1"
     },
     "localLastModifiedDate": "2021-01-15T01:55:13",
-    "toolAcceptedParameters": [{
-            "description": "parameter to a tool, controlling the behaviour of that tool",
+    "toolAcceptedParameters": [
+        {
+            "description": "un (more) quietly",
+            "type": "command line argument",
+            "value": "-q"
+        },{
+            "description": "recurse into subdirectories",
             "type": "command line argument",
             "value": "-recurse"
         },
         {
-            "description": "parameter to a tool, controlling the behaviour of that tool",
+            "description": "disable deep scan of container documents, increases speed but may reduce accuracy with big files",
             "type": "command line argument",
             "value": "-nocontainer"
         },
         {
-            "description": "parameter to a tool, controlling the behaviour of that tool",
+            "description": "disables loading of format extensions file, only PRONOM signatures are loaded, may reduce accuracy of results",
             "type": "command line argument",
             "value": "-pronom_only"
         },
         {
-            "description": "parameter to a tool, controlling the behaviour of that tool",
+            "description": "recurse into zip and tar files",
             "type": "command line argument",
             "value": "-zip"
         }
