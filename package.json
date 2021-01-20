@@ -44,18 +44,21 @@
       "libs",
       "DownloadedFiles",
       "config",
-      "translations"
+      "translations",
+      "./node_modules/fido"
     ]
   },
   "scripts": {
-    "dev": "electron-webpack dev",
+    "dev": "electron-webpack dev && patch",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "dist:linux": "yarn dist --linux",
-    "dist:mac": "yarn dist --mac"
+    "dist:mac": "yarn dist --mac",
+    "patch": "git am ../../patches/0001-change-relative-imports.patch --prefix node_modules/fido"
   },
   "dependencies": {
+    "fido": "git://github.com/openpreserve/fido.git",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@types/valid-url": "^1.0.3",
