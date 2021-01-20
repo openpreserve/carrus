@@ -55,7 +55,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "dist:linux": "yarn dist --linux",
     "dist:mac": "yarn dist --mac",
-    "patch": "git am ../../patches/0001-change-relative-imports.patch --prefix node_modules/fido"
+    "patch": "git am ./patches/0001-change-relative-imports.patch ./node_modules/fido"
   },
   "dependencies": {
     "fido": "git://github.com/openpreserve/fido.git",
