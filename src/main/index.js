@@ -168,7 +168,7 @@ const getDateString = () => {
 
 const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) => {
   const options = {
-    scriptPath: isDevelopment ? './node_modules/' : path.join(__dirname, '..', 'libs'),
+    scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
     args: tool.path.value === 'fido/fido/fido.py' ? [value, filePath]
       : [filePath, actionName, toolID, value, mimeType],
     pythonPath,
