@@ -57,7 +57,7 @@
     "dist:mac": "yarn dist --mac",
     "fido": "yarn clone && yarn patch",
     "clone": "git clone https://github.com/openpreserve/fido.git ./libs/fido",
-    "patch": "cd ./libs/fido && git am ../../patches/0001-change-relative-imports.patch"
+    "patch": "cd ./libs/fido && git am ../../patches/0001-change-relative-imports.patch && rm -rf .git"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
