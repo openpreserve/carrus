@@ -10,7 +10,8 @@
             "description": "un (more) quietly",
             "type": "command line argument",
             "value": "-q"
-        },{
+        },
+        {
             "description": "recurse into subdirectories",
             "type": "command line argument",
             "value": "-recurse"

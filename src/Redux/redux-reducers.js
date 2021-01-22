@@ -28,7 +28,7 @@ export const preproccessReducer = (state = initialState, action) => {
         ...state,
         actions: state.actions.map(e => ({
           ...e,
-          active: e.preservationActionName === action.payload,
+          active: e.id.name === action.payload,
         })),
         tools: state.tools.map(e => ({
           ...e,

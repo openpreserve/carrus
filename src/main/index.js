@@ -228,7 +228,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
         .then(() => runScript(
           arg.tool,
           arg.filePath,
-          arg.action.preservationActionName,
+          arg.action.id.name,
           arg.tool.toolID,
           arg.option.value,
           arg.outputFolder,

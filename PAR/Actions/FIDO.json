@@ -5,16 +5,7 @@
       "name": "FIDO",
       "namespace": "https://openpreservation.org/products/fido/"
     },
-    "constraints": [{
-        "allowedFormats": [
-          {"id": {
-            "guid": "7dcbd4bc-e1cd-4b71-bb01-b953281706e9",
-            "name": "pdf",
-            "namespace": "https://openpreservation.org"
-          }}
-        ]
-      }
-    ],
+    "constraints": [],
     "inputFiles": [{
         "description": "A file input to a fido action",
         "file": {
@@ -31,7 +22,7 @@
         "name": "report"
       }
     ],
-    "preservationActionName": "FIDO",
+    "preservationActionName": "Format Identification for Digital Objects",
     "tool": [{
         "id": {
           "guid": "e41fd267-627a-4a79-ac8f-725f3bdcfc1d",

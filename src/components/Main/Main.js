@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -168,13 +169,20 @@ const Main = props => {
         <Input
           type="select"
           onChange={e => {
-            props.setOptions(
-              props?.activeTool?.toolAcceptedParameters.filter(item => item.value === e.target.value),
-            );
+            if (e.target.value === 'No option') {
+              props.setOptions([{
+                value: null,
+              }]);
+            } else {
+              props.setOptions(
+                props?.activeTool?.toolAcceptedParameters.filter(item => item.value === e.target.value),
+              );
+            }
           }}
           default="Choose Option"
         >
           <option hidden>Choose Option</option>
+          <option>No option</option>
           {activeTool ? (
             activeTool.toolAcceptedParameters.map(activeToolOption => (
               <option key={hashCode(activeToolOption.value + mimeType)}>{activeToolOption.value}</option>
