@@ -27,6 +27,21 @@
             "value": "-pronom_only"
         },
         {
+            "description": "comma separated string of formats to use in identification",
+            "type": "command line argument",
+            "value": "-useformats INCLUDEPUIDS"
+        },
+        {
+            "description": "comma separated string of formats not to use in identification",
+            "type": "command line argument",
+            "value": "-nouseformats EXCLUDEPUIDS"
+        },
+        {
+            "description": "format string (Python style) to use if no match.",
+            "type": "command line argument",
+            "value": "-nomatchprintf FORMATSTRING"
+        },
+        {
             "description": "recurse into zip and tar files",
             "type": "command line argument",
             "value": "-zip"

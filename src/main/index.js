@@ -174,7 +174,10 @@ const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) 
     pythonPath,
   };
   PythonShell.run(tool.path.value, options, (err, data) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      throw err;
+    }
     const reportText = data.join('\n');
     const dest = path.join(outFol, `${path.basename(filePath)}-${actionName}_${getDateString()}.txt`);
     fs.writeFile(dest, reportText, error => {
