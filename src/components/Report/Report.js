@@ -21,7 +21,7 @@ const Report = () => {
         <Container fluid className="d-flex flex-column align-items-center">
           <Container>
             <Jumbotron className="p-4 bg-light align-self-center m-0 d-flex flex-row">
-              <pre className="w-75 text-left">{report}</pre>
+              <p className="w-75 text-left">{report}</p>
               {report && path && (
                 <div className="d-flex flex-row ml-2 justify-content-end w-25">
                   <FileCopyIcon onClick={() => clipboard.writeText(report)} className="cursor-pointer" />
