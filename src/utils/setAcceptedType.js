@@ -18,8 +18,11 @@ export default function setAcceptedType(actions, mimeType, fileFormats) {
     }
     return {};
   });
-  const allTypes = flatDeep(actions.map(action => action.constraints[0].allowedFormats), 2);
+  const allTypes = flatDeep(actions.map(action => action?.constraints[0]?.allowedFormats), 2);
   AcceptedType = AcceptedType.find(e => e?.name);
-  const isAccepted = !!allTypes.find(item => item.id.name === AcceptedType?.name);
+  const isAccepted = !!allTypes.find(item => item?.id.name === AcceptedType?.name);
+  if (actions.filter(action => action.constraints.length === 0)) {
+    return true;
+  }
   return isAccepted;
 }

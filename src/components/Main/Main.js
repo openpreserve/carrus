@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +8,7 @@ import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Bu
 import { ipcRenderer } from 'electron';
 import isURL from 'validator/lib/isURL';
 import setAcceptedActions from '../../utils/setAcceptedActions';
+import checkScriptAvailability from '../../utils/checkScriptAvailability';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
@@ -38,6 +40,7 @@ const Main = props => {
     url,
     fileName,
     fileFormats,
+    config,
   } = props;
   const { t } = useTranslation();
 
@@ -114,7 +117,7 @@ const Main = props => {
         <Input
           type="select"
           onChange={e => props.setAction(e.target.value)}
-          defaultValue={activeAction ? activeAction.preservationActionName : ''}
+          defaultValue={activeAction ? activeAction.name : ''}
         >
           {mimeType.length ? (
             acceptedActions.length ? (
@@ -151,9 +154,10 @@ const Main = props => {
         >
           <option hidden>Choose Tool</option>
           {activeAction ? (
-            tools
+            /* tools
               .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.id.guid).includes(e.id.guid))
-              .map(e => <option key={hashCode(e.id.guid + mimeType)}>{e.id.name}</option>)
+              .map(e => <option key={hashCode(e.id.guid + mimeType)}>{e.id.name}</option>) */
+            checkScriptAvailability(activeAction, tools, config.isDevelopment)
           ) : (
             <>
               <option disabled>No actions are chosen</option>
@@ -168,13 +172,20 @@ const Main = props => {
         <Input
           type="select"
           onChange={e => {
-            props.setOptions(
-              props?.activeTool?.toolAcceptedParameters.filter(item => item.value === e.target.value),
-            );
+            if (e.target.value === 'No option') {
+              props.setOptions([{
+                value: null,
+              }]);
+            } else {
+              props.setOptions(
+                props?.activeTool?.toolAcceptedParameters.filter(item => item.value === e.target.value),
+              );
+            }
           }}
           default="Choose Option"
         >
           <option hidden>Choose Option</option>
+          <option>No option</option>
           {activeTool ? (
             activeTool.toolAcceptedParameters.map(activeToolOption => (
               <option key={hashCode(activeToolOption.value + mimeType)}>{activeToolOption.value}</option>
@@ -231,6 +242,7 @@ const mapStateToProps = state => ({
   activeTool: state.tools.filter(e => e.active)[0],
   options: state.options,
   activeOption: state.options[0],
+  config: state.config,
 });
 
 export default connect(mapStateToProps, {

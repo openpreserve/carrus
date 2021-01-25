@@ -169,11 +169,15 @@ const getDateString = () => {
 const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) => {
   const options = {
     scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
-    args: [filePath, actionName, toolID, value, mimeType],
+    args: tool.path.value === 'fido/fido/fido.py' ? [value, filePath]
+      : [filePath, actionName, toolID, value, mimeType],
     pythonPath,
   };
   PythonShell.run(tool.path.value, options, (err, data) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      throw err;
+    }
     const reportText = data.join('\n');
     const dest = path.join(outFol, `${path.basename(filePath)}-${actionName}_${getDateString()}.txt`);
     fs.writeFile(dest, reportText, error => {
@@ -227,7 +231,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
         .then(() => runScript(
           arg.tool,
           arg.filePath,
-          arg.action.preservationActionName,
+          arg.action.id.name,
           arg.tool.toolID,
           arg.option.value,
           arg.outputFolder,

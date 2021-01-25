@@ -14,6 +14,7 @@ const actionTypes = {
   SET_FILE_INFO: 'SET_FILE_INFO',
   SET_PAR_DATA: 'SET_PAR_DATA',
   SET_MIME_TYPE: 'SET_MIME_TYPE',
+  SET_CONFIG: 'SET_CONFIG',
 };
 
 export default actionTypes;

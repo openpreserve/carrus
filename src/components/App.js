@@ -8,7 +8,7 @@ import Header from './Header/Header';
 import Tools from './Tools/Tools';
 import About from './About/About';
 import Report from './Report/Report';
-import { setParData } from '../Redux/redux-reducers';
+import { setParData, setConfig } from '../Redux/redux-reducers';
 
 const App = props => {
   const { i18n } = useTranslation();
@@ -16,6 +16,7 @@ const App = props => {
 
   useEffect(() => {
     ipcRenderer.once('config', (event, config) => {
+      props.setConfig(config);
       if (config.language && (config.language === 'fr' || config.language === 'ru')) {
         i18n.changeLanguage(config.language);
       }
@@ -48,8 +49,10 @@ const App = props => {
 
 const mapStateToProps = state => ({
   actions: state.actions,
+  config: state.config,
 });
 
 export default connect(mapStateToProps, {
   setParData,
+  setConfig,
 })(App);

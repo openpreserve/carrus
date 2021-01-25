@@ -32,15 +32,18 @@ export default async function setConfig(isDevelopment) {
       configuration = JSON.parse(configuration);
       if (configuration.language === 'default') {
         configuration.language = await getOsLang();
+        configuration.isDevelopment = isDevelopment;
       }
       return configuration;
     }
 
     // try to extract system language and set it up as default one
     initialConfig.language = await getOsLang();
+    initialConfig.isDevelopment = isDevelopment;
     return initialConfig;
   } catch (err) {
     // in case of some errors we default configuration
+    initialConfig.isDevelopment = isDevelopment;
     return initialConfig;
   }
 }

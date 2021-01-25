@@ -1,0 +1,87 @@
+From b15e4376865ba94fa1af839630a6f14b2bffac77 Mon Sep 17 00:00:00 2001
+From: Nikita <NBogdanov17@yandex.by>
+Date: Wed, 20 Jan 2021 02:20:47 +0300
+Subject: [PATCH] change relative imports
+
+---
+ fido/fido.py        | 18 ++++++++++++------
+ fido/pronomutils.py |  6 +++++-
+ 2 files changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/fido/fido.py b/fido/fido.py
+index 15d45d1..a72f55a 100755
+--- a/fido/fido.py
++++ b/fido/fido.py
+@@ -13,6 +13,7 @@ from __future__ import absolute_import
+ from argparse import ArgumentParser, RawTextHelpFormatter
+ from contextlib import closing
+ import os
++from os.path import abspath, dirname, join
+ import re
+ import sys
+ import tarfile
+@@ -27,10 +28,15 @@ import zipfile
+ 
+ from six.moves import range
+ 
+-from . import __version__, CONFIG_DIR
+-from .package import OlePackage, ZipPackage
+-from .pronomutils import get_local_pronom_versions
+-from .char_handler import escape
++__version__ = '1.4.1'
++
++
++CONFIG_DIR = join(abspath(dirname(__file__)), 'conf')
++
++
++from package import OlePackage, ZipPackage
++from pronomutils import get_local_pronom_versions
++from char_handler import escape
+ 
+ 
+ defaults = {
+@@ -39,7 +45,7 @@ defaults = {
+     'printmatch': "OK,%(info.time)s,%(info.puid)s,\"%(info.formatname)s\",\"%(info.signaturename)s\",%(info.filesize)s,\"%(info.filename)s\",\"%(info.mimetype)s\",\"%(info.matchtype)s\"\n",
+     'printnomatch': "KO,%(info.time)s,,,,%(info.filesize)s,\"%(info.filename)s\",,\"%(info.matchtype)s\"\n",
+     'format_files': [
+-        'formats-v96.xml',
++        'formats-v95.xml',
+         'format_extensions.xml'
+     ],
+     'containersignature_file': 'container-signature-20180920.xml',
+@@ -251,7 +257,7 @@ class Fido:
+         return format.findall('signature')
+ 
+     def has_priority_over(self, format, possibly_inferior):
+-        return self.get_puid(possibly_inferior) in self.puid_has_priority_over_map[self.get_puid(format)]
++        return self.get_puid(possibly_inferior)in self.puid_has_priority_over_map[self.get_puid(format)]
+ 
+     def get_puid(self, format):
+         return format.find('puid').text
+diff --git a/fido/pronomutils.py b/fido/pronomutils.py
+index 5dfee92..35bc31e 100644
+--- a/fido/pronomutils.py
++++ b/fido/pronomutils.py
+@@ -22,6 +22,7 @@ from __future__ import absolute_import
+ import os
+ import re
+ import sys
++from os.path import abspath, dirname, join
+ from xml.etree import ElementTree as ET
+ from xml.etree.ElementTree import parse, ParseError
+ from xml.parsers.expat import ExpatError, ParserCreate
+@@ -29,7 +30,10 @@ from xml.parsers.expat import ExpatError, ParserCreate
+ import six
+ from six.moves import http_client
+ 
+-from . import __version__, CONFIG_DIR
++__version__ = '1.4.1'
++
++
++CONFIG_DIR = join(abspath(dirname(__file__)), 'conf')
+ 
+ 
+ def check_well_formedness(filename, error=False):
+-- 
+2.23.0.windows.1
+

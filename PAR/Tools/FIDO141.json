@@ -1,0 +1,63 @@
+{
+    "id": {
+        "guid": "e41fd267-627a-4a79-ac8f-725f3bdcfc1d",
+        "name": "FIDO-1.4.1",
+        "namespace": "https://github.com/openpreserve/fido/releases/tag/v1.4.1"
+    },
+    "localLastModifiedDate": "2021-01-15T01:55:13",
+    "toolAcceptedParameters": [
+        {
+            "description": "un (more) quietly",
+            "type": "command line argument",
+            "value": "-q"
+        },
+        {
+            "description": "recurse into subdirectories",
+            "type": "command line argument",
+            "value": "-recurse"
+        },
+        {
+            "description": "disable deep scan of container documents, increases speed but may reduce accuracy with big files",
+            "type": "command line argument",
+            "value": "-nocontainer"
+        },
+        {
+            "description": "disables loading of format extensions file, only PRONOM signatures are loaded, may reduce accuracy of results",
+            "type": "command line argument",
+            "value": "-pronom_only"
+        },
+        {
+            "description": "comma separated string of formats to use in identification",
+            "type": "command line argument",
+            "value": "-useformats INCLUDEPUIDS"
+        },
+        {
+            "description": "comma separated string of formats not to use in identification",
+            "type": "command line argument",
+            "value": "-nouseformats EXCLUDEPUIDS"
+        },
+        {
+            "description": "format string (Python style) to use if no match.",
+            "type": "command line argument",
+            "value": "-nomatchprintf FORMATSTRING"
+        },
+        {
+            "description": "recurse into zip and tar files",
+            "type": "command line argument",
+            "value": "-zip"
+        }
+    ],
+    "toolLabel": "FIDO-1.4.1",
+    "toolName": "FIDO-1.4.1",
+    "toolOperatingEnvironments": [
+        "windows",
+        "linux",
+        "MacOS"
+    ],
+    "toolPublisher": "Open Preservation Foundation",
+    "toolVersion": "1.4.1",
+    "path": {
+        "value": "fido/fido/fido.py",
+        "description": "unsupported field. TODO find out how to find exact tool."
+    }
+}
