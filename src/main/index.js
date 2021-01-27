@@ -166,20 +166,20 @@ const getDateString = () => {
   return `${year}${month}${day}${hours}${mins}${sec}`;
 };
 
-const runScript = (tool, filePath, actionName, toolID, value, outFol, mimeType) => {
+const runScript = (tool, filePath, toolID, value, outFol, mimeType) => {
   const options = {
     scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
-    args: tool.path.value === 'fido/fido/fido.py' ? [value, filePath]
-      : [filePath, actionName, toolID, value, mimeType],
+    args: tool.toolLabel === 'fido/fido/fido.py' ? [value, filePath]
+      : [filePath, toolID, value, mimeType],
     pythonPath,
   };
-  PythonShell.run(tool.path.value, options, (err, data) => {
+  PythonShell.run(tool.toolLabel, options, (err, data) => {
     if (err) {
       console.log(err);
       throw err;
     }
     const reportText = data.join('\n');
-    const dest = path.join(outFol, `${path.basename(filePath)}-${actionName}_${getDateString()}.txt`);
+    const dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
     fs.writeFile(dest, reportText, error => {
       if (error) throw error;
       const win = new BrowserWindow({
@@ -231,9 +231,9 @@ ipcMain.on('execute-file-action', (event, arg) => {
         .then(() => runScript(
           arg.tool,
           arg.filePath,
-          arg.action.id.name,
+
           arg.tool.toolID,
-          arg.option.value,
+          arg.tool.toolName,
           arg.outputFolder,
           arg.mimeType,
         ))
@@ -246,9 +246,9 @@ ipcMain.on('execute-file-action', (event, arg) => {
     runScript(
       arg.tool,
       arg.filePath,
-      arg.action.preservationActionName,
+
       arg.tool.toolID,
-      arg.option.value,
+      arg.tool.toolName,
       arg.outputFolder,
       arg.mimeType,
     );

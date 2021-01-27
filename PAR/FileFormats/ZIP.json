@@ -1,0 +1,17 @@
+{
+    "id": {
+        "guid": "6e0f8c1b-846b-4c87-9fa5-65d65c14c292",
+        "name": "zip",
+        "namespace": "https://openpreservation.org"
+    },
+    "aliases": [
+      "ZIP archive"
+    ],
+    "name": "ZIP archive file format",
+    "lastUpdatedDate": "2021-01-26T12:27:00",
+    "identifiers": [{
+        "identifier": "application/zip",
+        "identifierType": "MIME"
+      }
+    ]
+}

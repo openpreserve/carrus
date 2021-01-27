@@ -9,6 +9,7 @@ import { ipcRenderer } from 'electron';
 import isURL from 'validator/lib/isURL';
 import setAcceptedActions from '../../utils/setAcceptedActions';
 import checkScriptAvailability from '../../utils/checkScriptAvailability';
+import mapActionTypes from '../../utils/mapActionTypes';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';
@@ -20,6 +21,7 @@ import {
   setFileOrigin,
   setMimeType,
   setFileInfo,
+  setActionType,
 } from '../../Redux/redux-reducers';
 import FolderInput from './FolderInput';
 
@@ -30,9 +32,12 @@ const Main = props => {
     fileOrigin,
     filePath,
     dirPath,
+    actionTypes,
+    actions,
     options,
     mimeType,
     acceptedActions,
+    activeActionTypes,
     activeAction,
     tools,
     activeTool,
@@ -53,6 +58,7 @@ const Main = props => {
       mimeType,
       fileOrigin,
       path: fileOrigin === 'url' ? url : filePath,
+      actionType: activeActionTypes,
       action: activeAction,
       outputFolder: dirPath,
       tool: activeTool,
@@ -62,7 +68,7 @@ const Main = props => {
     setIsLoading(false);
   };
 
-  /* useEffect(() => console.log(props), [props]); */
+  /*   useEffect(() => console.log(props), [props]); */
 
   useEffect(() => {
     if (isURL(url)) {
@@ -80,6 +86,16 @@ const Main = props => {
       setError('');
     }
   }, [url]);
+
+  function unique(arr) {
+    const result = [];
+    arr.forEach(item => {
+      if (!result.find(e => e.type.id.guid === item.type.id.guid)) {
+        result.push(item);
+      }
+    });
+    return result;
+  }
 
   return !isLoading ? (
     <div className="container d-flex flex-column">
@@ -111,6 +127,93 @@ const Main = props => {
         </TabPane>
       </TabContent>
       <FormGroup className="mt-3 w-50 d-flex flex-row">
+        <Label for="action" className="mr-1 my-auto w-25">
+          <span>{t('ActionType')}:</span>
+        </Label>
+        <Input
+          type="select"
+          onChange={e => props.setActionType(e.target.value)}
+          defaultValue={activeActionTypes ? activeActionTypes.id.name : ''}
+        >
+          {mimeType.length ? (
+            acceptedActions.length ? (
+              <>
+                <option hidden>Choose allowed action types</option>
+                {unique(acceptedActions).map(e => (
+                  <option key={hashCode(e.id.guid + mimeType)}>{e.type.id.name}</option>
+                ))}
+              </>
+            ) : (
+              <>
+                <option hidden>{t('inappropriateType')} </option>
+                <option disabled>{t('noActionTypes')}</option>
+              </>
+            )
+          ) : (
+            <>
+              <option hidden>{t('fileNotChoosen')}</option>
+              <option disabled>{t('fileNotChoosenSub')}</option>
+            </>
+          )}
+        </Input>
+      </FormGroup>
+      <FormGroup className="mt-3 w-50 d-flex flex-row">
+        <Label for="tool" className="mr-1 my-auto w-25">
+          <span>{t('Tool')}: </span>
+        </Label>
+        <Input
+          type="select"
+          onChange={e => {
+            props.setTool(e.target.value);
+          }}
+          defaultValue="Choose tool"
+        >
+          <option hidden>Choose Tool</option>
+          {activeActionTypes && mimeType.length ? (
+            checkScriptAvailability(activeActionTypes, tools, acceptedActions, config.isDevelopment)
+          ) : (
+            <>
+              <option disabled>No actions are chosen</option>
+            </>
+          )}
+        </Input>
+      </FormGroup>
+      <FormGroup className="mt-3 w-50 d-flex flex-row">
+        <Label for="action" className="mr-1 my-auto w-25">
+          <span>{t('Action')}: </span>
+        </Label>
+        <Input
+          type="select"
+          onChange={e => {
+            if (e.target.value === 'No action') {
+              props.setOptions([{
+                value: null,
+              }]);
+            } else {
+              props.setOptions([{
+                value: acceptedActions
+                  .find(action => action.id.name === e.target.value).inputToolArguments[0].value,
+              }]);
+            }
+          }}
+          default="Choose Option"
+        >
+          <option hidden>Choose Option</option>
+          <option>No action</option>
+          {activeTool ? (
+            activeTool.toolAcceptedParameters
+              .filter(param => acceptedActions.find(action => action.id.guid === param.id.guid))
+              .map(activeToolOption => (
+                <option key={activeToolOption.id.guid}>{activeToolOption.id.name}</option>
+              ))
+          ) : (
+            <>
+              <option disabled>No Tools are chosen</option>
+            </>
+          )}
+        </Input>
+      </FormGroup>
+      {/* <FormGroup className="mt-3 w-50 d-flex flex-row">
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Action')}:</span>
         </Label>
@@ -154,9 +257,6 @@ const Main = props => {
         >
           <option hidden>Choose Tool</option>
           {activeAction ? (
-            /* tools
-              .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.id.guid).includes(e.id.guid))
-              .map(e => <option key={hashCode(e.id.guid + mimeType)}>{e.id.name}</option>) */
             checkScriptAvailability(activeAction, tools, config.isDevelopment)
           ) : (
             <>
@@ -196,7 +296,7 @@ const Main = props => {
             </>
           )}
         </Input>
-      </FormGroup>
+      </FormGroup> */}
       <FormGroup className="mt-3 w-100 d-flex flex-row align-center">
         <div className="w-50 d-flex flex-row">
           <Label for="customFile" className="mr-1 my-auto w-25">
@@ -230,6 +330,7 @@ const Main = props => {
 const mapStateToProps = state => ({
   actions: state.actions,
   fileFormats: state.fileFormats,
+  actionTypes: state.actionTypes,
   url: state.url,
   fileOrigin: state.fileOrigin,
   fileName: state.fileName,
@@ -240,6 +341,7 @@ const mapStateToProps = state => ({
   activeAction: state.actions.filter(e => e.active)[0],
   tools: state.tools,
   activeTool: state.tools.filter(e => e.active)[0],
+  activeActionTypes: state.actionTypes.filter(e => e.active)[0],
   options: state.options,
   activeOption: state.options[0],
   config: state.config,
@@ -252,4 +354,5 @@ export default connect(mapStateToProps, {
   setFileOrigin,
   setMimeType,
   setFileInfo,
+  setActionType,
 })(Main);

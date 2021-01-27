@@ -2,19 +2,37 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
+/* eslint-disable arrow-body-style */
 import React from 'react';
 import path from 'path';
 import fs from 'fs';
 
-export default function checkScriptAvailability(activeAction, tools, isDevelopment) {
+function unique(arr) {
+  const result = [];
+  arr.forEach(item => {
+    if (!result.find(e => e.tool.id.guid === item.tool.id.guid)) {
+      result.push(item);
+    }
+  });
+  return result;
+}
+
+export default function checkScriptAvailability(activeActionTypes, tools, acceptedActions, isDevelopment) {
   let scriptPath = path.join(__dirname, '..', 'libs');
 
   if (isDevelopment) {
     scriptPath = path.join(__dirname, '..', '..', 'libs');
   }
 
-  const AvailableTools = tools
-    .filter(e => activeAction.tool.map(activeActionTool => activeActionTool.id.guid).includes(e.id.guid))
-    .filter((tool) => fs.existsSync(path.join(scriptPath, tool.path.value)));
-  return AvailableTools.map(e => <option key={e.id.guid}>{e.id.name}</option>);
+  const correctActions = acceptedActions.filter(action => action.type.id.guid === activeActionTypes.id.guid);
+
+  const AvailableTools = unique(correctActions).map(action => {
+    const candidate = tools.find(tool => tool.id.guid === action.tool.id.guid);
+    if (candidate) {
+      return candidate;
+    }
+  }).filter((tool) => fs.existsSync(path.join(scriptPath, tool.toolLabel)));
+  return (AvailableTools.length !== 0
+    ? AvailableTools.map(e => <option key={e.id.guid}>{e.id.name}</option>)
+    : <option disabled>No accepted tools</option>);
 }

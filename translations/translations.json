@@ -2,6 +2,7 @@
     "en": {
         "translation": {
             "Action": "Action",
+            "ActionType": "Action Type",
             "Tool": "Tool",
             "YourFile": "Your File",
             "FromUrl": "From Url",
@@ -29,6 +30,7 @@
             "fileNotChoosenSub": "You have not choosen any files to proccess",
             "inappropriateType": "There is no action for such file mime type",
             "noActions": "No actions",
+            "noActionTypes": "no Action Types",
             "invalidUrl": "Invalid URL",
             "corsErrorText": "Cant proccess link due to the cors policy error",
             "fileTypesUnavailable": "text-based formats like .txt, .csv, .svg aren't available"
@@ -37,6 +39,7 @@
     "fr": {
         "translation": {
             "Action": "Action",
+            "ActionType": "Type d'action",
             "Tool": "Outil",
             "YourFile": "Votre dossier",
             "FromUrl": "De l'URL",
@@ -64,6 +67,7 @@
             "fileNotChoosenSub": "Vous n'avez choisi aucun fichier à traiter",
             "inappropriateType": "Il n'y a pas d'action pour ce type de fichier mime",
             "noActions": "Il n'y a aucune action",
+            "noActionTypes": "Aucun type d'action",
             "invalidUrl": "URL invalide",
             "corsErrorText": "Lien de processus Cant en raison de l'erreur de politique cors",
             "fileTypesUnavailable": "Les formats textuels tels que .txt, .csv, .svg ne sont pas disponibles"
@@ -72,6 +76,7 @@
     "ru": {
         "translation": {
             "Action": "Действие",
+            "ActionType": "Тип действия",
             "Tool": "Инструмент",
             "YourFile": "Ваш файл",
             "FromUrl": "URL ссылка",
@@ -99,6 +104,7 @@
             "fileNotChoosenSub": "Вы не выбрали файл для обработки",
             "inappropriateType": "Нет действий для выбранного mime типа",
             "noActions": "Действий нет",
+            "noActionTypes": "нет типа действия",
             "invalidUrl": "Недействительная ссылка",
             "corsErrorText": "Невозможно обработать ссылку из-за cors ошибки",
             "fileTypesUnavailable": "Текстовые форматы, такие как .txt, .csv, .svg, не поддерживаются"
