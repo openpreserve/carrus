@@ -9,7 +9,6 @@ import { ipcRenderer } from 'electron';
 import isURL from 'validator/lib/isURL';
 import setAcceptedActions from '../../utils/setAcceptedActions';
 import checkScriptAvailability from '../../utils/checkScriptAvailability';
-import mapActionTypes from '../../utils/mapActionTypes';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
 import UrlHandler from './UrlHandler';

@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
@@ -11,10 +11,11 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { green } from '@material-ui/core/colors';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import mapTools from '../../utils/mapTools';
 import setAcceptedActions from '../../utils/setAcceptedActions';
 
 const Tools = props => {
-  const { actions } = props;
+  const { actions, tools } = props;
   const { t } = useTranslation();
   const PDFArray = [];
   const JPEGArray = [];
@@ -26,6 +27,8 @@ const Tools = props => {
     .forEach(item => {
       !JPEGArray.find(e => e === item.tool.id.name) ? JPEGArray.push(item.tool.id.name) : null;
     });
+
+  /* useEffect(() => console.log(props), [props]); */
   /* console.log(PDFArray);
   console.log(JPEGArray); */
   return (
@@ -52,20 +55,7 @@ const Tools = props => {
                 ))}
               </Input>
             </FormGroup>
-            {actions.filter(e => e.active && e.constraints[0].allowedFormats
-              .filter(item => item.id.name === 'pdf')).length ? (
-                actions
-                  .filter(e => e.active && e.constraints[0].allowedFormats
-                    .find(item => item.id.name === 'pdf'))[0]
-                  .tool.map((e, i) => (
-                    <div className="d-flex flex-row w-50 mb-3" key={i + 10 / 0.4}>
-                      <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                      <span className="ml-1">{e.id.name}</span>
-                    </div>
-                  ))
-              ) : (
-                <span>{t('noDefaultTools')}</span>
-              )}
+            {mapTools(tools, actions, 'pdf')}
           </CardBody>
         </Card>
         <Card className="w-50 border-0">
@@ -83,20 +73,7 @@ const Tools = props => {
                 ))}
               </Input>
             </FormGroup>
-            {actions.filter(e => e.active && e.constraints[0].allowedFormats
-              .find(item => item.id.name === 'image')).length ? (
-                actions
-                  .filter(e => e.active && e.constraints[0].allowedFormats
-                    .filter(item => item.id.name === 'image'))[0]
-                  .tool.map((e, i) => (
-                    <div className="d-flex flex-row w-50 mb-3" key={i + 10 / 0.4}>
-                      <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                      <span className="ml-1">{e.id.name}</span>
-                    </div>
-                  ))
-              ) : (
-                <span>{t('noDefaultTools')}</span>
-              )}
+            {mapTools(tools, actions, 'image')}
           </CardBody>
         </Card>
       </div>
@@ -113,7 +90,7 @@ const mapStateToProps = state => ({
   fileName: state.fileName,
   filePath: state.filePath,
   dirPath: state.dirPath,
-  tool: state.tool,
+  tools: state.tools,
 });
 
 export default connect(mapStateToProps, {})(Tools);
