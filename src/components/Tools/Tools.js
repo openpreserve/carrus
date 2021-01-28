@@ -2,6 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-unused-expressions */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label } from 'reactstrap';
@@ -17,14 +18,16 @@ const Tools = props => {
   const { t } = useTranslation();
   const PDFArray = [];
   const JPEGArray = [];
-  setAcceptedActions(props.actions, props.fileFormats, 'application/pdf').forEach(e => {
-    e.tool.forEach(tool => PDFArray.push(tool.id.name));
-  });
-  setAcceptedActions(props.actions, props.fileFormats, 'image/jpeg').forEach(e => {
-    e.tool.forEach(tool => JPEGArray.push(tool.id.name));
-  });
-  console.log(PDFArray);
-  console.log(JPEGArray);
+  setAcceptedActions(props.actions, props.fileFormats, 'application/pdf')
+    .forEach(item => {
+      !PDFArray.find(e => e === item.tool.id.name) ? PDFArray.push(item.tool.id.name) : null;
+    });
+  setAcceptedActions(props.actions, props.fileFormats, 'image/jpeg')
+    .forEach(item => {
+      !JPEGArray.find(e => e === item.tool.id.name) ? JPEGArray.push(item.tool.id.name) : null;
+    });
+  /* console.log(PDFArray);
+  console.log(JPEGArray); */
   return (
     <Container>
       <div className="d-flex flex-column align-items-left">
