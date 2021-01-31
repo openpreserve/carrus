@@ -9,8 +9,6 @@ import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label } from 'r
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { green } from '@material-ui/core/colors';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import mapTools from '../../utils/mapTools';
 import setAcceptedActions from '../../utils/setAcceptedActions';
 
@@ -28,7 +26,7 @@ const Tools = props => {
       !JPEGArray.find(e => e === item.tool.id.name) ? JPEGArray.push(item.tool.id.name) : null;
     });
 
-  /* useEffect(() => console.log(props), [props]); */
+  useEffect(() => console.log(props), [props]);
   /* console.log(PDFArray);
   console.log(JPEGArray); */
   return (

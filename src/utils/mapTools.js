@@ -8,17 +8,6 @@ import { useTranslation } from 'react-i18next';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { green } from '@material-ui/core/colors';
 
-function unique(arr) {
-  const result = [];
-  arr.forEach(item => {
-    if (!result.includes(item)) {
-      result.push(item);
-    }
-  });
-
-  return result;
-}
-
 export default function mapTools(tools, actions, type) {
   const { t } = useTranslation();
   const activeTool = tools.find(tool => tool.active);

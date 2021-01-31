@@ -67,7 +67,7 @@ const Main = props => {
     setIsLoading(false);
   };
 
-  /*   useEffect(() => console.log(props), [props]); */
+  useEffect(() => console.log(props), [props]);
 
   useEffect(() => {
     if (isURL(url)) {
@@ -165,7 +165,7 @@ const Main = props => {
           onChange={e => {
             props.setTool(e.target.value);
           }}
-          defaultValue="Choose tool"
+          defaultValue={activeTool ? activeTool.id.name : ''}
         >
           <option hidden>Choose Tool</option>
           {activeActionTypes && mimeType.length ? (
@@ -183,6 +183,7 @@ const Main = props => {
         </Label>
         <Input
           type="select"
+          defaultValue={activeOption ? activeOption.name : ''}
           onChange={e => {
             if (e.target.value === 'No action') {
               props.setOptions([{
@@ -192,10 +193,11 @@ const Main = props => {
               props.setOptions([{
                 value: acceptedActions
                   .find(action => action.id.name === e.target.value).inputToolArguments[0].value,
+                name: e.target.value,
               }]);
             }
           }}
-          default="Choose Option"
+          /* default={activeOption ? 'что-то должно быть...' : ''} */
         >
           <option hidden>Choose Option</option>
           <option>No action</option>

@@ -123,6 +123,10 @@ export const preproccessReducer = (state = initialState, action) => {
         mimeType: action.payload.type,
         fileName: action.payload.name,
         filePath: action.payload.path,
+        actionTypes: state.actionTypes.map(e => ({
+          ...e,
+          active: false,
+        })),
         actions: state.actions.map(e => ({
           ...e,
           active: false,
@@ -131,6 +135,7 @@ export const preproccessReducer = (state = initialState, action) => {
           ...e,
           active: false,
         })),
+        options: [],
       };
     }
 
