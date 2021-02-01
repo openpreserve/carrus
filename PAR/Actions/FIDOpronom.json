@@ -1,0 +1,41 @@
+{
+  "description": "identify the file format of a digital object using FIDO",
+  "example": "-pronom_only ${inputfile}",
+  "id": {
+    "guid": "c6859ee7-f5bb-4618-8583-3a0f46eef962",
+    "name": "pronom only",
+    "namespace": "https://openpreservation.org/products/fido/"
+  },
+  "inputFiles": [{
+      "description": "File that will be acted upon",
+      "file": {
+        "filepath": ""
+      },
+      "name": "inputfile.$ext"
+    }
+  ],
+  "constraints": [],
+  "inputToolArguments": [{
+      "description": "disables loading of format extensions file, only PRONOM signatures are loaded, may reduce accuracy of results",
+      "type": "command line argument",
+      "value": "-pronom_only"
+    }
+  ],
+  "outputFiles": [
+
+  ],
+  "tool": {
+    "id": {
+      "guid": "e41fd267-627a-4a79-ac8f-725f3bdcfc1d",
+      "name": "FIDO",
+      "namespace": "https://github.com/openpreserve/fido/releases/tag/v1.4.1"
+    }
+  },
+  "type": {
+    "id": {
+      "guid": "56c56576-8931-4d90-bf30-b21fc21001c0",
+      "name": "identify",
+      "namespace": "https://openpreservation.org"
+    }
+  }
+}

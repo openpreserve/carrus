@@ -5,6 +5,7 @@ const initialState = {
   tools: [],
   options: [],
   fileFormats: [],
+  actionTypes: [],
   url: '',
   fileOrigin: 'file',
   defaultPDFTool: '',
@@ -37,6 +38,15 @@ export const preproccessReducer = (state = initialState, action) => {
         options: state.options.map(e => ({
           ...e,
           active: false,
+        })),
+      };
+    }
+    case actionTypes.SET_ACTION_TYPE: {
+      return {
+        ...state,
+        actionTypes: state.actionTypes.map(e => ({
+          ...e,
+          active: e.id.name === action.payload,
         })),
       };
     }
@@ -113,6 +123,10 @@ export const preproccessReducer = (state = initialState, action) => {
         mimeType: action.payload.type,
         fileName: action.payload.name,
         filePath: action.payload.path,
+        actionTypes: state.actionTypes.map(e => ({
+          ...e,
+          active: false,
+        })),
         actions: state.actions.map(e => ({
           ...e,
           active: false,
@@ -121,6 +135,7 @@ export const preproccessReducer = (state = initialState, action) => {
           ...e,
           active: false,
         })),
+        options: [],
       };
     }
 
@@ -155,6 +170,7 @@ export const setTool = value => ({ type: actionTypes.SET_TOOL, payload: value })
 export const setOptions = value => ({ type: actionTypes.SET_OPTIONS, payload: value });
 export const setActions = value => ({ type: actionTypes.SET_ACTIONS, payload: value });
 export const setAction = value => ({ type: actionTypes.SET_ACTION, payload: value });
+export const setActionType = value => ({ type: actionTypes.SET_ACTION_TYPE, payload: value });
 export const setURL = value => ({ type: actionTypes.SET_URL, payload: value });
 export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payload: value });
 export const setDefaultPDFTool = value => ({ type: actionTypes.SET_DEFAULT_PDF_TOOl, payload: value });

@@ -1,8 +1,0 @@
-{
-    "id": {
-        "guid": "cc27c2de-5e63-478b-8905-1d4713f14f2d",
-        "name": "FidoType",
-        "namespace": "https://openpreservation.org/products/fido/"
-      },
-      "label": "FidoType"
-}

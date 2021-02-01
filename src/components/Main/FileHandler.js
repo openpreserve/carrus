@@ -8,7 +8,9 @@ import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import { green } from '@material-ui/core/colors';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
-import { setFileInfo } from '../../Redux/redux-reducers';
+import {
+  setFileInfo,
+} from '../../Redux/redux-reducers';
 import setAcceptedType from '../../utils/setAcceptedType';
 
 const FileHandler = props => {
@@ -79,4 +81,6 @@ const mapStateToProps = state => ({
   actions: state.actions,
   isTypeAccepted: !setAcceptedType(state.actions, state.mimeType, state.fileFormats),
 });
-export default connect(mapStateToProps, { setFileInfo })(FileHandler);
+export default connect(mapStateToProps, {
+  setFileInfo,
+})(FileHandler);
