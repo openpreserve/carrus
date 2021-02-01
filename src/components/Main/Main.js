@@ -67,7 +67,7 @@ const Main = props => {
     setIsLoading(false);
   };
 
-  useEffect(() => console.log(props), [props]);
+  /* useEffect(() => console.log(props), [props]); */
 
   useEffect(() => {
     if (isURL(url)) {
@@ -197,7 +197,6 @@ const Main = props => {
               }]);
             }
           }}
-          /* default={activeOption ? 'что-то должно быть...' : ''} */
         >
           <option hidden>Choose Option</option>
           <option>No action</option>
@@ -214,8 +213,8 @@ const Main = props => {
           )}
         </Input>
       </FormGroup>
-      <FormGroup className="mt-3 w-100 d-flex flex-row align-center">
-        <div className="w-50 d-flex flex-row">
+      <FormGroup className="mt-3 w-100 d-flex flex-row align-items-center">
+        <div className="w-50 d-flex flex-row align-items-center">
           <Label for="customFile" className="mr-1 my-auto w-25">
             {t('OutputFolder')}:
           </Label>

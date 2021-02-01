@@ -10,11 +10,11 @@ const SemiHeader = () => {
       <div className="w-50">
         <img src={logo} alt="" className="" />
       </div>
-      <div className="d-flex w-25">
-        <h3 className="m-auto">
+      <div className="d-flex justify-content-end w-50">
+        <h3 className="ml-3">
           <Link to="/tools">{t('Tools')} </Link>
         </h3>
-        <h3 className="m-auto">
+        <h3 className="ml-3">
           <Link to="/about">{t('About')}</Link>
         </h3>
       </div>

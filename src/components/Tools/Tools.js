@@ -26,9 +26,8 @@ const Tools = props => {
       !JPEGArray.find(e => e === item.tool.id.name) ? JPEGArray.push(item.tool.id.name) : null;
     });
 
-  useEffect(() => console.log(props), [props]);
-  /* console.log(PDFArray);
-  console.log(JPEGArray); */
+  /* useEffect(() => console.log(props), [props]); */
+
   return (
     <Container>
       <div className="d-flex flex-column align-items-left">
