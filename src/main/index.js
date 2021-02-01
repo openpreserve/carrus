@@ -231,7 +231,6 @@ ipcMain.on('execute-file-action', (event, arg) => {
         .then(() => runScript(
           arg.tool,
           arg.filePath,
-
           arg.tool.toolID,
           arg.tool.toolName,
           arg.outputFolder,
