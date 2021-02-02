@@ -1,0 +1,11 @@
+{
+    "id": {
+      "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+      "name": "Validate",
+      "namespace": "https://openpreservation.org"
+    },
+    "familyType": {
+      "type": "Validate"
+    },
+    "label": "Validate"
+}
