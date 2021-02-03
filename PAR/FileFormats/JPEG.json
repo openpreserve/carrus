@@ -1,0 +1,20 @@
+{
+    "id": {
+        "guid": "2be6f5bd-6c1b-4e63-934d-f78ea4cfab4c",
+        "name": "JPEG",
+        "namespace": "https://openpreservation.org"
+    },
+    "aliases": [
+      "JPEG 2000", "JPEG-LS", "JPEG XR", "MotionJPEG"
+    ],
+    "name": "JPEG file format",
+    "lastUpdatedDate": "2021-01-04T13:45:30",
+    "identifiers": [{
+        "identifier": "image/jpg",
+        "identifierType": "MIME"
+      }, {
+        "identifier": "image/jpeg",
+        "identifierType": "MIME"
+      }
+    ]
+}

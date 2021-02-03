@@ -1,0 +1,17 @@
+{
+    "id": {
+        "guid": "78180ccc-4968-4e1b-9621-39cd83478114",
+        "name": "TIFF",
+        "namespace": "https://openpreservation.org"
+    },
+    "aliases": [
+      "tif", "tiff"
+    ],
+    "name": "Tagged Image File Format",
+    "lastUpdatedDate": "2021-02-02T16:21:00",
+    "identifiers": [{
+        "identifier": "image/tiff",
+        "identifierType": "MIME"
+      }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "description": "The XML-hul module recognizes and validates the XML (Extensible Markup Language) format.",
+    "example": "-m XML-hul ${inputfile}",
+    "id": {
+        "guid": "5b827f97-0fc5-4d75-9bb4-8b906483ef6d",
+        "name": "XML-hul",
+        "namespace": "http://jhove.openpreservation.org/modules/xml/"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+          "filepath": ""
+        },
+        "name": "inputfile.xml"
+      }
+    ],
+    "constraints": [{
+        "allowedFormats": [{
+            "id": {
+                "guid": "bd54596e-0ac9-4fc0-ac1e-62e03219382e",
+                "name": "XML",
+                "namespace": "https://openpreservation.org"
+            }
+          }
+        ]
+      }
+    ],
+    "inputToolArguments": [{
+        "description": "The XML-hul module.",
+        "type": "command line argument",
+        "value": "-m XML-hul"
+        }
+    ],
+    "outputFiles": [
+  
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+            "name": "JHOVE",
+            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

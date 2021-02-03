@@ -7,10 +7,19 @@
   "aliases": [
     "PDF (v1)"
   ],
-  "name": "PDF format",
-  "lastUpdatedDate": "2021-01-04T13:45:30",
+  "name": "Portable Document Format format",
+  "lastUpdatedDate": "2021-02-02T13:15:00",
   "identifiers": [{
       "identifier": "application/pdf",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/x-pdf",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/x-bzpdf",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/x-gzpdf",
       "identifierType": "MIME"
     }
   ]

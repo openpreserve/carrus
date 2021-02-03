@@ -1,0 +1,51 @@
+{
+    "description": "The GIF-hul module recognizes and validates the GIF (Tagged Interchange Format) format [GIF89a].",
+    "example": "-m gif-hul ${inputfile}",
+    "id": {
+        "guid": "e95c86dd-d563-498d-b119-c40a664dd346",
+        "name": "gif-hul",
+        "namespace": "http://jhove.openpreservation.org/modules/gif/"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+          "filepath": ""
+        },
+        "name": "inputfile.gif"
+      }
+    ],
+    "constraints": [{
+        "allowedFormats": [{
+            "id": {
+              "guid": "aaef002d-ab99-4b34-9d17-870d9fd87036",
+              "name": "GIF",
+              "namespace": "https://openpreservation.org"
+            }
+          }
+        ]
+      }
+    ],
+    "inputToolArguments": [{
+        "description": "The GIF-hul module recognizes and validates the following public profiles: GIF version 87a and 89a",
+        "type": "command line argument",
+        "value": "-m gif-hul"
+        }
+    ],
+    "outputFiles": [
+  
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+            "name": "JHOVE",
+            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

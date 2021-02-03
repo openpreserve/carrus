@@ -1,0 +1,51 @@
+{
+    "description": "The JPEG-hul module recognizes and validates the JPEG format.",
+    "example": "-m JPEG-hul ${inputfile}",
+    "id": {
+        "guid": "37b95610-3eca-49ab-9c33-8530a9607877",
+        "name": "JPEG-hul",
+        "namespace": "http://jhove.openpreservation.org/modules/jpeg/"
+      },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+          "filepath": ""
+        },
+        "name": "inputfile.$ext"
+      }
+    ],
+    "constraints": [{
+        "allowedFormats": [{
+            "id": {
+              "guid": "2be6f5bd-6c1b-4e63-934d-f78ea4cfab4c",
+              "name": "JPEG",
+              "namespace": "https://openpreservation.org"
+            }
+          }
+        ]
+      }
+    ],
+    "inputToolArguments": [{
+        "description": "The HTML-hul module.",
+        "type": "command line argument",
+        "value": "-m JPEG-hul"
+        }
+    ],
+    "outputFiles": [
+  
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+            "name": "JHOVE",
+            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

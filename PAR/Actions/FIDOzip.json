@@ -44,8 +44,8 @@
   "type": {
     "id": {
       "guid": "56c56576-8931-4d90-bf30-b21fc21001c0",
-      "name": "identify",
-      "namespace": "identify"
+      "name": "Identify",
+      "namespace": "https://openpreservation.org"
     }
   }
 }

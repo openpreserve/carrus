@@ -1,0 +1,41 @@
+{
+    "description": "The BYTESTREAM module recognizes and validates arbitrary bytestreams. This module exists merely to provide a default format during identification operations.",
+    "example": "-m bytestream ${inputfile}",
+    "id": {
+        "guid": "0ee1fb06-ee6c-45e3-97dd-ec27ae585083",
+        "name": "bytestream",
+        "namespace": "http://jhove.openpreservation.org/modules/bytestream/"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+          "filepath": ""
+        },
+        "name": "inputfile.$ext"
+      }
+    ],
+    "constraints": [],
+    "inputToolArguments": [{
+        "description": "ASCII-hul module",
+        "type": "command line argument",
+        "value": "-m bytestream"
+        }
+    ],
+    "outputFiles": [
+  
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+            "name": "JHOVE",
+            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "description": "The HTML-hul module recognizes and validates the HTML (Hypertext Markup Language) format.",
+    "example": "-m HTML-hul ${inputfile}",
+    "id": {
+        "guid": "6f1f77f3-230e-41f6-b644-e54909c07981",
+        "name": "HTML-hul",
+        "namespace": "http://jhove.openpreservation.org/modules/html/"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+          "filepath": ""
+        },
+        "name": "inputfile.$ext"
+      }
+    ],
+    "constraints": [{
+        "allowedFormats": [{
+            "id": {
+              "guid": "8251c857-bb3a-474b-82d9-7292f3ce8258",
+              "name": "HTML",
+              "namespace": "https://openpreservation.org"
+            }
+          }
+        ]
+      }
+    ],
+    "inputToolArguments": [{
+        "description": "The HTML-hul module.",
+        "type": "command line argument",
+        "value": "-m HTML-hul"
+        }
+    ],
+    "outputFiles": [
+  
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+            "name": "JHOVE",
+            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

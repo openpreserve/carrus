@@ -1,0 +1,51 @@
+{
+    "description": "The TIFF-hul module recognizes and validates the TIFF (Tagged Image File Format) format [TIFF 6.0]",
+    "example": "-m TIFF-hul ${inputfile}",
+    "id": {
+        "guid": "c9600d9e-c64f-4a15-bba6-d7ba952b7a07",
+        "name": "TIFF-hul",
+        "namespace": "http://jhove.openpreservation.org/modules/tiff/"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+          "filepath": ""
+        },
+        "name": "inputfile.$ext"
+      }
+    ],
+    "constraints": [{
+        "allowedFormats": [{
+            "id": {
+                "guid": "78180ccc-4968-4e1b-9621-39cd83478114",
+                "name": "TIFF",
+                "namespace": "https://openpreservation.org"
+            }
+          }
+        ]
+      }
+    ],
+    "inputToolArguments": [{
+        "description": "The TIFF-hul module.",
+        "type": "command line argument",
+        "value": "-m TIFF-hul"
+        }
+    ],
+    "outputFiles": [
+  
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+            "name": "JHOVE",
+            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

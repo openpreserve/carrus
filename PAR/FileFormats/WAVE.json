@@ -1,0 +1,17 @@
+{
+    "id": {
+        "guid": "7bf20208-2093-4328-9dc8-89e10e82f422",
+        "name": "WAVE",
+        "namespace": "https://openpreservation.org"
+    },
+    "aliases": [
+      "WAVE/WAV"
+    ],
+    "name": "Waveform Audio File Format",
+    "lastUpdatedDate": "2021-02-02T16:21:00",
+    "identifiers": [{
+        "identifier": "audio/vnd.wave",
+        "identifierType": "MIME"
+      }
+    ]
+}
