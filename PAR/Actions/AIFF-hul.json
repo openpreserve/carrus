@@ -28,8 +28,13 @@
     "inputToolArguments": [{
         "description": "AIFF-hul module",
         "type": "command line argument",
-        "value": "-m aiff-hul"
-        }
+        "value": "-m"
+        },
+        {
+          "description": "AIFF-hul module",
+          "type": "command line argument",
+          "value": "aiff-hul"
+          }
     ],
     "outputFiles": [
   

@@ -4,7 +4,7 @@
       "name": "JHOVE",
       "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
     },
-    "toolLabel": "fido/fido/fido.py",
+    "toolLabel": "jhove/jhove.bat",
     "toolName": "JHOVE",
     "toolOperatingEnvironments": [
       "windows command line",

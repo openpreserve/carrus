@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
 import { ipcRenderer, shell } from 'electron';
+import { connect } from 'react-redux';
 import * as os from 'os';
 import { Jumbotron, Container } from 'reactstrap';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import * as clipboard from 'clipboard-polyfill/text';
 import showItemInFolder from '../../utils/linuxShowItem';
+import {
+  setLoad,
+} from '../../Redux/redux-reducers';
 /* eslint-disable no-console */
-const Report = () => {
+const Report = (props) => {
   const [report, setReport] = useState('');
   const [path, setPath] = useState('');
   ipcRenderer.on('receiver', (event, arg) => {
     setReport(arg.report);
     setPath(arg.path);
   });
+
+  useEffect(() => console.log(props), [props]);
 
   return (
     <div>
@@ -43,4 +50,10 @@ const Report = () => {
   );
 };
 
-export default Report;
+const mapStateToProps = state => ({
+  load: state.load,
+});
+
+export default connect(mapStateToProps, {
+  setLoad,
+})(Report);

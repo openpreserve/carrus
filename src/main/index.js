@@ -4,11 +4,14 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable operator-assignment */
+/* eslint-disable prefer-template */
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
 import { PythonShell } from 'python-shell';
 import fs from 'fs';
+import os from 'os';
+import { spawn } from 'child_process';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
@@ -55,7 +58,7 @@ async function createMainWindow() {
   });
 
   window._id = 'main';
-
+  global.window = window;
   if (isDevelopment) {
     window.webContents.openDevTools();
   }
@@ -166,7 +169,72 @@ const getDateString = () => {
   return `${year}${month}${day}${hours}${mins}${sec}`;
 };
 
-const runScript = (tool, filePath, toolID, value, outFol, mimeType) => {
+const runJava = (tool, filePath, optionArr, outFol, event) => {
+  let reportDate = '';
+  const scriptPath = isDevelopment
+    ? path.join(__dirname, '..', '..', 'libs', tool.toolLabel)
+    : path.join(__dirname, '..', 'libs', tool.toolLabel);
+  if (tool.toolLabel.split('.')[0] === 'jhove/jhove') {
+    reportDate = spawn(scriptPath, [
+      ...optionArr,
+      filePath,
+    ]);
+  } else if (tool.toolLabel.split('.')[1] === 'py') {
+    const python = (os.platform() === 'linux') ? 'python3' : 'python';
+    reportDate = spawn(python, [
+      scriptPath,
+      ...optionArr,
+      filePath,
+    ]);
+  }
+  reportDate.stdout.on('data', (data) => {
+    const reportText = data.toString();
+    const dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
+    fs.writeFile(dest, reportText, error => {
+      if (error) throw error;
+      const win = new BrowserWindow({
+        minWidth: 1037,
+        minHeight: 700,
+        title: 'JHove 2020',
+        frame: false,
+        titleBarStyle: 'hidden',
+        webPreferences: {
+          nodeIntegration: true,
+          enableRemoteModule: true,
+        },
+      });
+      win._id = 'report';
+
+      win.webContents.once('did-finish-load', async () => {
+        const translate = await setTranslate(isDevelopment);
+        win.webContents.send('translate', translate);
+        win.webContents.send('receiver', { report: reportText, path: dest });
+        event.sender.send('receive-load', false);
+      });
+
+      if (isDevelopment) {
+        win.webContents.openDevTools();
+      }
+
+      if (isDevelopment) {
+        win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+      } else {
+        win.loadURL(
+          formatUrl({
+            pathname: path.join(__dirname, 'index.html'),
+            protocol: 'file',
+            slashes: true,
+          }),
+        );
+      }
+    });
+  });
+  reportDate.stderr.on('data', (data) => {
+    console.error(data.toString());
+  });
+};
+
+/* const runScript = (tool, filePath, toolID, value, outFol, mimeType) => {
   const options = {
     scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
     args: tool.toolLabel === 'fido/fido/fido.py' ? [value, filePath]
@@ -218,7 +286,7 @@ const runScript = (tool, filePath, toolID, value, outFol, mimeType) => {
       }
     });
   });
-};
+}; */
 
 ipcMain.on('execute-file-action', (event, arg) => {
   if (arg.fileOrigin === 'url') {
@@ -228,27 +296,13 @@ ipcMain.on('execute-file-action', (event, arg) => {
     arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
-        .then(() => runScript(
-          arg.tool,
-          arg.filePath,
-          arg.tool.toolID,
-          arg.tool.toolName,
-          arg.outputFolder,
-          arg.mimeType,
-        ))
+        .then(() => runJava(arg.tool, arg.filePath, arg.option.value, arg.outputFolder))
         .catch(err => console.log(err));
     } catch (err) {
       console.log(err);
     }
   } else {
     arg.filePath = arg.path;
-    runScript(
-      arg.tool,
-      arg.filePath,
-      arg.tool.toolID,
-      arg.tool.toolName,
-      arg.outputFolder,
-      arg.mimeType,
-    );
+    runJava(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event);
   }
 });

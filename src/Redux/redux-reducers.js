@@ -14,6 +14,7 @@ const initialState = {
   dirPath: '',
   fileName: '',
   mimeType: '',
+  load: false,
 };
 
 export const preproccessReducer = (state = initialState, action) => {
@@ -35,10 +36,7 @@ export const preproccessReducer = (state = initialState, action) => {
           ...e,
           active: false,
         })),
-        options: state.options.map(e => ({
-          ...e,
-          active: false,
-        })),
+        options: [],
       };
     }
     case actionTypes.SET_ACTION_TYPE: {
@@ -48,6 +46,11 @@ export const preproccessReducer = (state = initialState, action) => {
           ...e,
           active: e.id.name === action.payload,
         })),
+        tools: state.tools.map(e => ({
+          ...e,
+          active: false,
+        })),
+        options: [],
       };
     }
     case actionTypes.SET_OPTIONS: {
@@ -160,6 +163,13 @@ export const preproccessReducer = (state = initialState, action) => {
       };
     }
 
+    case actionTypes.SET_LOAD: {
+      return {
+        ...state,
+        load: action.payload,
+      };
+    }
+
     default: {
       return state;
     }
@@ -183,3 +193,4 @@ export const setFileInfo = (fileName, filePath, fileMimeType) => ({
 export const setMimeType = value => ({ type: actionTypes.SET_MIME_TYPE, payload: value });
 export const setParData = value => ({ type: actionTypes.SET_PAR_DATA, payload: value });
 export const setConfig = value => ({ type: actionTypes.SET_CONFIG, payload: value });
+export const setLoad = value => ({ type: actionTypes.SET_LOAD, payload: value });

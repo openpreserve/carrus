@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect } from 'react';
+/* eslint-disable no-unused-expressions */
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
@@ -21,6 +22,7 @@ import {
   setMimeType,
   setFileInfo,
   setActionType,
+  setLoad,
 } from '../../Redux/redux-reducers';
 import FolderInput from './FolderInput';
 
@@ -45,13 +47,17 @@ const Main = props => {
     fileName,
     fileFormats,
     config,
+    load,
   } = props;
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
+  const InputToolRef = useRef();
+  const InputOptionRef = useRef();
   const [error, setError] = useState('');
   const handleExecute = () => {
     setIsLoading(true);
+    props.setLoad(true);
     const dataToSend = {
       fileName,
       mimeType,
@@ -64,10 +70,11 @@ const Main = props => {
       option: activeOption,
     };
     ipcRenderer.send('execute-file-action', dataToSend);
-    setIsLoading(false);
   };
-
-  /* useEffect(() => console.log(props), [props]); */
+  ipcRenderer.on('receive-load', (event, value) => {
+    props.setLoad(value);
+  });
+  useEffect(() => console.log(props), [props]);
 
   useEffect(() => {
     if (isURL(url)) {
@@ -96,7 +103,7 @@ const Main = props => {
     return result;
   }
 
-  return !isLoading ? (
+  return !load ? (
     <div className="container d-flex flex-column">
       <SemiHeader />
       <Nav tabs className="mt-5">
@@ -131,7 +138,11 @@ const Main = props => {
         </Label>
         <Input
           type="select"
-          onChange={e => props.setActionType(e.target.value)}
+          onChange={e => {
+            props.setActionType(e.target.value);
+            InputToolRef.current ? InputToolRef.current.target.value = '' : null;
+            InputOptionRef.current ? InputOptionRef.current.target.value = '' : null;
+          }}
           defaultValue={activeActionTypes ? activeActionTypes.id.name : ''}
         >
           {mimeType.length ? (
@@ -161,9 +172,12 @@ const Main = props => {
           <span>{t('Tool')}: </span>
         </Label>
         <Input
+          /* ref={InputToolRef} */
           type="select"
           onChange={e => {
             props.setTool(e.target.value);
+            InputToolRef.current = e;
+            InputOptionRef.current ? InputOptionRef.current.target.value = '' : null;
           }}
           defaultValue={activeTool ? activeTool.id.name : ''}
         >
@@ -186,13 +200,14 @@ const Main = props => {
           defaultValue={activeOption ? activeOption.name : ''}
           onChange={e => {
             if (e.target.value === 'No action') {
+              InputOptionRef.current = e;
               props.setOptions([{
-                value: null,
+                value: [],
               }]);
             } else {
               props.setOptions([{
                 value: acceptedActions
-                  .find(action => action.id.name === e.target.value).inputToolArguments[0].value,
+                  .find(action => action.id.name === e.target.value).inputToolArguments.map(i => i.value),
                 name: e.target.value,
               }]);
             }
@@ -261,6 +276,7 @@ const mapStateToProps = state => ({
   options: state.options,
   activeOption: state.options[0],
   config: state.config,
+  load: state.load,
 });
 
 export default connect(mapStateToProps, {
@@ -271,4 +287,5 @@ export default connect(mapStateToProps, {
   setMimeType,
   setFileInfo,
   setActionType,
+  setLoad,
 })(Main);

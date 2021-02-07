@@ -5218,10 +5218,6 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-"fido@git://github.com/openpreserve/fido.git":
-  version "0.0.0"
-  resolved "git://github.com/openpreserve/fido.git#093cf9c8c968c710d3d6dfbbcc6e067cd9e27ef3"
-
 figures@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"
@@ -6943,6 +6939,10 @@ jake@^10.6.1:
     chalk "^2.4.2"
     filelist "^1.0.1"
     minimatch "^3.0.4"
+
+"jhove@git+https://github.com/openpreserve/jhove.git":
+  version "0.0.0"
+  resolved "git+https://github.com/openpreserve/jhove.git#47f077fcb09d3dd5720aeeb4abf27de5dac48d19"
 
 jquery@^3.5.1:
   version "3.5.1"
