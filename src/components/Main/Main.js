@@ -197,7 +197,7 @@ const Main = props => {
           type="select"
           defaultValue={activeOption ? activeOption.name : ''}
           onChange={e => {
-            if (e.target.value === 'No action') {
+            if (e.target.value === 'default') {
               InputOptionRef.current = e;
               props.setOptions([{
                 value: [],
@@ -212,7 +212,7 @@ const Main = props => {
           }}
         >
           <option hidden>Choose Option</option>
-          <option>No action</option>
+          <option>default</option>
           {activeTool ? (
             activeTool.toolAcceptedParameters
               .filter(param => acceptedActions.find(action => action.id.guid === param.id.guid))
