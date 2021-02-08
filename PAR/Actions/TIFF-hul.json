@@ -9,11 +9,10 @@
     "inputFiles": [{
         "description": "File that will be acted upon",
         "file": {
-          "filepath": ""
+            "filepath": ""
         },
         "name": "inputfile.$ext"
-      }
-    ],
+    }],
     "constraints": [{
         "allowedFormats": [{
             "id": {
@@ -21,18 +20,21 @@
                 "name": "TIFF",
                 "namespace": "https://openpreservation.org"
             }
-          }
-        ]
-      }
-    ],
+        }]
+    }],
     "inputToolArguments": [{
-        "description": "The TIFF-hul module.",
-        "type": "command line argument",
-        "value": "-m TIFF-hul"
+            "description": "The TIFF-hul module.",
+            "type": "command line argument",
+            "value": "-m"
+        },
+        {
+            "description": "The TIFF-hul module.",
+            "type": "command line argument",
+            "value": "TIFF-hul"
         }
     ],
     "outputFiles": [
-  
+
     ],
     "tool": {
         "id": {

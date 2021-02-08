@@ -1,51 +1,53 @@
 {
-    "description": "The JPEG2000-hul module recognizes and validates the JPEG 2000 (ISO/IEC 15444) format, a digital representation format for lossy or losslessly-compressed bi-tonal, grayscale, palette color, and continuous color still image data.",
-    "example": "-m JPEG2000-hul ${inputfile}",
-    "id": {
-        "guid": "1a8bcb3c-fe46-4a88-b5f5-5808f3ced1a4",
-        "name": "JPEG2000-hul",
-        "namespace": "http://jhove.openpreservation.org/modules/jpeg2000/"
+  "description": "The JPEG2000-hul module recognizes and validates the JPEG 2000 (ISO/IEC 15444) format, a digital representation format for lossy or losslessly-compressed bi-tonal, grayscale, palette color, and continuous color still image data.",
+  "example": "-m JPEG2000-hul ${inputfile}",
+  "id": {
+    "guid": "1a8bcb3c-fe46-4a88-b5f5-5808f3ced1a4",
+    "name": "JPEG2000-hul",
+    "namespace": "http://jhove.openpreservation.org/modules/jpeg2000/"
+  },
+  "inputFiles": [{
+    "description": "File that will be acted upon",
+    "file": {
+      "filepath": ""
     },
-    "inputFiles": [{
-        "description": "File that will be acted upon",
-        "file": {
-          "filepath": ""
-        },
-        "name": "inputfile.$ext"
+    "name": "inputfile.$ext"
+  }],
+  "constraints": [{
+    "allowedFormats": [{
+      "id": {
+        "guid": "dbf62923-44f3-4ab1-b2ff-c2729bda030b",
+        "name": "JPEG2000",
+        "namespace": "https://openpreservation.org"
       }
-    ],
-    "constraints": [{
-        "allowedFormats": [{
-            "id": {
-              "guid": "dbf62923-44f3-4ab1-b2ff-c2729bda030b",
-              "name": "JPEG2000",
-              "namespace": "https://openpreservation.org"
-            }
-          }
-        ]
-      }
-    ],
-    "inputToolArguments": [{
-        "description": "The JPEG2000-hul module.",
-        "type": "command line argument",
-        "value": "-m JPEG2000-hul"
-        }
-    ],
-    "outputFiles": [
-  
-    ],
-    "tool": {
-        "id": {
-            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
-            "name": "JHOVE",
-            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
-        }
+    }]
+  }],
+  "inputToolArguments": [{
+      "description": "The JPEG2000-hul module.",
+      "type": "command line argument",
+      "value": "-m"
     },
-    "type": {
-        "id": {
-            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
-            "name": "Validate",
-            "namespace": "https://openpreservation.org"
-        }
+    {
+      "description": "The JPEG2000-hul module.",
+      "type": "command line argument",
+      "value": "JPEG2000-hul"
     }
+  ],
+  "outputFiles": [
+
+  ],
+  "tool": {
+    "id": {
+      "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+      "name": "JHOVE",
+      "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+    }
+  },
+  "type": {
+    "id": {
+      "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+      "name": "Validate",
+      "namespace": "https://openpreservation.org"
+    }
+  }
 }

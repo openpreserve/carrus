@@ -9,20 +9,24 @@
     "inputFiles": [{
         "description": "File that will be acted upon",
         "file": {
-          "filepath": ""
+            "filepath": ""
         },
         "name": "inputfile.$ext"
-      }
-    ],
+    }],
     "constraints": [],
     "inputToolArguments": [{
-        "description": "The UTF8-hul module.",
-        "type": "command line argument",
-        "value": "-m UTF8-hul"
+            "description": "The UTF8-hul module.",
+            "type": "command line argument",
+            "value": "-m"
+        },
+        {
+            "description": "The UTF8-hul module.",
+            "type": "command line argument",
+            "value": "UTF8-hul"
         }
     ],
     "outputFiles": [
-  
+
     ],
     "tool": {
         "id": {

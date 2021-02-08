@@ -9,20 +9,24 @@
     "inputFiles": [{
         "description": "File that will be acted upon",
         "file": {
-          "filepath": ""
+            "filepath": ""
         },
         "name": "inputfile.$ext"
-      }
-    ],
+    }],
     "constraints": [],
     "inputToolArguments": [{
-        "description": "ASCII-hul module",
-        "type": "command line argument",
-        "value": "-m bytestream"
+            "description": "ASCII-hul module",
+            "type": "command line argument",
+            "value": "-m"
+        },
+        {
+            "description": "ASCII-hul module",
+            "type": "command line argument",
+            "value": "bytestream"
         }
     ],
     "outputFiles": [
-  
+
     ],
     "tool": {
         "id": {

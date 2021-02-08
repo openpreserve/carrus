@@ -5,24 +5,28 @@
         "guid": "7d71d2bd-0df1-4e64-b620-3ee8ce14ab67",
         "name": "ascii-hul",
         "namespace": "http://jhove.openpreservation.org/modules/ascii/"
-      },
+    },
     "inputFiles": [{
         "description": "File that will be acted upon",
         "file": {
-          "filepath": ""
+            "filepath": ""
         },
         "name": "inputfile.$ext"
-      }
-    ],
+    }],
     "constraints": [],
     "inputToolArguments": [{
-        "description": "ASCII-hul module",
-        "type": "command line argument",
-        "value": "-m ascii-hul"
+            "description": "ASCII-hul module",
+            "type": "command line argument",
+            "value": "-m"
+        },
+        {
+            "description": "ASCII-hul module",
+            "type": "command line argument",
+            "value": "ascii-hul"
         }
     ],
     "outputFiles": [
-  
+
     ],
     "tool": {
         "id": {

@@ -1,51 +1,53 @@
 {
-    "description": "The WAVE-hul module recognizes and validates the Audio for Windows format (WAVE) [WAVE, WAVEFORMAT]. WAVE is a variant of the Microsoft RIFF format [RIFF], which is itself an implementation of the Electronic Arts IFF 85 format [IFF].",
-    "example": "-m UWAVE-hul ${inputfile}",
-    "id": {
-        "guid": "61419e36-c5e4-44ef-9c4b-e619cf10cf04",
-        "name": "WAVE-hul",
-        "namespace": "http://jhove.openpreservation.org/modules/wave/"
-      },
-    "inputFiles": [{
-        "description": "File that will be acted upon",
-        "file": {
-          "filepath": ""
-        },
-        "name": "inputfile.wav"
-      }
-    ],
-    "constraints": [{
-        "allowedFormats": [{
-            "id": {
-                "guid": "7bf20208-2093-4328-9dc8-89e10e82f422",
-                "name": "WAVE",
-                "namespace": "https://openpreservation.org"
-            }
-          }
-        ]
-      }
-    ],
-    "inputToolArguments": [{
-        "description": "The WAVE-hul module.",
-        "type": "command line argument",
-        "value": "-m WAVE-hul"
-        }
-    ],
-    "outputFiles": [
-  
-    ],
-    "tool": {
-        "id": {
-            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
-            "name": "JHOVE",
-            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
-        }
+  "description": "The WAVE-hul module recognizes and validates the Audio for Windows format (WAVE) [WAVE, WAVEFORMAT]. WAVE is a variant of the Microsoft RIFF format [RIFF], which is itself an implementation of the Electronic Arts IFF 85 format [IFF].",
+  "example": "-m UWAVE-hul ${inputfile}",
+  "id": {
+    "guid": "61419e36-c5e4-44ef-9c4b-e619cf10cf04",
+    "name": "WAVE-hul",
+    "namespace": "http://jhove.openpreservation.org/modules/wave/"
+  },
+  "inputFiles": [{
+    "description": "File that will be acted upon",
+    "file": {
+      "filepath": ""
     },
-    "type": {
-        "id": {
-            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
-            "name": "Validate",
-            "namespace": "https://openpreservation.org"
-        }
+    "name": "inputfile.wav"
+  }],
+  "constraints": [{
+    "allowedFormats": [{
+      "id": {
+        "guid": "7bf20208-2093-4328-9dc8-89e10e82f422",
+        "name": "WAVE",
+        "namespace": "https://openpreservation.org"
+      }
+    }]
+  }],
+  "inputToolArguments": [{
+      "description": "The WAVE-hul module.",
+      "type": "command line argument",
+      "value": "-m"
+    },
+    {
+      "description": "The WAVE-hul module.",
+      "type": "command line argument",
+      "value": "WAVE-hul"
     }
+  ],
+  "outputFiles": [
+
+  ],
+  "tool": {
+    "id": {
+      "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+      "name": "JHOVE",
+      "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+    }
+  },
+  "type": {
+    "id": {
+      "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+      "name": "Validate",
+      "namespace": "https://openpreservation.org"
+    }
+  }
 }

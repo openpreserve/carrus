@@ -1,56 +1,53 @@
 {
-    "description": "The AIFF-hul module recognizes and validates the Audio Interchange File Format (AIFF) [AIFF].",
-    "example": "-m aiff-hul ${inputfile}",
-    "id": {
-        "guid": "8d2e8a88-4695-4eb7-b559-9b74833f2cdc",
-        "name": "aiff-hul",
-        "namespace": "http://jhove.openpreservation.org/modules/aiff/"
+  "description": "The AIFF-hul module recognizes and validates the Audio Interchange File Format (AIFF) [AIFF].",
+  "example": "-m aiff-hul ${inputfile}",
+  "id": {
+    "guid": "8d2e8a88-4695-4eb7-b559-9b74833f2cdc",
+    "name": "aiff-hul",
+    "namespace": "http://jhove.openpreservation.org/modules/aiff/"
+  },
+  "inputFiles": [{
+    "description": "File that will be acted upon",
+    "file": {
+      "filepath": ""
     },
-    "inputFiles": [{
-        "description": "File that will be acted upon",
-        "file": {
-          "filepath": ""
-        },
-        "name": "inputfile.$ext"
+    "name": "inputfile.$ext"
+  }],
+  "constraints": [{
+    "allowedFormats": [{
+      "id": {
+        "guid": "e541afb3-8e44-46fa-aa9e-f5b41d479f1b",
+        "name": "AIFF",
+        "namespace": "https://openpreservation.org"
       }
-    ],
-    "constraints": [{
-        "allowedFormats": [{
-            "id": {
-              "guid": "e541afb3-8e44-46fa-aa9e-f5b41d479f1b",
-              "name": "AIFF",
-              "namespace": "https://openpreservation.org"
-            }
-          }
-        ]
-      }
-    ],
-    "inputToolArguments": [{
-        "description": "AIFF-hul module",
-        "type": "command line argument",
-        "value": "-m"
-        },
-        {
-          "description": "AIFF-hul module",
-          "type": "command line argument",
-          "value": "aiff-hul"
-          }
-    ],
-    "outputFiles": [
-  
-    ],
-    "tool": {
-        "id": {
-            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
-            "name": "JHOVE",
-            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
-        }
+    }]
+  }],
+  "inputToolArguments": [{
+      "description": "AIFF-hul module",
+      "type": "command line argument",
+      "value": "-m"
     },
-    "type": {
-        "id": {
-            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
-            "name": "Validate",
-            "namespace": "https://openpreservation.org"
-        }
+    {
+      "description": "AIFF-hul module",
+      "type": "command line argument",
+      "value": "aiff-hul"
     }
+  ],
+  "outputFiles": [
+
+  ],
+  "tool": {
+    "id": {
+      "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+      "name": "JHOVE",
+      "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+    }
+  },
+  "type": {
+    "id": {
+      "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+      "name": "Validate",
+      "namespace": "https://openpreservation.org"
+    }
+  }
 }

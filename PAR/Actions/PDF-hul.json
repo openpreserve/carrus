@@ -9,11 +9,10 @@
     "inputFiles": [{
         "description": "File that will be acted upon",
         "file": {
-          "filepath": ""
+            "filepath": ""
         },
         "name": "inputfile.pdf"
-      }
-    ],
+    }],
     "constraints": [{
         "allowedFormats": [{
             "id": {
@@ -21,18 +20,21 @@
                 "name": "pdf",
                 "namespace": "https://openpreservation.org"
             }
-          }
-        ]
-      }
-    ],
+        }]
+    }],
     "inputToolArguments": [{
-        "description": "The PDF-hul module.",
-        "type": "command line argument",
-        "value": "-m PDF-hul"
+            "description": "The PDF-hul module.",
+            "type": "command line argument",
+            "value": "-m"
+        },
+        {
+            "description": "The PDF-hul module.",
+            "type": "command line argument",
+            "value": "PDF-hul"
         }
     ],
     "outputFiles": [
-  
+
     ],
     "tool": {
         "id": {
