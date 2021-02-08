@@ -51,12 +51,10 @@ const Main = props => {
   } = props;
   const { t } = useTranslation();
 
-  const [isLoading, setIsLoading] = useState(false);
   const InputToolRef = useRef();
   const InputOptionRef = useRef();
   const [error, setError] = useState('');
   const handleExecute = () => {
-    setIsLoading(true);
     props.setLoad(true);
     const dataToSend = {
       fileName,
@@ -70,11 +68,11 @@ const Main = props => {
       option: activeOption,
     };
     ipcRenderer.send('execute-file-action', dataToSend);
+    ipcRenderer.on('receive-load', (event, value) => {
+      props.setLoad(value);
+    });
   };
-  ipcRenderer.on('receive-load', (event, value) => {
-    props.setLoad(value);
-  });
-  useEffect(() => console.log(props), [props]);
+  /* useEffect(() => console.log(props), [props]); */
 
   useEffect(() => {
     if (isURL(url)) {

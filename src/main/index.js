@@ -8,7 +8,6 @@
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
-import { PythonShell } from 'python-shell';
 import fs from 'fs';
 import os from 'os';
 import { spawn } from 'child_process';
@@ -191,7 +190,10 @@ const runJava = (tool, filePath, optionArr, outFol, event) => {
     const reportText = data.toString();
     const dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
     fs.writeFile(dest, reportText, error => {
-      if (error) throw error;
+      if (error) {
+        event.sender.send('receive-load', false);
+        throw error;
+      }
       const win = new BrowserWindow({
         minWidth: 1037,
         minHeight: 700,
@@ -231,62 +233,9 @@ const runJava = (tool, filePath, optionArr, outFol, event) => {
   });
   reportDate.stderr.on('data', (data) => {
     console.error(data.toString());
+    event.sender.send('receive-load', false);
   });
 };
-
-/* const runScript = (tool, filePath, toolID, value, outFol, mimeType) => {
-  const options = {
-    scriptPath: isDevelopment ? './libs/' : path.join(__dirname, '..', 'libs'),
-    args: tool.toolLabel === 'fido/fido/fido.py' ? [value, filePath]
-      : [filePath, toolID, value, mimeType],
-    pythonPath,
-  };
-  PythonShell.run(tool.toolLabel, options, (err, data) => {
-    if (err) {
-      console.log(err);
-      throw err;
-    }
-    const reportText = data.join('\n');
-    const dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
-    fs.writeFile(dest, reportText, error => {
-      if (error) throw error;
-      const win = new BrowserWindow({
-        minWidth: 1037,
-        minHeight: 700,
-        title: 'JHove 2020',
-        frame: false,
-        titleBarStyle: 'hidden',
-        webPreferences: {
-          nodeIntegration: true,
-          enableRemoteModule: true,
-        },
-      });
-      win._id = 'report';
-
-      win.webContents.once('did-finish-load', async () => {
-        const translate = await setTranslate(isDevelopment);
-        win.webContents.send('translate', translate);
-        win.webContents.send('receiver', { report: reportText, path: dest });
-      });
-
-      if (isDevelopment) {
-        win.webContents.openDevTools();
-      }
-
-      if (isDevelopment) {
-        win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
-      } else {
-        win.loadURL(
-          formatUrl({
-            pathname: path.join(__dirname, 'index.html'),
-            protocol: 'file',
-            slashes: true,
-          }),
-        );
-      }
-    });
-  });
-}; */
 
 ipcMain.on('execute-file-action', (event, arg) => {
   if (arg.fileOrigin === 'url') {
@@ -296,10 +245,11 @@ ipcMain.on('execute-file-action', (event, arg) => {
     arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
-        .then(() => runJava(arg.tool, arg.filePath, arg.option.value, arg.outputFolder))
+        .then(() => runJava(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event))
         .catch(err => console.log(err));
     } catch (err) {
       console.log(err);
+      event.sender.send('receive-load', false);
     }
   } else {
     arg.filePath = arg.path;
