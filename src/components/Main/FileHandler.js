@@ -1,9 +1,10 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Dropzone from 'react-dropzone';
 import { Jumbotron, Container } from 'reactstrap';
-import FileType from 'file-type';
+import mime from 'mime-types';
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import { green } from '@material-ui/core/colors';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
@@ -21,16 +22,14 @@ const FileHandler = props => {
     <div className="mt-3">
       <Dropzone
         onDrop={e => {
-          FileType.fromFile(e[0].path).then(MT => {
-            try {
-              if (MT) props.setFileInfo(e[0].name, e[0].path, MT.mime);
-              else throw new Error(t('fileTypesUnavailable'));
-              setError('');
-            } catch (err) {
-              props.setFileInfo('', '', '');
-              setError(err.message);
-            }
-          });
+          try {
+            const MT = mime.lookup(e[0].path);
+            if (MT) props.setFileInfo(e[0].name, e[0].path, MT);
+            else throw new Error('file type is unavailable');
+          } catch (err) {
+            props.setFileInfo('', '', '');
+            setError(err.message);
+          }
         }}
       >
         {({ getRootProps, getInputProps }) => (

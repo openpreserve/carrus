@@ -10,6 +10,7 @@ import * as path from 'path';
 import { format as formatUrl } from 'url';
 import fs from 'fs';
 import os from 'os';
+import mime from 'mime-types';
 import { spawn } from 'child_process';
 import setConfig from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
@@ -17,9 +18,9 @@ import setPAR from '../utils/setPAR';
 
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 
-const FileType = require('file-type');
+/* const FileType = require('file-type'); */
 const request = require('request');
-const fetch = require('node-fetch');
+/* const fetch = require('node-fetch'); */
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -148,8 +149,7 @@ const download = (url, dest) => new Promise((resolve, reject) => {
 });
 
 ipcMain.on('check-mime-type', async (event, arg) => {
-  const fStream = await fetch(arg);
-  const type = await FileType.fromStream(fStream.body);
+  const type = mime.lookup(arg);
   event.sender.send('receive-mime-type', type);
 });
 

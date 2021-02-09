@@ -78,10 +78,10 @@ const Main = props => {
     if (isURL(url)) {
       ipcRenderer.send('check-mime-type', url);
       ipcRenderer.on('receive-mime-type', (event, arg) => {
-        if (arg !== null) props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', arg.mime);
+        if (arg !== null) props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', arg);
         else {
           props.setFileInfo('', '', '');
-          setError(t('fileTypesUnavailable'));
+          setError('file type is unavailable');
         }
       });
     } else if (url.length !== 0) {
