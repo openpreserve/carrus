@@ -215,7 +215,8 @@ const Main = props => {
           <option>default</option>
           {activeTool ? (
             activeTool.toolAcceptedParameters
-              .filter(param => acceptedActions.find(action => action.id.guid === param.id.guid))
+              .filter(param => acceptedActions
+                .find(a => ((a.id.guid === param.id.guid) && (a.type.id.name === activeActionTypes.id.name))))
               .map(activeToolOption => (
                 <option key={activeToolOption.id.guid}>{activeToolOption.id.name}</option>
               ))
