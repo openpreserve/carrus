@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +24,7 @@ const FileHandler = props => {
     <div className="mt-3">
       <Dropzone
         onDrop={e => {
+          props.InputActionTypeRef.current ? props.InputActionTypeRef.current.target.value = '' : null;
           try {
             const MT = mime.lookup(e[0].path);
             if (MT) props.setFileInfo(e[0].name, e[0].path, MT);

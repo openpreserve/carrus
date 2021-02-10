@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -50,7 +51,7 @@ const Main = props => {
     load,
   } = props;
   const { t } = useTranslation();
-
+  const InputActionTypeRef = useRef();
   const InputToolRef = useRef();
   const InputOptionRef = useRef();
   const [error, setError] = useState('');
@@ -124,7 +125,7 @@ const Main = props => {
       </Nav>
       <TabContent activeTab={fileOrigin}>
         <TabPane tabId="file">
-          <FileHandler />
+          <FileHandler InputActionTypeRef={InputActionTypeRef} />
         </TabPane>
         <TabPane tabId="url">
           <UrlHandler isValid={!error.length} isEmpty={!url.length} feedback={error} />
@@ -138,6 +139,7 @@ const Main = props => {
           type="select"
           onChange={e => {
             props.setActionType(e.target.value);
+            InputActionTypeRef.current = e;
             InputToolRef.current ? InputToolRef.current.target.value = '' : null;
             InputOptionRef.current ? InputOptionRef.current.target.value = '' : null;
           }}
