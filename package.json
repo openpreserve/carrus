@@ -57,7 +57,9 @@
     "dist:mac": "yarn dist --mac",
     "fido": "yarn clone && yarn patch",
     "clone": "git clone https://github.com/openpreserve/fido.git ./libs/fido",
-    "patch": "cd ./libs/fido && git am ../../patches/0001-change-relative-imports.patch && rm -rf .git"
+    "patch": "cd ./libs/fido && git am ../../patches/0001-change-relative-imports.patch && rm -rf .git",
+    "jhove": "cd ./libs && java -jar jhove-latest.jar auto-install.xml",
+    "jhove-download": "cd ./libs && wget http://software.openpreservation.org/rel/jhove-latest.jar"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",

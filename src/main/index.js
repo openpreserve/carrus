@@ -168,7 +168,7 @@ const getDateString = () => {
   return `${year}${month}${day}${hours}${mins}${sec}`;
 };
 
-const runJava = (tool, filePath, optionArr, outFol, event) => {
+const runScript = (tool, filePath, optionArr, outFol, event) => {
   let reportDate = '';
   const scriptPath = isDevelopment
     ? path.join(__dirname, '..', '..', 'libs', tool.toolLabel)
@@ -245,7 +245,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
     arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
-        .then(() => runJava(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event))
+        .then(() => runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event))
         .catch(err => console.log(err));
     } catch (err) {
       console.log(err);
@@ -253,6 +253,6 @@ ipcMain.on('execute-file-action', (event, arg) => {
     }
   } else {
     arg.filePath = arg.path;
-    runJava(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event);
+    runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event);
   }
 });
