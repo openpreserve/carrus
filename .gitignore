@@ -7,6 +7,7 @@
 node_modules/
 libs/fido/
 libs/jhove/
+libs/jhove-latest.jar
 dist/
 src/DownloadedFiles/
 
