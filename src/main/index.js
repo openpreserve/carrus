@@ -170,6 +170,8 @@ const getDateString = () => {
 
 const runScript = (tool, filePath, optionArr, outFol, event) => {
   let reportDate = '';
+  let reportText = '';
+  let dest = '';
   const scriptPath = isDevelopment
     ? path.join(__dirname, '..', '..', 'libs', tool.toolLabel)
     : path.join(__dirname, '..', 'libs', tool.toolLabel);
@@ -187,8 +189,14 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
     ]);
   }
   reportDate.stdout.on('data', (data) => {
-    const reportText = data.toString();
-    const dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
+    reportText += data.toString();
+    dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
+  });
+  reportDate.stderr.on('data', (data) => {
+    console.error(data.toString());
+    event.sender.send('receive-load', false);
+  });
+  reportDate.stdout.on('end', (data) => {
     fs.writeFile(dest, reportText, error => {
       if (error) {
         event.sender.send('receive-load', false);
