@@ -17,7 +17,7 @@
   "constraints": [],
   "inputToolArguments": [{
       "description": "un (more) quietly",
-      "type": "command line argument",
+      "type": "command_line",
       "value": "-q"
     }
   ],

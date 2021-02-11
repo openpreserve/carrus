@@ -24,12 +24,12 @@
   }],
   "inputToolArguments": [{
       "description": "The HTML-hul module.",
-      "type": "command line argument",
+      "type": "command_line",
       "value": "-m"
     },
     {
       "description": "The HTML-hul module.",
-      "type": "command line argument",
+      "type": "command_line",
       "value": "HTML-hul"
     }
   ],

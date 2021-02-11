@@ -27,7 +27,7 @@
   ],
   "inputToolArguments": [{
       "description": "recurse into zip and tar files",
-      "type": "command line argument",
+      "type": "command_line",
       "value": "-zip"
     }
   ],

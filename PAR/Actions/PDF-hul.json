@@ -24,12 +24,12 @@
     }],
     "inputToolArguments": [{
             "description": "The PDF-hul module.",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "-m"
         },
         {
             "description": "The PDF-hul module.",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "PDF-hul"
         }
     ],

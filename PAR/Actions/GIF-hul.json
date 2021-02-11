@@ -24,12 +24,12 @@
   }],
   "inputToolArguments": [{
       "description": "The GIF-hul module recognizes and validates the following public profiles: GIF version 87a and 89a",
-      "type": "command line argument",
+      "type": "command_line",
       "value": "-m"
     },
     {
       "description": "The GIF-hul module recognizes and validates the following public profiles: GIF version 87a and 89a",
-      "type": "command line argument",
+      "type": "command_line",
       "value": "gif-hul"
     }
   ],

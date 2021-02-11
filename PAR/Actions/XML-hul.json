@@ -24,12 +24,12 @@
     }],
     "inputToolArguments": [{
             "description": "The XML-hul module.",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "-m"
         },
         {
             "description": "The XML-hul module.",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "XML-hul"
         }
     ],

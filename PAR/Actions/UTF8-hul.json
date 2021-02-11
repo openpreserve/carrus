@@ -16,12 +16,12 @@
     "constraints": [],
     "inputToolArguments": [{
             "description": "The UTF8-hul module.",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "-m"
         },
         {
             "description": "The UTF8-hul module.",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "UTF8-hul"
         }
     ],

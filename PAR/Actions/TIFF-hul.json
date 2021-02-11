@@ -24,12 +24,12 @@
     }],
     "inputToolArguments": [{
             "description": "The TIFF-hul module.",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "-m"
         },
         {
             "description": "The TIFF-hul module.",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "TIFF-hul"
         }
     ],

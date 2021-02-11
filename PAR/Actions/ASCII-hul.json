@@ -16,12 +16,12 @@
     "constraints": [],
     "inputToolArguments": [{
             "description": "ASCII-hul module",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "-m"
         },
         {
             "description": "ASCII-hul module",
-            "type": "command line argument",
+            "type": "command_line",
             "value": "ascii-hul"
         }
     ],

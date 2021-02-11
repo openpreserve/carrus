@@ -17,7 +17,7 @@
     "constraints": [],
     "inputToolArguments": [{
         "description": "Calculate CRC32, MD5, and SHA-1 checksums and Format identification based on internal signatures only",
-        "type": "command line argument",
+        "type": "command_line",
         "value": "-ks"
         }
     ],

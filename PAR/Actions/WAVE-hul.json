@@ -24,12 +24,12 @@
   }],
   "inputToolArguments": [{
       "description": "The WAVE-hul module.",
-      "type": "command line argument",
+      "type": "command_line",
       "value": "-m"
     },
     {
       "description": "The WAVE-hul module.",
-      "type": "command line argument",
+      "type": "command_line",
       "value": "WAVE-hul"
     }
   ],
