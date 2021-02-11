@@ -11,14 +11,7 @@
       "linux command line",
       "MacOS command line"
     ],
-    "toolAcceptedParameters": [{
-      "id": {
-        "guid": "8d2e8a88-4695-4eb7-b559-9b74833f2cd0",
-        "name": "Print text",
-        "namespace": "http://jhove.openpreservation.org/cat"
-      }
-    }
-    ],
+    "toolAcceptedParameters": [],
     "toolPublisher": "AT&T Bell Laboratories",
     "toolVersion": "1.0"
 }

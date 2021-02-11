@@ -11,26 +11,7 @@
     "linux command line",
     "MacOS command line"
   ],
-  "toolAcceptedParameters": [{
-      "id": {
-        "guid": "f626e141-4ff5-4b5c-bc9e-9487de81d972",
-        "name": "quiet",
-        "namespace": "https://openpreservation.org/products/fido/"
-      }
-    }, {
-      "id": {
-        "guid": "c6859ee7-f5bb-4618-8583-3a0f46eef962",
-        "name": "pronom only",
-        "namespace": "https://openpreservation.org/products/fido/"
-      }
-    }, {
-      "id": {
-        "guid": "b727bab0-c0cd-41a4-a2e0-5b6fdc021b80",
-        "name": "zip",
-        "namespace": "https://openpreservation.org/products/fido/"
-      }
-    }
-  ],
+  "toolAcceptedParameters": [],
   "toolPublisher": "Open Preservation Foundation",
   "toolVersion": "1.4.1"
 }
