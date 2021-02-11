@@ -175,7 +175,12 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
   const scriptPath = isDevelopment
     ? path.join(__dirname, '..', '..', 'libs', tool.toolLabel)
     : path.join(__dirname, '..', 'libs', tool.toolLabel);
-  if (tool.toolLabel.split('.')[0] === 'jhove/jhove') {
+  if (tool.toolLabel.split('.')[1] === 'bat') {
+    reportDate = spawn(scriptPath, [
+      ...optionArr,
+      filePath,
+    ]);
+  } else if (tool.toolLabel.split('.')[0] === 'jhove/jhove') {
     reportDate = spawn(scriptPath, [
       ...optionArr,
       filePath,

@@ -1,0 +1,24 @@
+{
+    "id": {
+      "guid": "cc198b57-7a14-469e-afbd-feb170e692e0",
+      "name": "cat",
+      "namespace": "https://openpreservation.org"
+    },
+    "toolLabel": "cat.bat",
+    "toolName": "cat",
+    "toolOperatingEnvironments": [
+      "windows command line",
+      "linux command line",
+      "MacOS command line"
+    ],
+    "toolAcceptedParameters": [{
+      "id": {
+        "guid": "8d2e8a88-4695-4eb7-b559-9b74833f2cd0",
+        "name": "Print text",
+        "namespace": "http://jhove.openpreservation.org/cat"
+      }
+    }
+    ],
+    "toolPublisher": "AT&T Bell Laboratories",
+    "toolVersion": "1.0"
+}
