@@ -131,11 +131,12 @@ const Main = props => {
           <UrlHandler isValid={!error.length} isEmpty={!url.length} feedback={error} />
         </TabPane>
       </TabContent>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
+      <FormGroup className="mt-3 w-100 d-flex flex-row">
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('ActionType')}:</span>
         </Label>
         <Input
+          className="w-50"
           type="select"
           onChange={e => {
             props.setActionType(e.target.value);
@@ -167,12 +168,12 @@ const Main = props => {
           )}
         </Input>
       </FormGroup>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
+      <FormGroup className="mt-3 w-100 d-flex flex-row">
         <Label for="tool" className="mr-1 my-auto w-25">
           <span>{t('Tool')}: </span>
         </Label>
         <Input
-          /* ref={InputToolRef} */
+          className="w-50"
           type="select"
           onChange={e => {
             props.setTool(e.target.value);
@@ -192,11 +193,12 @@ const Main = props => {
           )}
         </Input>
       </FormGroup>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
+      <FormGroup className="mt-3 w-100 d-flex flex-row">
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Action')}: </span>
         </Label>
         <Input
+          className="w-50"
           type="select"
           defaultValue={activeOption ? activeOption.name : ''}
           onChange={e => {
@@ -236,12 +238,10 @@ const Main = props => {
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-100 d-flex flex-row align-items-center">
-        <div className="w-50 d-flex flex-row align-items-center">
-          <Label for="customFile" className="mr-1 my-auto w-25">
-            {t('OutputFolder')}:
-          </Label>
-          <Input className="dir_path" readOnly placeholder={dirPath} />
-        </div>
+        <Label for="customFile" className="mr-1 my-auto w-25">
+          {t('OutputFolder')}:
+        </Label>
+        <Input className="dir_path w-50" readOnly placeholder={dirPath} />
         <FolderInput />
       </FormGroup>
       <Button

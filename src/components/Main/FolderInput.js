@@ -12,7 +12,7 @@ const FolderInput = props => {
   }
 
   return (
-    <div className="w-50 d-flex flex-row">
+    <div className="w-25 d-flex flex-row">
       <label className="custom-file-upload ml-3">
         <input
           className="ml-3"
