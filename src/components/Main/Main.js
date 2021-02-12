@@ -186,6 +186,7 @@ const Main = props => {
             checkScriptAvailability(activeActionTypes, tools, acceptedActions, config.isDevelopment)
           ) : (
             <>
+              <option hidden>Choose Tool</option>
               <option disabled>No actions are chosen</option>
             </>
           )}
@@ -199,22 +200,15 @@ const Main = props => {
           type="select"
           defaultValue={activeOption ? activeOption.name : ''}
           onChange={e => {
-            if (e.target.value === 'default') {
-              InputOptionRef.current = e;
-              props.setOptions([{
-                value: [],
-              }]);
-            } else {
-              props.setOptions([{
-                value: acceptedActions
-                  .find(action => action.id.name === e.target.value).inputToolArguments.map(i => i.value),
-                name: e.target.value,
-              }]);
-            }
+            InputOptionRef.current = e;
+            props.setOptions([{
+              value: acceptedActions
+                .find(action => action.id.name === e.target.value).inputToolArguments.map(i => i.value),
+              name: e.target.value,
+            }]);
           }}
         >
           <option hidden>Choose Option</option>
-          <option>default</option>
           {/* {activeTool ? (
             activeTool.toolAcceptedParameters
               .filter(param => acceptedActions
@@ -235,6 +229,7 @@ const Main = props => {
               ))
           ) : (
             <>
+              <option hidden>Choose Option</option>
               <option disabled>No Tools are chosen</option>
             </>
           )}
