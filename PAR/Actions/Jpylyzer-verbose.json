@@ -1,0 +1,49 @@
+{
+    "description": "Jpylyzer tells you if a JP2 image really conforms to the format’s specifications (validation). It also reports the image’s technical characteristics (feature extraction).",
+    "example": "-verbose ${inputfile}",
+    "id": {
+        "guid": "3bea0fb3-a9af-41f3-8feb-b2493284fada",
+        "name": "verbose",
+        "namespace": "https://jpylyzer.openpreservation.org/usage.html"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+            "filepath": ""
+        },
+        "name": "inputfile.$ext"
+    }],
+    "constraints": [{
+        "allowedFormats": [{
+            "id": {
+                "guid": "dbf62923-44f3-4ab1-b2ff-c2729bda030b",
+                "name": "JPEG2000",
+                "namespace": "https://openpreservation.org"
+            }
+        }]
+    }],
+    "inputToolArguments": [
+        {
+            "description": "report test results in verbose format",
+            "type": "command_line",
+            "value": "--verbose"
+        }
+    ],
+    "outputFiles": [
+
+    ],
+    "tool": {
+        "id": {
+            "guid": "7cb6668c-9eeb-4158-8f5e-0864adc8ad1b",
+            "name": "Jpylyzer",
+            "namespace": "https://jpylyzer.openpreservation.org/"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

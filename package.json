@@ -42,7 +42,6 @@
     "extraResources": [
       "PAR",
       "libs",
-      "DownloadedFiles",
       "config",
       "translations",
       "./node_modules/fido"

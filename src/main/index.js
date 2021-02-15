@@ -169,6 +169,11 @@ const getDateString = () => {
 };
 
 const runScript = (tool, filePath, optionArr, outFol, event) => {
+  let shieldedPath = filePath.split('');
+  shieldedPath.unshift('"');
+  shieldedPath.push('"');
+  shieldedPath = shieldedPath.join('');
+  /* console.log(shieldedPath); */
   let reportDate = '';
   let reportText = '';
   let dest = '';
@@ -191,7 +196,7 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
       scriptPath,
       ...optionArr,
       filePath,
-    ]);
+    ], { /* cwd: path.join(__dirname, '..', '..', 'libs', tool.id.name, tool.id.name) */ });
   }
   reportDate.stdout.on('data', (data) => {
     reportText += data.toString();
@@ -252,10 +257,8 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
 
 ipcMain.on('execute-file-action', (event, arg) => {
   if (arg.fileOrigin === 'url') {
-    if (!fs.existsSync(path.join(__dirname, '..', 'DownloadedFiles'))) {
-      fs.mkdirSync(path.join(__dirname, '..', 'DownloadedFiles'));
-    }
-    arg.filePath = path.join(__dirname, '..', 'DownloadedFiles', `${getDateString()}-${arg.fileName}`);
+    console.log(os.tmpdir());
+    arg.filePath = path.join(os.tmpdir(), `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
         .then(() => runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event))

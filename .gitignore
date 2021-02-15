@@ -7,9 +7,9 @@
 node_modules/
 libs/fido/
 libs/jhove/
+libs/jpylyzer/
 libs/jhove-latest.jar
 dist/
-src/DownloadedFiles/
 
 # Compiled Java class files
 *.class
