@@ -58,6 +58,7 @@
     "clone": "git clone https://github.com/openpreserve/fido.git ./libs/fido",
     "patch": "cd ./libs/fido && git am ../../patches/0001-change-relative-imports.patch && rm -rf .git",
     "jhove": "cd ./libs && java -DINSTALL_PATH=%cd%/libs/jhove -jar jhove-latest.jar -options-system && del jhove-latest.jar",
+    "jhove:linux": "cd ./libs && java -DINSTALL_PATH=$(pwd)/jhove -jar jhove-latest.jar -options-system && rm jhove-latest.jar",
     "jhove-download": "cd ./libs && wget http://software.openpreservation.org/rel/jhove-latest.jar"
   },
   "dependencies": {
