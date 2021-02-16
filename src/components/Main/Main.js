@@ -141,10 +141,10 @@ const Main = props => {
           onChange={e => {
             props.setActionType(e.target.value);
             InputActionTypeRef.current = e;
-            InputToolRef.current ? InputToolRef.current.target.value = '' : null;
-            InputOptionRef.current ? InputOptionRef.current.target.value = '' : null;
+            InputToolRef.current ? InputToolRef.current.target.value = 'Choose Tool' : null;
+            InputOptionRef.current ? InputOptionRef.current.target.value = 'Choose Option' : null;
           }}
-          defaultValue={activeActionTypes ? activeActionTypes.id.name : ''}
+          defaultValue={activeActionTypes ? activeActionTypes.id.name : 'Choose allowed action types'}
         >
           {mimeType.length ? (
             acceptedActions.length ? (
@@ -178,9 +178,9 @@ const Main = props => {
           onChange={e => {
             props.setTool(e.target.value);
             InputToolRef.current = e;
-            InputOptionRef.current ? InputOptionRef.current.target.value = '' : null;
+            InputOptionRef.current ? InputOptionRef.current.target.value = 'Choose Option' : null;
           }}
-          defaultValue={activeTool ? activeTool.id.name : ''}
+          defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'}
         >
           <option hidden>Choose Tool</option>
           {activeActionTypes && mimeType.length ? (
@@ -200,7 +200,7 @@ const Main = props => {
         <Input
           className="w-50"
           type="select"
-          defaultValue={activeOption ? activeOption.name : ''}
+          defaultValue={activeOption ? activeOption.name : 'Choose Option'}
           onChange={e => {
             InputOptionRef.current = e;
             props.setOptions([{

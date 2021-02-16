@@ -24,7 +24,9 @@ const FileHandler = props => {
     <div className="mt-3">
       <Dropzone
         onDrop={e => {
-          props.InputActionTypeRef.current ? props.InputActionTypeRef.current.target.value = '' : null;
+          props.InputActionTypeRef.current
+            ? props.InputActionTypeRef.current.target.value = 'Choose allowed action types'
+            : null;
           try {
             const MT = mime.lookup(e[0].path);
             if (MT) props.setFileInfo(e[0].name, e[0].path, MT);
