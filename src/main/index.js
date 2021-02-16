@@ -194,9 +194,10 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
     const python = (os.platform() === 'linux') ? 'python3' : 'python';
     reportDate = spawn(python, [
       scriptPath,
+      /* 'jpylyzer/jpylyzer.py', */
       ...optionArr,
       filePath,
-    ], { /* cwd: path.join(__dirname, '..', '..', 'libs', tool.id.name, tool.id.name) */ });
+    ], { /* cwd: path.join(__dirname, '..', '..', 'libs', tool.id.name), shell: true */ });
   }
   reportDate.stdout.on('data', (data) => {
     reportText += data.toString();
