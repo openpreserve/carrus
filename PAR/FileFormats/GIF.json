@@ -1,0 +1,17 @@
+{
+    "id": {
+        "guid": "aaef002d-ab99-4b34-9d17-870d9fd87036",
+        "name": "GIF",
+        "namespace": "https://openpreservation.org"
+    },
+    "aliases": [
+      "GIF87a/GIF89a"
+    ],
+    "name": "Graphics Interchange Format",
+    "lastUpdatedDate": "2021-02-03T11:57:00",
+    "identifiers": [{
+        "identifier": "image/gif",
+        "identifierType": "MIME"
+      }
+    ]
+}

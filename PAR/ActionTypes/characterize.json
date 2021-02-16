@@ -1,0 +1,11 @@
+{
+    "id": {
+      "guid": "4e4fee39-faf8-4901-88f3-862754f24c85",
+      "name": "Characterize",
+      "namespace": "https://openpreservation.org"
+    },
+    "familyType": {
+      "type": "Characterize"
+    },
+    "label": "Characterize"
+  }

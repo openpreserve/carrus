@@ -1,0 +1,21 @@
+{
+    "id": {
+        "guid": "e541afb3-8e44-46fa-aa9e-f5b41d479f1b",
+        "name": "AIFF",
+        "namespace": "https://openpreservation.org"
+    },
+    "aliases": [
+      "aiff", "aif", "aifc"
+    ],
+    "name": "Audio Interchange File Format",
+    "lastUpdatedDate": "2021-02-02T16:21:00",
+    "identifiers": [{
+        "identifier": "audio/aiff",
+        "identifierType": "MIME"
+      },
+      {
+        "identifier": "audio/x-aiff",
+        "identifierType": "MIME"
+      }
+    ]
+}

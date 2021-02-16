@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect } from 'react';
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
@@ -21,6 +23,7 @@ import {
   setMimeType,
   setFileInfo,
   setActionType,
+  setLoad,
 } from '../../Redux/redux-reducers';
 import FolderInput from './FolderInput';
 
@@ -45,13 +48,15 @@ const Main = props => {
     fileName,
     fileFormats,
     config,
+    load,
   } = props;
   const { t } = useTranslation();
-
-  const [isLoading, setIsLoading] = useState(false);
+  const InputActionTypeRef = useRef();
+  const InputToolRef = useRef();
+  const InputOptionRef = useRef();
   const [error, setError] = useState('');
   const handleExecute = () => {
-    setIsLoading(true);
+    props.setLoad(true);
     const dataToSend = {
       fileName,
       mimeType,
@@ -64,19 +69,20 @@ const Main = props => {
       option: activeOption,
     };
     ipcRenderer.send('execute-file-action', dataToSend);
-    setIsLoading(false);
+    ipcRenderer.on('receive-load', (event, value) => {
+      props.setLoad(value);
+    });
   };
-
   /* useEffect(() => console.log(props), [props]); */
 
   useEffect(() => {
     if (isURL(url)) {
       ipcRenderer.send('check-mime-type', url);
       ipcRenderer.on('receive-mime-type', (event, arg) => {
-        if (arg !== null) props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', arg.mime);
+        if (arg !== null) props.setFileInfo(url.substring(url.lastIndexOf('/') + 1), '', arg);
         else {
           props.setFileInfo('', '', '');
-          setError(t('fileTypesUnavailable'));
+          setError('file type is unavailable');
         }
       });
     } else if (url.length !== 0) {
@@ -96,7 +102,7 @@ const Main = props => {
     return result;
   }
 
-  return !isLoading ? (
+  return !load ? (
     <div className="container d-flex flex-column">
       <SemiHeader />
       <Nav tabs className="mt-5">
@@ -119,20 +125,26 @@ const Main = props => {
       </Nav>
       <TabContent activeTab={fileOrigin}>
         <TabPane tabId="file">
-          <FileHandler />
+          <FileHandler InputActionTypeRef={InputActionTypeRef} />
         </TabPane>
         <TabPane tabId="url">
           <UrlHandler isValid={!error.length} isEmpty={!url.length} feedback={error} />
         </TabPane>
       </TabContent>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
+      <FormGroup className="mt-3 w-100 d-flex flex-row">
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('ActionType')}:</span>
         </Label>
         <Input
+          className="w-50"
           type="select"
-          onChange={e => props.setActionType(e.target.value)}
-          defaultValue={activeActionTypes ? activeActionTypes.id.name : ''}
+          onChange={e => {
+            props.setActionType(e.target.value);
+            InputActionTypeRef.current = e;
+            InputToolRef.current ? InputToolRef.current.target.value = 'Choose Tool' : null;
+            InputOptionRef.current ? InputOptionRef.current.target.value = 'Choose Option' : null;
+          }}
+          defaultValue={activeActionTypes ? activeActionTypes.id.name : 'Choose allowed action types'}
         >
           {mimeType.length ? (
             acceptedActions.length ? (
@@ -156,53 +168,53 @@ const Main = props => {
           )}
         </Input>
       </FormGroup>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
+      <FormGroup className="mt-3 w-100 d-flex flex-row">
         <Label for="tool" className="mr-1 my-auto w-25">
           <span>{t('Tool')}: </span>
         </Label>
         <Input
+          className="w-50"
           type="select"
           onChange={e => {
             props.setTool(e.target.value);
+            InputToolRef.current = e;
+            InputOptionRef.current ? InputOptionRef.current.target.value = 'Choose Option' : null;
           }}
-          defaultValue={activeTool ? activeTool.id.name : ''}
+          defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'}
         >
           <option hidden>Choose Tool</option>
           {activeActionTypes && mimeType.length ? (
             checkScriptAvailability(activeActionTypes, tools, acceptedActions, config.isDevelopment)
           ) : (
             <>
+              <option hidden>Choose Tool</option>
               <option disabled>No actions are chosen</option>
             </>
           )}
         </Input>
       </FormGroup>
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
+      <FormGroup className="mt-3 w-100 d-flex flex-row">
         <Label for="action" className="mr-1 my-auto w-25">
           <span>{t('Action')}: </span>
         </Label>
         <Input
+          className="w-50"
           type="select"
-          defaultValue={activeOption ? activeOption.name : ''}
+          defaultValue={activeOption ? activeOption.name : 'Choose Option'}
           onChange={e => {
-            if (e.target.value === 'No action') {
-              props.setOptions([{
-                value: null,
-              }]);
-            } else {
-              props.setOptions([{
-                value: acceptedActions
-                  .find(action => action.id.name === e.target.value).inputToolArguments[0].value,
-                name: e.target.value,
-              }]);
-            }
+            InputOptionRef.current = e;
+            props.setOptions([{
+              value: acceptedActions
+                .find(action => action.id.name === e.target.value).inputToolArguments.map(i => i.value),
+              name: e.target.value,
+            }]);
           }}
         >
           <option hidden>Choose Option</option>
-          <option>No action</option>
-          {activeTool ? (
+          {/* {activeTool ? (
             activeTool.toolAcceptedParameters
-              .filter(param => acceptedActions.find(action => action.id.guid === param.id.guid))
+              .filter(param => acceptedActions
+                .find(a => ((a.id.guid === param.id.guid) && (a.type.id.name === activeActionTypes.id.name))))
               .map(activeToolOption => (
                 <option key={activeToolOption.id.guid}>{activeToolOption.id.name}</option>
               ))
@@ -210,16 +222,26 @@ const Main = props => {
             <>
               <option disabled>No Tools are chosen</option>
             </>
+          )} */}
+          {activeTool ? (
+            acceptedActions
+              .filter(a => (a.type.id.guid === activeActionTypes.id.guid && a.tool.id.guid === activeTool.id.guid))
+              .map(avaliableOption => (
+                <option key={avaliableOption.id.guid}>{avaliableOption.id.name}</option>
+              ))
+          ) : (
+            <>
+              <option hidden>Choose Option</option>
+              <option disabled>No Tools are chosen</option>
+            </>
           )}
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-100 d-flex flex-row align-items-center">
-        <div className="w-50 d-flex flex-row align-items-center">
-          <Label for="customFile" className="mr-1 my-auto w-25">
-            {t('OutputFolder')}:
-          </Label>
-          <Input className="dir_path" readOnly placeholder={dirPath} />
-        </div>
+        <Label for="customFile" className="mr-1 my-auto w-25">
+          {t('OutputFolder')}:
+        </Label>
+        <Input className="dir_path w-50" readOnly placeholder={dirPath} />
         <FolderInput />
       </FormGroup>
       <Button
@@ -261,6 +283,7 @@ const mapStateToProps = state => ({
   options: state.options,
   activeOption: state.options[0],
   config: state.config,
+  load: state.load,
 });
 
 export default connect(mapStateToProps, {
@@ -271,4 +294,5 @@ export default connect(mapStateToProps, {
   setMimeType,
   setFileInfo,
   setActionType,
+  setLoad,
 })(Main);

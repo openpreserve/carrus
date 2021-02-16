@@ -1,0 +1,17 @@
+{
+    "id": {
+      "guid": "7cb6668c-9eeb-4158-8f5e-0864adc8ad1b",
+      "name": "Jpylyzer",
+      "namespace": "https://jpylyzer.openpreservation.org/"
+    },
+    "toolLabel": "jpylyzer/jpylyzer.py",
+    "toolName": "Jpylyzer",
+    "toolOperatingEnvironments": [
+      "windows command line",
+      "linux command line",
+      "MacOS command line"
+    ],
+    "toolAcceptedParameters": [],
+    "toolPublisher": "Open Preservation Foundation",
+    "toolVersion": "2.0.0"
+}

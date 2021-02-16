@@ -17,7 +17,7 @@
   "constraints": [],
   "inputToolArguments": [{
       "description": "disables loading of format extensions file, only PRONOM signatures are loaded, may reduce accuracy of results",
-      "type": "command line argument",
+      "type": "command_line",
       "value": "-pronom_only"
     }
   ],
@@ -34,7 +34,7 @@
   "type": {
     "id": {
       "guid": "56c56576-8931-4d90-bf30-b21fc21001c0",
-      "name": "identify",
+      "name": "Identify",
       "namespace": "https://openpreservation.org"
     }
   }

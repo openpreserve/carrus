@@ -5,9 +5,8 @@
 
 # Node artifact files
 node_modules/
-libs/fido/
+libs/*
 dist/
-src/DownloadedFiles/
 
 # Compiled Java class files
 *.class

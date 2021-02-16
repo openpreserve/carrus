@@ -8,11 +8,11 @@ const UrlHandler = props => {
   const { url, isValid, feedback, isEmpty } = props;
   return (
     <div className="mt-3 d-flex flex-column">
-      <FormGroup className="mt-3 w-50 d-flex flex-row">
+      <FormGroup className="mt-3 w-100 d-flex flex-row">
         <Label for="action" className="mr-1 my-auto w-25">
           <span>URL: </span>
         </Label>
-        <InputGroup>
+        <InputGroup className="w-50">
           <Input
             type="url"
             name="url"
