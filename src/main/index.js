@@ -173,7 +173,6 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
   shieldedPath.unshift('"');
   shieldedPath.push('"');
   shieldedPath = shieldedPath.join('');
-  /* console.log(shieldedPath); */
   let reportDate = '';
   let reportText = '';
   let dest = '';
