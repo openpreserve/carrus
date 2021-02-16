@@ -5,10 +5,7 @@
 
 # Node artifact files
 node_modules/
-libs/fido/
-libs/jhove/
-libs/jpylyzer/
-libs/jhove-latest.jar
+libs/
 dist/
 
 # Compiled Java class files
