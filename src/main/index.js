@@ -191,12 +191,13 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
     ]);
   } else if (tool.toolLabel.split('.')[1] === 'py') {
     const python = (os.platform() === 'linux') ? 'python3' : 'python';
-    reportDate = spawn(python, [
-      scriptPath,
-      /* 'jpylyzer/jpylyzer.py', */
+    reportDate = spawn('C:/Python38/python.exe', [
+      /* scriptPath, */
+      'my_project/jpylyzer/jpylyzer/jpylyzer.py',
+      '-m',
       ...optionArr,
       filePath,
-    ], { /* cwd: path.join(__dirname, '..', '..', 'libs', tool.id.name), shell: true */ });
+    ], { cwd: path.join(__dirname, '..', '..', 'libs'), shell: true });
   }
   reportDate.stdout.on('data', (data) => {
     reportText += data.toString();
