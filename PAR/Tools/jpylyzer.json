@@ -4,7 +4,7 @@
       "name": "Jpylyzer",
       "namespace": "https://jpylyzer.openpreservation.org/"
     },
-    "toolLabel": "my_project/jpylyzer/jpylyzer/jpylyzer.py",
+    "toolLabel": "jpylyzer/jpylyzer/jpylyzer.py",
     "toolName": "Jpylyzer",
     "toolOperatingEnvironments": [
       "windows command line",
