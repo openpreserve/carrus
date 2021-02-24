@@ -141,15 +141,15 @@ const Main = props => {
           onChange={e => {
             props.setActionType(e.target.value);
             InputActionTypeRef.current = e;
-            InputToolRef.current ? InputToolRef.current.target.value = 'Choose Tool' : null;
-            InputOptionRef.current ? InputOptionRef.current.target.value = 'Choose Option' : null;
+            InputToolRef.current ? document.querySelectorAll('select')[1].value = 'Choose Tool' : null;
+            InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
           }}
-          defaultValue={activeActionTypes ? activeActionTypes.id.name : 'Choose allowed action types'}
+          defaultValue={activeActionTypes ? activeActionTypes.id.name : t('chooseAllowedActionTypes')}
         >
           {mimeType.length ? (
             acceptedActions.length ? (
               <>
-                <option hidden>Choose allowed action types</option>
+                <option hidden>{t('chooseAllowedActionTypes')}</option>
                 {unique(acceptedActions).map(e => (
                   <option key={hashCode(e.id.guid + mimeType)}>{e.type.id.name}</option>
                 ))}
@@ -178,16 +178,16 @@ const Main = props => {
           onChange={e => {
             props.setTool(e.target.value);
             InputToolRef.current = e;
-            InputOptionRef.current ? InputOptionRef.current.target.value = 'Choose Option' : null;
+            InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
           }}
           defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'}
         >
-          <option hidden>Choose Tool</option>
+          <option hidden>{t('ChooseTool')}</option>
           {activeActionTypes && mimeType.length ? (
             checkScriptAvailability(activeActionTypes, tools, acceptedActions, config.isDevelopment)
           ) : (
             <>
-              <option hidden>Choose Tool</option>
+              <option hidden>{t('ChooseTool')}</option>
               <option disabled>No actions are chosen</option>
             </>
           )}
@@ -210,7 +210,7 @@ const Main = props => {
             }]);
           }}
         >
-          <option hidden>Choose Option</option>
+          <option hidden>{t('ChooseOption')}</option>
           {activeTool ? (
             acceptedActions
               .filter(a => (a.type.id.guid === activeActionTypes.id.guid && a.tool.id.guid === activeTool.id.guid))
@@ -219,7 +219,7 @@ const Main = props => {
               ))
           ) : (
             <>
-              <option hidden>Choose Option</option>
+              <option hidden>{t('ChooseOption')}</option>
               <option disabled>No Tools are chosen</option>
             </>
           )}

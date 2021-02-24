@@ -25,7 +25,7 @@ const FileHandler = props => {
       <Dropzone
         onDrop={e => {
           props.InputActionTypeRef.current
-            ? document.querySelector('select').value = 'Choose allowed action types'
+            ? document.querySelector('select').value = t('chooseAllowedActionTypes')
             : null;
           try {
             const MT = mime.lookup(e[0].path);

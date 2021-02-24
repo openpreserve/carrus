@@ -5,6 +5,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable operator-assignment */
 /* eslint-disable prefer-template */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable quotes */
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
@@ -138,6 +141,7 @@ const download = (url, dest) => new Promise((resolve, reject) => {
 
   file.on('error', err => {
     file.close();
+    console.log(err);
 
     if (err.code === 'EEXIST') {
       reject('File already exists');
@@ -157,6 +161,43 @@ app.on('ready', () => {
   mainWindow = createMainWindow();
 });
 
+const runJobFailed = (error, event) => {
+  const win = new BrowserWindow({
+    minWidth: 1037,
+    minHeight: 500,
+    title: 'JHove 2020',
+    frame: false,
+    titleBarStyle: 'hidden',
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    },
+  });
+  win._id = 'jobFailed';
+
+  win.webContents.once('did-finish-load', async () => {
+    const translate = await setTranslate(isDevelopment);
+    win.webContents.send('translate', translate);
+    win.webContents.send('receive-err', { report: error });
+  });
+
+  if (isDevelopment) {
+    win.webContents.openDevTools();
+  }
+
+  if (isDevelopment) {
+    win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+  } else {
+    win.loadURL(
+      formatUrl({
+        pathname: path.join(__dirname, 'index.html'),
+        protocol: 'file',
+        slashes: true,
+      }),
+    );
+  }
+};
+
 const getDateString = () => {
   const date = new Date();
   const year = date.getFullYear();
@@ -175,6 +216,7 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
   shieldedPath = shieldedPath.join('');
   let reportDate = '';
   let reportText = '';
+  let errorText = '';
   let dest = '';
   const scriptPath = isDevelopment
     ? path.join(__dirname, '..', '..', 'libs', tool.toolLabel)
@@ -201,15 +243,14 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
     reportText += data.toString();
     dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
   });
-  reportDate.stderr.on('data', (data) => {
-    console.error(data.toString());
-    event.sender.send('receive-load', false);
-  });
   reportDate.stdout.on('end', (data) => {
     fs.writeFile(dest, reportText, error => {
       if (error) {
         event.sender.send('receive-load', false);
-        throw error;
+        error.message !== `ENOENT: no such file or directory, open ''`
+          ? runJobFailed(error.message)
+          : runJobFailed(errorText);
+        return;
       }
       const win = new BrowserWindow({
         minWidth: 1037,
@@ -250,6 +291,7 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
   });
   reportDate.stderr.on('data', (data) => {
     console.error(data.toString());
+    errorText += data.toString();
     event.sender.send('receive-load', false);
   });
 };
@@ -261,10 +303,15 @@ ipcMain.on('execute-file-action', (event, arg) => {
     try {
       download(arg.path, arg.filePath)
         .then(() => runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event))
-        .catch(err => console.log(err));
+        .catch(err => {
+          event.sender.send('receive-load', false);
+          runJobFailed(err);
+          console.log(err);
+        });
     } catch (err) {
-      console.log(err);
       event.sender.send('receive-load', false);
+      runJobFailed(err.message);
+      console.log(err);
     }
   } else {
     arg.filePath = arg.path;
