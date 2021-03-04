@@ -18,6 +18,7 @@ import { spawn } from 'child_process';
 import { setConfig, updateConfig } from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
+import JobFailed from '../components/Report/JobFailed';
 
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 
@@ -93,7 +94,7 @@ async function createMainWindow() {
   const translate = await setTranslate(isDevelopment);
   const config = await setConfig(isDevelopment);
   pythonPath = config.pythonPath;
-  const PAR = await setPAR(isDevelopment);
+  const PAR = await setPAR(isDevelopment, runJobFailed);
   window.webContents.on('did-finish-load', () => {
     window.webContents.send('translate', translate);
     window.webContents.send('config', config);

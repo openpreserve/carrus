@@ -78,9 +78,9 @@ const Main = props => {
     config.outFolder ? props.setDirPath(config.outFolder) : null;
   }, [config]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     console.log(props);
-  }, [props]); */
+  }, [props]);
 
   useEffect(() => {
     if (isURL(url)) {
