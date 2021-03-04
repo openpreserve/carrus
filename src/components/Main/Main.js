@@ -24,6 +24,7 @@ import {
   setFileInfo,
   setActionType,
   setLoad,
+  setDirPath,
 } from '../../Redux/redux-reducers';
 import FolderInput from './FolderInput';
 
@@ -73,7 +74,13 @@ const Main = props => {
       props.setLoad(value);
     });
   };
-  /* useEffect(() => console.log(props), [props]); */
+  useEffect(() => {
+    config.outFolder ? props.setDirPath(config.outFolder) : null;
+  }, [config]);
+
+  /* useEffect(() => {
+    console.log(props);
+  }, [props]); */
 
   useEffect(() => {
     if (isURL(url)) {
@@ -283,4 +290,5 @@ export default connect(mapStateToProps, {
   setFileInfo,
   setActionType,
   setLoad,
+  setDirPath,
 })(Main);

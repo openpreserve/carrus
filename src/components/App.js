@@ -19,7 +19,6 @@ const App = props => {
   useEffect(() => {
     ipcRenderer.once('config', (event, config) => {
       props.setConfig(config);
-      console.log(config);
       if (config.language && (config.language === 'fr' || config.language === 'ru')) {
         i18n.changeLanguage(config.language);
       }

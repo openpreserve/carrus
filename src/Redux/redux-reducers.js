@@ -15,6 +15,7 @@ const initialState = {
   fileName: '',
   mimeType: '',
   load: false,
+  config: {},
 };
 
 export const preproccessReducer = (state = initialState, action) => {

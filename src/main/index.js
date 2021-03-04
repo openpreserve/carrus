@@ -15,7 +15,7 @@ import fs from 'fs';
 import os from 'os';
 import mime from 'mime-types';
 import { spawn } from 'child_process';
-import setConfig from '../utils/setConfig';
+import { setConfig, updateConfig } from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
 
@@ -29,6 +29,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
 let pythonPath;
+let outputPath;
 
 async function createMainWindow() {
   const factor = screen.getPrimaryDisplay().scaleFactor;
@@ -101,6 +102,10 @@ async function createMainWindow() {
 
   return window;
 }
+
+/* app.on('before-quit', () => {
+  updateConfig(isDevelopment, outputPath);
+}); */
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -221,33 +226,20 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
   const scriptPath = isDevelopment
     ? path.join(__dirname, '..', '..', 'libs', tool.toolLabel)
     : path.join(__dirname, '..', 'libs', tool.toolLabel);
-  try {
-    if (tool.toolLabel.split('.')[tool.toolLabel.split('.').length - 1] === 'bat') {
-      reportDate = spawn(scriptPath, [
-        ...optionArr,
-        filePath,
-      ]);
-    } else if (tool.toolLabel.split('.')[0] === 'jhove/jhove') {
-      reportDate = spawn(scriptPath, [
-        ...optionArr,
-        filePath,
-      ]);
-    } else if (tool.toolLabel.split('.')[tool.toolLabel.split('.').length - 1] === 'py') {
-      const python = (os.platform() === 'linux') ? 'python3' : 'python';
-      reportDate = spawn(python, [
-        scriptPath,
-        ...optionArr,
-        filePath,
-      ]);
-    } else {
-      reportDate = spawn(scriptPath, [
-        ...optionArr,
-        filePath,
-      ]);
-    }
-  } catch (error) {
-    console.log(error);
+  if (tool.toolLabel.split('.')[tool.toolLabel.split('.').length - 1] === 'py') {
+    const python = (os.platform() === 'linux') ? 'python3' : 'python';
+    reportDate = spawn(python, [
+      scriptPath,
+      ...optionArr,
+      filePath,
+    ]);
+  } else {
+    reportDate = spawn(scriptPath, [
+      ...optionArr,
+      filePath,
+    ]);
   }
+
   reportDate.stdout.on('data', (data) => {
     data ? reportText += data.toString() : null;
     dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
@@ -303,6 +295,11 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
     errorText += data.toString();
     event.sender.send('receive-load', false);
   });
+  reportDate.on('error', (err) => {
+    errorText += err.toString();
+  });
+
+  outputPath = outFol;
 };
 
 ipcMain.on('execute-file-action', (event, arg) => {
@@ -326,4 +323,5 @@ ipcMain.on('execute-file-action', (event, arg) => {
     arg.filePath = arg.path;
     runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event);
   }
+  updateConfig(isDevelopment, outputPath);
 });
