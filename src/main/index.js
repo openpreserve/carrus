@@ -221,26 +221,35 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
   const scriptPath = isDevelopment
     ? path.join(__dirname, '..', '..', 'libs', tool.toolLabel)
     : path.join(__dirname, '..', 'libs', tool.toolLabel);
-  if (tool.toolLabel.split('.')[1] === 'bat') {
-    reportDate = spawn(scriptPath, [
-      ...optionArr,
-      filePath,
-    ]);
-  } else if (tool.toolLabel.split('.')[0] === 'jhove/jhove') {
-    reportDate = spawn(scriptPath, [
-      ...optionArr,
-      filePath,
-    ]);
-  } else if (tool.toolLabel.split('.')[1] === 'py') {
-    const python = (os.platform() === 'linux') ? 'python3' : 'python';
-    reportDate = spawn(python, [
-      scriptPath,
-      ...optionArr,
-      filePath,
-    ]);
+  try {
+    if (tool.toolLabel.split('.')[tool.toolLabel.split('.').length - 1] === 'bat') {
+      reportDate = spawn(scriptPath, [
+        ...optionArr,
+        filePath,
+      ]);
+    } else if (tool.toolLabel.split('.')[0] === 'jhove/jhove') {
+      reportDate = spawn(scriptPath, [
+        ...optionArr,
+        filePath,
+      ]);
+    } else if (tool.toolLabel.split('.')[tool.toolLabel.split('.').length - 1] === 'py') {
+      const python = (os.platform() === 'linux') ? 'python3' : 'python';
+      reportDate = spawn(python, [
+        scriptPath,
+        ...optionArr,
+        filePath,
+      ]);
+    } else {
+      reportDate = spawn(scriptPath, [
+        ...optionArr,
+        filePath,
+      ]);
+    }
+  } catch (error) {
+    console.log(error);
   }
   reportDate.stdout.on('data', (data) => {
-    reportText += data.toString();
+    data ? reportText += data.toString() : null;
     dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
   });
   reportDate.stdout.on('end', (data) => {
