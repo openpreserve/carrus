@@ -13,10 +13,10 @@ export default async function setPAR(isDevelopment, runJobFailed) {
   let toolsPath = path.join(__dirname, '..', 'PAR', 'Tools');
   let fileFormatsPath = path.join(__dirname, '..', 'PAR', 'FileFormats');
   let actionTypesPath = path.join(__dirname, '..', 'PAR', 'ActionTypes');
-  let actions;
-  let actionTypes;
+  const actions = [];
+  const actionTypes = [];
   const tools = [];
-  let fileFormats;
+  const fileFormats = [];
   if (isDevelopment) {
     actionsPath = './PAR/Actions';
     toolsPath = './PAR/Tools';
@@ -24,26 +24,37 @@ export default async function setPAR(isDevelopment, runJobFailed) {
     actionTypesPath = './PAR/ActionTypes';
   }
   try {
-    actions = readdirSync(actionsPath).map(e => ({
-      ...JSON.parse(readFileSync(path.join(actionsPath, e), 'utf-8')),
-      active: false,
-    }));
-    actionTypes = readdirSync(actionTypesPath).map(e => ({
-      ...JSON.parse(readFileSync(path.join(actionTypesPath, e), 'utf-8')),
-      active: false,
-    }));
-    /* try {
-      tools = readdirSync(toolsPath).map(e => ({
-        ...JSON.parse(readFileSync(path.join(toolsPath, e), 'utf-8')),
-        active: false,
-      }));
-    } catch (error) {
-      tools = [];
-      console.log(error);
-      runJobFailed(error.message);
-    } */
+    readdirSync(actionsPath).forEach(e => {
+      let action;
+      action = readFileSync(path.join(actionsPath, e), 'utf-8');
+      try {
+        action = JSON.parse(action);
+        actions.push({
+          ...action,
+          active: false,
+        });
+      } catch (error) {
+        console.log(error);
+        runJobFailed(error.message);
+      }
+    });
+
+    readdirSync(actionTypesPath).forEach(e => {
+      let actionType;
+      actionType = readFileSync(path.join(actionTypesPath, e), 'utf-8');
+      try {
+        actionType = JSON.parse(actionType);
+        actionTypes.push({
+          ...actionType,
+          active: false,
+        });
+      } catch (error) {
+        console.log(error);
+        runJobFailed(error.message);
+      }
+    });
+
     readdirSync(toolsPath).forEach(e => {
-      console.log(e);
       let tool;
       tool = readFileSync(path.join(toolsPath, e), 'utf-8');
       try {
@@ -57,14 +68,23 @@ export default async function setPAR(isDevelopment, runJobFailed) {
         runJobFailed(error.message);
       }
     });
-    console.log(tools);
-    fileFormats = readdirSync(fileFormatsPath).map(e => ({
-      ...JSON.parse(readFileSync(path.join(fileFormatsPath, e), 'utf-8')),
-      active: false,
-    }));
+
+    readdirSync(fileFormatsPath).forEach(e => {
+      let fileFormat;
+      fileFormat = readFileSync(path.join(fileFormatsPath, e), 'utf-8');
+      try {
+        fileFormat = JSON.parse(fileFormat);
+        fileFormats.push({
+          ...fileFormat,
+          active: false,
+        });
+      } catch (error) {
+        console.log(error);
+        runJobFailed(error.message);
+      }
+    });
   } catch (error) {
-    /* runJobFailed(error.message);
-    return {}; */
+    console.log(error);
   }
   return {
     actions,
