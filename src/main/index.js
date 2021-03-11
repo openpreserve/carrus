@@ -121,6 +121,15 @@ app.on('activate', () => {
 });
 
 const download = (url, dest) => new Promise((resolve, reject) => {
+  const downloadDir = path.join(path.join(os.tmpdir(), 'jhove2020', 'downloads'));
+  try {
+    if (!fs.existsSync(downloadDir)) {
+      fs.mkdirSync(downloadDir);
+    }
+  } catch (err) {
+    reject(err.message);
+  }
+
   const file = fs.createWriteStream(dest);
 
   const sendReq = request.get(url);
@@ -306,7 +315,7 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
 ipcMain.on('execute-file-action', (event, arg) => {
   if (arg.fileOrigin === 'url') {
     console.log(os.tmpdir());
-    arg.filePath = path.join(os.tmpdir(), `${getDateString()}-${arg.fileName}`);
+    arg.filePath = path.join(os.tmpdir(), 'jhove2020', 'downloads', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
         .then(() => runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event))

@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 import util from 'util';
 import osLocale from 'os-locale';
 
@@ -15,15 +16,16 @@ async function getOsLang() {
 }
 
 const initialConfig = {
-  language: 'en',
+  language: 'default',
 };
 
 export async function setConfig(isDevelopment) {
-  let configDir = path.join(__dirname, '..', 'config');
+  const tempDir = path.join(path.join(os.tmpdir(), 'jhove2020'));
+  const configDir = path.join(path.join(os.tmpdir(), 'jhove2020', 'config'));
 
-  if (isDevelopment) {
+  /* if (isDevelopment) {
     configDir = path.join(__dirname, '..', '..', 'config');
-  }
+  } */
 
   try {
     // check if we already have created config file
@@ -37,9 +39,17 @@ export async function setConfig(isDevelopment) {
       }
       return configuration;
     }
-
+    try {
+      if (!fs.existsSync(tempDir)) {
+        await fs.mkdir(tempDir);
+        await fs.mkdir(configDir);
+      }
+    } catch (err) {
+      console.error(err);
+    }
     // try to extract system language and set it up as default one
     initialConfig.language = await getOsLang();
+    writer(path.join(configDir, 'config.json'), JSON.stringify(initialConfig));
     initialConfig.isDevelopment = isDevelopment;
     return initialConfig;
   } catch (err) {
