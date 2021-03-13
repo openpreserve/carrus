@@ -59,12 +59,8 @@ export async function setConfig(isDevelopment) {
   }
 }
 
-export async function updateConfig(isDevelopment, outFolder) {
-  let configDir = path.join(__dirname, '..', 'config');
-
-  if (isDevelopment) {
-    configDir = path.join(__dirname, '..', '..', 'config');
-  }
+export async function updateConfig(outFolder) {
+  const configDir = path.join(path.join(os.tmpdir(), 'jhove2020', 'config'));
 
   try {
     let config = await reader(path.join(configDir, 'config.json'), 'utf8');
