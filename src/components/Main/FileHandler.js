@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import Dropzone from 'react-dropzone';
 import { Jumbotron, Container } from 'reactstrap';
 import mime from 'mime-types';
+import FileType from 'file-type';
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import { green } from '@material-ui/core/colors';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
@@ -23,14 +24,18 @@ const FileHandler = props => {
   return (
     <div className="mt-3">
       <Dropzone
-        onDrop={e => {
+        onDrop={async (e) => {
           props.InputActionTypeRef.current
             ? document.querySelector('select').value = t('chooseAllowedActionTypes')
             : null;
           try {
-            const MT = mime.lookup(e[0].path);
-            if (MT) props.setFileInfo(e[0].name, e[0].path, MT);
-            else throw new Error('file type is unavailable');
+            const MT = await FileType.fromFile(e[0].path);
+            if (MT) {
+              props.setFileInfo(e[0].name, e[0].path, MT.mime);
+            } else {
+              const newMT = mime.lookup(e[0].path);
+              props.setFileInfo(e[0].name, e[0].path, newMT);
+            }
           } catch (err) {
             props.setFileInfo('', '', '');
             setError(err.message);
