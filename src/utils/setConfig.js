@@ -23,10 +23,6 @@ export async function setConfig(isDevelopment) {
   const tempDir = path.join(path.join(os.tmpdir(), 'jhove2020'));
   const configDir = path.join(path.join(os.tmpdir(), 'jhove2020', 'config'));
 
-  /* if (isDevelopment) {
-    configDir = path.join(__dirname, '..', '..', 'config');
-  } */
-
   try {
     // check if we already have created config file
     // in this case only provide settings from config.js
@@ -41,8 +37,8 @@ export async function setConfig(isDevelopment) {
     }
     try {
       if (!fs.existsSync(tempDir)) {
-        await fs.mkdir(tempDir);
-        await fs.mkdir(configDir);
+        fs.mkdirSync(tempDir);
+        fs.mkdirSync(configDir);
       }
     } catch (err) {
       console.error(err);

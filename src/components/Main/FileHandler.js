@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Dropzone from 'react-dropzone';
@@ -21,6 +21,11 @@ const FileHandler = props => {
   const { t } = useTranslation();
   const { fileName, mimeType, isTypeAccepted } = props;
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    console.log(props);
+  }, [props]);
+
   return (
     <div className="mt-3">
       <Dropzone
@@ -30,10 +35,12 @@ const FileHandler = props => {
             : null;
           try {
             const MT = await FileType.fromFile(e[0].path);
+            console.log(MT);
             if (MT) {
               props.setFileInfo(e[0].name, e[0].path, MT.mime);
             } else {
               const newMT = mime.lookup(e[0].path);
+              console.log(newMT);
               props.setFileInfo(e[0].name, e[0].path, newMT);
             }
           } catch (err) {
@@ -66,8 +73,8 @@ const FileHandler = props => {
                     )
                   ) : (
                     <div className="d-flex flex-row mt-3 align-items-center">
-                      {mimeType.includes('pdf') && <PictureAsPdfIcon />}
-                      {mimeType.includes('image') && <ImageOutlinedIcon />}
+                      {mimeType && mimeType.includes('pdf') && <PictureAsPdfIcon />}
+                      {mimeType && mimeType.includes('image') && <ImageOutlinedIcon />}
                       <span className="ml-1" style={{ fontSize: 20 }}>
                         {fileName}
                       </span>
