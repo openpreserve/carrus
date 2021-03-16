@@ -59,7 +59,12 @@
     "patch": "cd ./libs/fido && git am ../../patches/0001-change-relative-imports.patch && rm -rf .git",
     "jhove": "cd ./libs && java -DINSTALL_PATH=%cd%/libs/jhove -jar jhove-latest.jar -options-system && del jhove-latest.jar",
     "jhove:linux": "cd ./libs && java -DINSTALL_PATH=$(pwd)/jhove -jar jhove-latest.jar -options-system && rm jhove-latest.jar",
-    "jhove-download": "cd ./libs && wget http://software.openpreservation.org/rel/jhove-latest.jar"
+    "jhove-download": "cd ./libs && wget http://software.openpreservation.org/rel/jhove-latest.jar",
+    "veraPDF-download": "cd ./libs && wget https://software.verapdf.org/rel/verapdf-installer.zip",
+    "veraPDF-unzip": "cd ./libs && powershell Expand-Archive -Path verapdf-installer.zip -DestinationPath %cd%/libs/veraPDF",
+    "veraPDF-unzip:linux": "cd ./libs && unzip verapdf-installer.zip",
+    "veraPDF": "cd ./libs/veraPDF && java -DINSTALL_PATH=%cd%/libs/veraPDF -jar verapdf-greenfield-1.16.1/verapdf-izpack-installer-1.16.1.jar -options-system && rd /s /q verapdf-greenfield-1.16.1",
+    "veraPDF:linux": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.16.1/verapdf-izpack-installer-1.16.1.jar -options-system && rm -rf verapdf-greenfield-1.16.1"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -67,6 +72,7 @@
     "@types/valid-url": "^1.0.3",
     "bootstrap": "^4.5.3",
     "clipboard-polyfill": "^3.0.1",
+    "file-type": "^16.3.0",
     "i18next": "^19.8.3",
     "jquery": "^3.5.1",
     "mime-types": "^2.1.28",

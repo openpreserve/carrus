@@ -78,9 +78,9 @@ const Main = props => {
     config.outFolder ? props.setDirPath(config.outFolder) : null;
   }, [config]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log(props);
-  }, [props]);
+  }, [props]); */
 
   useEffect(() => {
     if (isURL(url)) {
@@ -163,13 +163,13 @@ const Main = props => {
               </>
             ) : (
               <>
-                <option hidden>{t('inappropriateType')} </option>
+                <option hidden>{t('chooseAllowedActionTypes')}</option>
                 <option disabled>{t('noActionTypes')}</option>
               </>
             )
           ) : (
             <>
-              <option hidden>{t('fileNotChoosen')}</option>
+              <option hidden>{t('chooseAllowedActionTypes')}</option>
               <option disabled>{t('fileNotChoosenSub')}</option>
             </>
           )}

@@ -333,5 +333,5 @@ ipcMain.on('execute-file-action', (event, arg) => {
     arg.filePath = arg.path;
     runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event);
   }
-  updateConfig(isDevelopment, outputPath);
+  updateConfig(outputPath);
 });
