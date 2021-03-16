@@ -122,3 +122,8 @@ label.custom-file-upload {
   padding-left: 30px;
 }
 
+.mimeTypeURL {
+  position: absolute;
+  top: 100%;
+  font-size: 14px;
+}

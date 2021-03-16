@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { FormGroup, Label, Input, FormFeedback, InputGroup } from 'reactstrap';
+import { FormGroup, Label, Input, FormFeedback, InputGroup, FormText } from 'reactstrap';
 import { setURL } from '../../Redux/redux-reducers';
 
 const UrlHandler = props => {
-  const { url, isValid, feedback, isEmpty } = props;
+  const { url, isValid, feedback, isEmpty, mimeType } = props;
   const { t } = useTranslation();
 
   return (
@@ -31,12 +32,13 @@ const UrlHandler = props => {
             invalid={!isValid && !isEmpty}
           />
           {!isValid && <FormFeedback tooltip>{feedback}</FormFeedback>}
+          {mimeType && <FormText className="mimeTypeURL">{mimeType}</FormText>}
         </InputGroup>
       </FormGroup>
     </div>
   );
 };
 
-const mapStateToProps = state => ({ url: state.url, config: state.config });
+const mapStateToProps = state => ({ url: state.url, config: state.config, mimeType: state.mimeType });
 
 export default connect(mapStateToProps, { setURL })(UrlHandler);
