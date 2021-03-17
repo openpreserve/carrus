@@ -3,7 +3,7 @@
     "example": "veraPDF ${inputfile}",
     "id": {
         "guid": "f31910ae-0e83-4db3-9098-0dd9ecb1c221",
-        "name": "auto detect",
+        "name": "Auto detect",
         "namespace": "http://verapdf.org"
     },
     "inputFiles": [{
