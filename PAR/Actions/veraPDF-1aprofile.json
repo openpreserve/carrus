@@ -1,9 +1,9 @@
 {
     "description": "Chooses built-in Validation Profile flavour",
-    "example": "veraPDF -f 3b ${inputfile}",
+    "example": "veraPDF -f 1a ${inputfile}",
     "id": {
-        "guid": "cf156b6b-9db5-457c-ac1d-abbb0b816555",
-        "name": "PDF/A-3b",
+        "guid": "0a534f3f-731e-4005-90b2-57a52ea1aea5",
+        "name": "PDF/A-1a",
         "namespace": "http://verapdf.org"
     },
     "inputFiles": [{
@@ -31,7 +31,7 @@
         {
             "description": "Profile flavour",
             "type": "command_line",
-            "value": "3b"
+            "value": "1a"
         }
     ],
     "outputFiles": [
