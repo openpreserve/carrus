@@ -72,13 +72,18 @@ const FileHandler = props => {
                       </div>
                     )
                   ) : (
-                    <div className="d-flex flex-row mt-3 align-items-center">
-                      {mimeType && mimeType.includes('pdf') && <PictureAsPdfIcon />}
-                      {mimeType && mimeType.includes('image') && <ImageOutlinedIcon />}
-                      <span className="ml-1" style={{ fontSize: 20 }}>
-                        {fileName}
-                      </span>
-                    </div>
+                    <>
+                      <div className="d-flex flex-row mt-3 align-items-center">
+                        {mimeType && mimeType.includes('pdf') && <PictureAsPdfIcon />}
+                        {mimeType && mimeType.includes('image') && <ImageOutlinedIcon />}
+                        <span className="ml-1" style={{ fontSize: 20 }}>
+                          {fileName}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-muted">{mimeType}</p>
+                      </div>
+                    </>
                   )}
                 </Container>
               </Jumbotron>
