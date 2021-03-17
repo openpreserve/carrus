@@ -79,6 +79,10 @@ export async function updateConfig(outFolder) {
       console.log(error);
     }
   } else {
-    await writer(path.join(configDir, 'config.json'), JSON.stringify({ outFolder }));
+    try {
+      await writer(path.join(configDir, 'config.json'), JSON.stringify({ outFolder }));
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
