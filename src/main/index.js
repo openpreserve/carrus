@@ -254,15 +254,8 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
     data ? reportText += data.toString() : null;
     dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
   });
-  reportDate.stdout.on('end', (data) => {
-    fs.writeFile(dest, reportText, error => {
-      if (error) {
-        event.sender.send('receive-load', false);
-        error.message !== `ENOENT: no such file or directory, open ''`
-          ? runJobFailed(error.message)
-          : runJobFailed(errorText);
-        return;
-      }
+  reportDate.stdout.on('end', () => {
+    if (reportText) {
       const win = new BrowserWindow({
         minWidth: 1037,
         minHeight: 700,
@@ -297,6 +290,14 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
             slashes: true,
           }),
         );
+      }
+    }
+    fs.writeFile(dest, reportText, error => {
+      if (error) {
+        event.sender.send('receive-load', false);
+        error.message !== `ENOENT: no such file or directory, open ''`
+          ? runJobFailed(error.message)
+          : runJobFailed(errorText);
       }
     });
   });
