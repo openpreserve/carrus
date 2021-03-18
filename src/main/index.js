@@ -224,37 +224,42 @@ const getDateString = () => {
   return `${year}${month}${day}${hours}${mins}${sec}`;
 };
 
-const runScript = (tool, filePath, optionArr, outFol, event) => {
+const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   let shieldedPath = filePath.split('');
   shieldedPath.unshift('"');
   shieldedPath.push('"');
   shieldedPath = shieldedPath.join('');
-  let reportDate = '';
+  let reportData = '';
   let reportText = '';
   let errorText = '';
   let dest = '';
-  const scriptPath = isDevelopment
-    ? path.join(__dirname, '..', '..', 'libs', tool.toolLabel)
-    : path.join(__dirname, '..', 'libs', tool.toolLabel);
-  if (tool.toolLabel.split('.')[tool.toolLabel.split('.').length - 1] === 'py') {
-    const python = (os.platform() === 'linux') ? 'python3' : 'python';
-    reportDate = spawn(python, [
-      scriptPath,
-      ...optionArr,
-      filePath,
-    ]);
-  } else {
-    reportDate = spawn(scriptPath, [
-      ...optionArr,
-      filePath,
-    ]);
+
+  const configTools = Object.keys(config);
+  const configTool = configTools.find(e => e === tool.toolName);
+  const OSconfigTool = configTool ? config[configTool].find(e => e.OS === os.platform()) : null;
+  if (!OSconfigTool) {
+    event.sender.send('receive-load', false);
+    runJobFailed(`There is no ${tool.toolName} tool in config`);
+    return;
   }
 
-  reportDate.stdout.on('data', (data) => {
+  const scriptPath = isDevelopment
+    ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.scriptPath)
+    : path.join(__dirname, '..', 'libs', OSconfigTool.scriptPath);
+
+  const command = OSconfigTool.scriptType === 'shell' ? scriptPath : OSconfigTool.scriptType;
+
+  reportData = spawn(command, [
+    OSconfigTool.scriptType !== 'shell' && scriptPath,
+    ...optionArr,
+    filePath,
+  ]);
+
+  reportData.stdout.on('data', (data) => {
     data ? reportText += data.toString() : null;
     dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
   });
-  reportDate.stdout.on('end', () => {
+  reportData.stdout.on('end', () => {
     if (reportText) {
       const win = new BrowserWindow({
         minWidth: 1037,
@@ -301,12 +306,12 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
       }
     });
   });
-  reportDate.stderr.on('data', (data) => {
+  reportData.stderr.on('data', (data) => {
     console.error(data.toString());
     errorText += data.toString();
     event.sender.send('receive-load', false);
   });
-  reportDate.on('error', (err) => {
+  reportData.on('error', (err) => {
     errorText += err.toString();
   });
 
@@ -315,11 +320,10 @@ const runScript = (tool, filePath, optionArr, outFol, event) => {
 
 ipcMain.on('execute-file-action', (event, arg) => {
   if (arg.fileOrigin === 'url') {
-    console.log(os.tmpdir());
     arg.filePath = path.join(os.tmpdir(), 'jhove2020', 'downloads', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
-        .then(() => runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event))
+        .then(() => runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event, arg.config))
         .catch(err => {
           event.sender.send('receive-load', false);
           runJobFailed(err);
@@ -332,7 +336,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
     }
   } else {
     arg.filePath = arg.path;
-    runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event);
+    runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event, arg.config);
   }
   updateConfig(outputPath);
 });

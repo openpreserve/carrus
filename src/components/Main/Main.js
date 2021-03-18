@@ -68,6 +68,7 @@ const Main = props => {
       outputFolder: dirPath,
       tool: activeTool,
       option: activeOption,
+      config,
     };
     ipcRenderer.send('execute-file-action', dataToSend);
     ipcRenderer.on('receive-load', (event, value) => {

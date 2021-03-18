@@ -1,3 +1,27 @@
 {
-    "language": "default"
+    "language": "default",
+    "FIDO": [
+        {
+            "OS": "win32",
+            "scriptPath": "fido/fido/fido.py",
+            "scriptType": "python"
+        },
+        {
+            "OS": "linux",
+            "scriptPath": "fido/fido/fido.py",
+            "scriptType": "python3"
+        }
+    ],
+    "JHOVE": [
+        {
+            "OS": "win32",
+            "scriptPath": "jhove/jhove.bat",
+            "scriptType": "shell"
+        },
+        {
+            "OS": "linux",
+            "scriptPath": "jhove/jhove",
+            "scriptType": "shell"
+        }
+    ]
 }
