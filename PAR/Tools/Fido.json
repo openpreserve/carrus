@@ -4,7 +4,7 @@
     "name": "FIDO",
     "namespace": "https://github.com/openpreserve/fido/releases/tag/v1.4.1"
   },
-  "toolLabel": "fido/fido/fido.py",
+  "toolLabel": "fido",
   "toolName": "FIDO",
   "toolOperatingEnvironments": [
     "windows command line",

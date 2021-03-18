@@ -234,8 +234,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   let errorText = '';
   let dest = '';
 
-  const configTools = Object.keys(config);
-  const configTool = configTools.find(e => e === tool.toolName);
+  const configTool = Object.keys(config).find(e => e === tool.toolName);
   const OSconfigTool = configTool ? config[configTool].find(e => e.OS === os.platform()) : null;
   if (!OSconfigTool) {
     event.sender.send('receive-load', false);

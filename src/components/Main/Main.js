@@ -192,7 +192,7 @@ const Main = props => {
         >
           <option hidden>{t('ChooseTool')}</option>
           {activeActionTypes && mimeType.length ? (
-            checkScriptAvailability(activeActionTypes, tools, acceptedActions, config.isDevelopment)
+            checkScriptAvailability(activeActionTypes, tools, acceptedActions, config)
           ) : (
             <>
               <option hidden>{t('ChooseTool')}</option>

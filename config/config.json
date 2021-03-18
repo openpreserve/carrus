@@ -23,5 +23,29 @@
             "scriptPath": "jhove/jhove",
             "scriptType": "shell"
         }
+    ],
+    "veraPDF": [
+        {
+            "OS": "win32",
+            "scriptPath": "veraPDF/verapdf.bat",
+            "scriptType": "shell"
+        },
+        {
+            "OS": "linux",
+            "scriptPath": "veraPDF/verapdf",
+            "scriptType": "shell"
+        }
+    ],
+    "Jpylyzer": [
+        {
+            "OS": "win32",
+            "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
+            "scriptType": "python"
+        },
+        {
+            "OS": "linux",
+            "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
+            "scriptType": "python3"
+        }  
     ]
 }
