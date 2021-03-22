@@ -46,7 +46,7 @@ export default function checkScriptAvailability(activeActionTypes, tools, accept
     const OSconfigTool = configTool ? config[configTool].find(e => e.OS === os.platform()) : null;
     return OSconfigTool ? fs.existsSync(path.join(scriptPath, OSconfigTool.scriptPath)) : false;
   });
-
+  console.log(AvailableTools);
   return (AvailableTools.length !== 0
     ? AvailableTools.map(e => <option key={e.id.guid}>{e.id.name}</option>)
     : <option disabled>No accepted tools</option>);

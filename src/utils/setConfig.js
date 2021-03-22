@@ -31,15 +31,15 @@ export async function setConfig(isDevelopment) {
 
   try {
     if (await isExists(path.join(configDir, 'config.json'))) {
-      configuration = await reader(path.join(configDir, 'config.json'), 'utf8');
+      configuration = JSON.parse(await reader(path.join(configDir, 'config.json'), 'utf8'));
     } else {
       configuration = initialConfig;
     }
     if (await isExists(path.join(tempConfigDir, 'config.json'))) {
-      const tempConf = await reader(path.join(tempConfigDir, 'config.json'), 'utf8');
+      const tempConf = JSON.parse(await reader(path.join(tempConfigDir, 'config.json'), 'utf8'));
       configuration = {
-        ...JSON.parse(configuration),
-        ...JSON.parse(tempConf),
+        ...configuration,
+        ...tempConf,
       };
     } else {
       try {
