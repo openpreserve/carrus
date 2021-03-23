@@ -176,7 +176,7 @@ app.on('ready', () => {
   mainWindow = createMainWindow();
 });
 
-const runJobFailed = (error, event) => {
+const runJobFailed = (error) => {
   const win = new BrowserWindow({
     minWidth: 1037,
     minHeight: 500,
@@ -192,7 +192,9 @@ const runJobFailed = (error, event) => {
 
   win.webContents.once('did-finish-load', async () => {
     const translate = await setTranslate(isDevelopment);
+    const config = await setConfig(isDevelopment);
     win.webContents.send('translate', translate);
+    win.webContents.send('config', config);
     win.webContents.send('receive-err', { report: error });
   });
 
@@ -276,6 +278,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
       win.webContents.once('did-finish-load', async () => {
         const translate = await setTranslate(isDevelopment);
         win.webContents.send('translate', translate);
+        win.webContents.send('config', config);
         win.webContents.send('receiver', { report: reportText, path: dest });
         event.sender.send('receive-load', false);
       });
@@ -308,8 +311,13 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   reportData.stderr.on('data', (data) => {
     console.error(data.toString());
     errorText += data.toString();
+    /* event.sender.send('receive-load', false); */
+  });
+
+  reportData.stderr.on('end', (data) => {
     event.sender.send('receive-load', false);
   });
+
   reportData.on('error', (err) => {
     errorText += err.toString();
   });

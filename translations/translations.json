@@ -37,7 +37,8 @@
             "fileTypesUnavailable": "text-based formats like .txt, .csv, .svg aren't available",
             "JobFailed": "Job Failed",
             "ChooseTool": "Choose Tool",
-            "ChooseOption": "Choose Option"
+            "ChooseOption": "Choose Option",
+            "SendReport": "Send Report"
         }
     },
     "fr": {
@@ -78,7 +79,8 @@
             "fileTypesUnavailable": "Les formats textuels tels que .txt, .csv, .svg ne sont pas disponibles",
             "JobFailed": "La tâche a échoué",
             "ChooseTool": "Choisissez un outil",
-            "ChooseOption": "Choisir une action"
+            "ChooseOption": "Choisir une action",
+            "SendReport": "Envoyer un rapport"
         }
     },
     "ru": {
@@ -119,7 +121,8 @@
             "fileTypesUnavailable": "Текстовые форматы, такие как .txt, .csv, .svg, не поддерживаются",
             "JobFailed": "Действие не выпонено",
             "ChooseTool": "Выберите инструмент",
-            "ChooseOption": "Выберите действие"
+            "ChooseOption": "Выберите действие",
+            "SendReport": "Отправить Жалобу"
         }
     }
 }
