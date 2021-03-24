@@ -1,4 +1,5 @@
 {
+    "docs": "Possible values are aix, darwin, freebsd, linux, openbsd, sunos, and win32",
     "language": "default",
     "FIDO": [
         {
@@ -8,11 +9,6 @@
         },
         {
             "OS": "linux",
-            "scriptPath": "fido/fido/fido.py",
-            "scriptType": "python3"
-        },
-        {
-            "OS": "mac",
             "scriptPath": "fido/fido/fido.py",
             "scriptType": "python3"
         }
