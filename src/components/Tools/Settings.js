@@ -22,8 +22,8 @@ const Settings = props => {
   const [defaultFileType, setDefaultFileType] = useState('');
   const [defaultTool, setDefaultTool] = useState('');
 
-  useEffect(() => console.log(props), [props]);
-
+  /* useEffect(() => console.log(props), [props]); */
+  useEffect(() => console.log(defaultTool), [defaultTool]);
   return (
     <Container>
       <div className="d-flex w-100 flex-row align-items-center mb-5">
@@ -43,12 +43,20 @@ const Settings = props => {
                 <Label for="defaultTool" className="w-50 m-auto">
                   <span>{t('defaultFileFormat')}:</span>
                 </Label>
-                <Input type="select">
+                <Input
+                  type="select"
+                  onChange={e => {
+                    setDefaultFileType(e.target.value);
+                  }}
+                >
                   {
                     fileFormats ? (
-                      fileFormats.map((e, i) => (
-                        <option key={i}>{e.id.name}</option>
-                      ))
+                      <>
+                        <option hidden>{t('chooseFileFormat')}</option>
+                        {fileFormats.map((e, i) => (
+                          <option key={i}>{e.id.name}</option>
+                        ))}
+                      </>
                     ) : (
                       <>
                         <option hidden>{t('fileTypesUnavailable')}</option>
@@ -69,19 +77,20 @@ const Settings = props => {
                 <Label for="defaultTool" className="w-50 m-auto">
                   <span>{t('defaultTool')}:</span>
                 </Label>
-                <Input type="select">
-                  {/* {JPEGArray.map((e, i) => (
-                    <option key={(i * 2) / 0.4}>{e}</option>
-                  ))} */}
-                  <option hidden>{t('noDefaultTools')}</option>
-                  <option disabled>{t('noDefaultTools')}</option>
+                <Input
+                  type="select"
+                  onChange={e => {
+                    setDefaultTool(e.target.value);
+                  }}
+                >
+                  {mapTools(actions, defaultActionType, defaultFileType)}
                 </Input>
               </FormGroup>
               {
                 defaultTool ? (
                   <div className="d-flex flex-row w-50 mb-3">
                     <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                    <span className="ml-1">{defaultTool.id.name}</span>
+                    <span className="ml-1">{defaultTool}</span>
                   </div>
                 )
                   : (
@@ -94,7 +103,7 @@ const Settings = props => {
             color="success"
             value="Execute"
             className="w-25 mt-4 align-self-center"
-            disabled
+            disabled={!defaultTool}
           >
             {t('Apply')}
           </Button>
@@ -106,10 +115,28 @@ const Settings = props => {
                 <CardTitle tag="h5" className="w-50 font-weight-bold text-center">
                   {t('ActionType')}
                 </CardTitle>
-                <Input type="select" className="w-50">
-                  {actionTypes.map((e, i) => (
-                    <option key={i}>{e.id.name}</option>
-                  ))}
+                <Input
+                  type="select"
+                  className="w-50"
+                  onChange={e => {
+                    setDefaultActionType(e.target.value);
+                  }}
+                >
+                  {
+                    actionTypes ? (
+                      <>
+                        <option hidden>{t('chooseAllowedActionTypes')}</option>
+                        {actionTypes.map((e, i) => (
+                          <option key={i}>{e.id.name}</option>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        <option hidden>{t('noActionTypes')}</option>
+                        <option disabled>{t('noActionTypes')}</option>
+                      </>
+                    )
+                  }
                 </Input>
               </FormGroup>
             </CardBody>

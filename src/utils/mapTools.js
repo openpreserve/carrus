@@ -3,30 +3,58 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
 /* eslint-disable arrow-body-style */
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import { green } from '@material-ui/core/colors';
 
-export default function mapTools(tools, actions, type) {
-  const { t } = useTranslation();
-  const activeTool = tools.find(tool => tool.active);
-  const acceptedActions = [];
-  if (!activeTool) {
-    return <span>{t('noDefaultTools')}</span>;
-  }
-  activeTool.toolAcceptedParameters.forEach(param => {
-    acceptedActions.push(actions.find(action => action.id.guid === param.id.guid));
+function unique(arr) {
+  const result = [];
+  arr.forEach(item => {
+    if (!result.find(e => e === item)) {
+      result.push(item);
+    }
   });
-  if (acceptedActions
-    .filter(action => action.constraints.length === 0 || action.constraints[0].allowedFormats[0].id.name === type)
-    .length) {
+  return result;
+}
+
+export default function mapTools(actions, defaultActionType, defaultFileType) {
+  const { t } = useTranslation();
+  const acceptedActions = [];
+
+  if (!defaultActionType || !defaultFileType) {
     return (
-      <div className="d-flex flex-row w-50 mb-3">
-        <CheckCircleOutlineIcon style={{ color: green[500] }} />
-        <span className="ml-1">{activeTool.id.name}</span>
-      </div>
+      <>
+        <option hidden>{t('noDefaultTools')}</option>
+        <option disabled>{t('noDefaultTools')}</option>
+      </>
     );
   }
-  return <span>{t('noDefaultTools')}</span>;
+
+  actions.forEach(action => {
+    if (
+      action.type.id.name === defaultActionType
+      && (action?.constraints.length === 0
+      || action?.constraints[0]?.allowedFormats.find((format) => format?.id.name === defaultFileType))
+    ) {
+      acceptedActions.push(action.tool.id.name);
+    }
+  });
+
+  if (acceptedActions.length) {
+    return (
+      <>
+        <option hidden>{t('ChooseTool')}</option>
+        {unique(acceptedActions).map((e, i) => (
+          <option key={i}>{e}</option>
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <option hidden>{t('noDefaultTools')}</option>
+      <option disabled>{t('noDefaultTools')}</option>
+    </>
+  );
 }
