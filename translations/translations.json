@@ -5,6 +5,7 @@
             "ActionType": "Action Type",
             "Tool": "Tool",
             "YourFile": "Your File",
+            "FileFormat": "File Format",
             "FromUrl": "From Url",
             "Validate": "Validate",
             "Characterize": "Characterize",
@@ -17,6 +18,7 @@
             "About": "About",
             "mainPage": "Main Page",
             "defaultTool": "Default Tool",
+            "defaultFileFormat": "Default File Format",
             "Loading": "Loading...",
             "DerivedFrom": "Derived from software Copyright 2004-2011 by the President and Fellows of Harvard College.",
             "GNULicense": "Released under the GNU Lesser General Public License.",
@@ -34,11 +36,12 @@
             "noActionTypes": "no Action Types",
             "invalidUrl": "Invalid URL",
             "corsErrorText": "Cant proccess link due to the cors policy error",
-            "fileTypesUnavailable": "text-based formats like .txt, .csv, .svg aren't available",
+            "fileTypesUnavailable": "No available file types",
             "JobFailed": "Job Failed",
             "ChooseTool": "Choose Tool",
             "ChooseOption": "Choose Option",
-            "SendReport": "Send Report"
+            "SendReport": "Send Report",
+            "Apply": "Apply"
         }
     },
     "fr": {
@@ -47,6 +50,7 @@
             "ActionType": "Type d'action",
             "Tool": "Outil",
             "YourFile": "Votre dossier",
+            "FileFormat": "Format de fichier",
             "FromUrl": "De l'URL",
             "Validate": "Valider",
             "Characterize": "Caractériser",
@@ -59,6 +63,7 @@
             "About": "À propos",
             "mainPage": "Page D'accueil",
             "defaultTool": "Outil par défaut",
+            "defaultFileFormat": "Format de fichier par défaut",
             "Loading": "Chargement...",
             "DerivedFrom": "Dérivé du logiciel Copyright 2004-2011 par le Président et les Fellows du Harvard College.",
             "GNULicense": "Publié sous la licence publique générale limitée GNU.",
@@ -76,11 +81,12 @@
             "noActionTypes": "Aucun type d'action",
             "invalidUrl": "URL invalide",
             "corsErrorText": "Lien de processus Cant en raison de l'erreur de politique cors",
-            "fileTypesUnavailable": "Les formats textuels tels que .txt, .csv, .svg ne sont pas disponibles",
+            "fileTypesUnavailable": "Aucun type de fichier disponible",
             "JobFailed": "La tâche a échoué",
             "ChooseTool": "Choisissez un outil",
             "ChooseOption": "Choisir une action",
-            "SendReport": "Envoyer un rapport"
+            "SendReport": "Envoyer un rapport",
+            "Apply": "Appliquer"
         }
     },
     "ru": {
@@ -89,6 +95,7 @@
             "ActionType": "Тип действия",
             "Tool": "Инструмент",
             "YourFile": "Ваш файл",
+            "FileFormat": "Тип файла",
             "FromUrl": "URL ссылка",
             "Validate": "Проверить",
             "Characterize": "Характеризовать",
@@ -101,6 +108,7 @@
             "About": "О нас",
             "mainPage": "Главная Страница",
             "defaultTool": "Инструмент по умолчанию",
+            "defaultFileFormat": "Тип файла по умолчанию",
             "Loading": "Загрузка...",
             "DerivedFrom": "Создано на основе программного обеспечения, с авторскими правами 2004–2011 гг, \n      принадлежащими президенту и научным сотрудникам Гарвардского колледжа.",
             "GNULicense": "Выпущено под Стандартной общественной лицензией ограниченного применения GNU.",
@@ -118,11 +126,12 @@
             "noActionTypes": "нет типа действия",
             "invalidUrl": "Недействительная ссылка",
             "corsErrorText": "Невозможно обработать ссылку из-за cors ошибки",
-            "fileTypesUnavailable": "Текстовые форматы, такие как .txt, .csv, .svg, не поддерживаются",
+            "fileTypesUnavailable": "Нет доступных типов файлов",
             "JobFailed": "Действие не выпонено",
             "ChooseTool": "Выберите инструмент",
             "ChooseOption": "Выберите действие",
-            "SendReport": "Отправить Жалобу"
+            "SendReport": "Отправить Жалобу",
+            "Apply": "Сохранить"
         }
     }
 }
