@@ -4,6 +4,7 @@
 /* eslint-disable no-console */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/no-array-index-key */
+/* eslint-disable no-else-return */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -19,7 +20,7 @@ function unique(arr) {
 
 export default function mapTools(actions, defaultActionType, defaultFileType) {
   const { t } = useTranslation();
-  const acceptedActions = [];
+  const acceptedTools = [];
 
   if (!defaultActionType || !defaultFileType) {
     return (
@@ -36,25 +37,25 @@ export default function mapTools(actions, defaultActionType, defaultFileType) {
       && (action?.constraints.length === 0
       || action?.constraints[0]?.allowedFormats.find((format) => format?.id.name === defaultFileType))
     ) {
-      acceptedActions.push(action.tool.id.name);
+      acceptedTools.push(action.tool.id.name);
     }
   });
 
-  if (acceptedActions.length) {
+  if (acceptedTools.length) {
     return (
       <>
         <option hidden>{t('ChooseTool')}</option>
-        {unique(acceptedActions).map((e, i) => (
-          <option key={i}>{e}</option>
+        {unique(acceptedTools).map((tool, i) => (
+          <option key={i}>{tool}</option>
         ))}
       </>
     );
+  } else {
+    return (
+      <>
+        <option hidden>{t('noDefaultTools')}</option>
+        <option disabled>{t('noDefaultTools')}</option>
+      </>
+    );
   }
-
-  return (
-    <>
-      <option hidden>{t('noDefaultTools')}</option>
-      <option disabled>{t('noDefaultTools')}</option>
-    </>
-  );
 }

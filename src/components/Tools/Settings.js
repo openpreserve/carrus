@@ -12,6 +12,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { green } from '@material-ui/core/colors';
 import mapTools from '../../utils/mapTools';
+import mapActions from '../../utils/mapActions';
 import setAcceptedActions from '../../utils/setAcceptedActions';
 
 const Settings = props => {
@@ -21,6 +22,7 @@ const Settings = props => {
   const [defaultActionType, setDefaultActionType] = useState('');
   const [defaultFileType, setDefaultFileType] = useState('');
   const [defaultTool, setDefaultTool] = useState('');
+  const [defaultAction, setDefaultAction] = useState('');
 
   /* useEffect(() => console.log(props), [props]); */
   useEffect(() => console.log(defaultTool), [defaultTool]);
@@ -31,9 +33,37 @@ const Settings = props => {
           <ArrowBackIcon />
         </Link>
         <h3 className="m-0 ml-3 font-weight-bold">{t('Tools')}</h3>
+        <FormGroup className="actipn-type-settings w-50 d-flex flex-row mb-0">
+          <Label for="defaultTool" className="w-50 m-auto text-right">
+            <span className="pr-3">{t('ActionType')}:</span>
+          </Label>
+          <Input
+            type="select"
+            className="w-50"
+            onChange={e => {
+              setDefaultActionType(e.target.value);
+            }}
+          >
+            {
+              actionTypes ? (
+                <>
+                  <option hidden>{t('chooseAllowedActionTypes')}</option>
+                  {actionTypes.map((e, i) => (
+                    <option key={i}>{e.id.name}</option>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <option hidden>{t('noActionTypes')}</option>
+                  <option disabled>{t('noActionTypes')}</option>
+                </>
+              )
+            }
+          </Input>
+        </FormGroup>
       </div>
       <div className="d-flex flex-row">
-        <div className="d-flex flex-column justify-content-center w-50 pt-5">
+        <div className="d-flex flex-column justify-content-center w-50">
           <Card className="w-100 border-0 mt-4">
             <CardBody>
               <CardTitle tag="h5" className="font-weight-bold">
@@ -99,22 +129,53 @@ const Settings = props => {
               }
             </CardBody>
           </Card>
+          <Card className="w-100 border-0">
+            <CardBody>
+              <CardTitle tag="h5" className="font-weight-bold">
+                {t('Action')}
+              </CardTitle>
+              <FormGroup className="mt-3 d-flex flex-row mb-3">
+                <Label for="defaultTool" className="w-50 m-auto">
+                  <span>{t('defaultAction')}:</span>
+                </Label>
+                <Input
+                  type="select"
+                  onChange={e => {
+                    setDefaultAction(e.target.value);
+                  }}
+                >
+                  {mapActions(actions, defaultActionType, defaultFileType, defaultTool)}
+                </Input>
+              </FormGroup>
+              {
+                defaultAction ? (
+                  <div className="d-flex flex-row w-50 mb-3">
+                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
+                    <span className="ml-1">{defaultAction}</span>
+                  </div>
+                )
+                  : (
+                    <span>{t('noActions')}</span>
+                  )
+              }
+            </CardBody>
+          </Card>
           <Button
             color="success"
             value="Execute"
             className="w-25 mt-4 align-self-center"
-            disabled={!defaultTool}
+            disabled={!defaultTool || !defaultAction}
           >
             {t('Apply')}
           </Button>
         </div>
-        <div className="w-50">
+        {/* <div className="w-50">
           <Card className="border-0">
             <CardBody>
-              <FormGroup className="d-flex flex-column align-items-end mb-3">
-                <CardTitle tag="h5" className="w-50 font-weight-bold text-center">
-                  {t('ActionType')}
-                </CardTitle>
+              <FormGroup className="mt-3 d-flex flex-row mb-3">
+                <Label for="defaultTool" className="w-50 m-auto text-right">
+                  <span className="pr-3">{t('ActionType')}:</span>
+                </Label>
                 <Input
                   type="select"
                   className="w-50"
@@ -141,7 +202,7 @@ const Settings = props => {
               </FormGroup>
             </CardBody>
           </Card>
-        </div>
+        </div> */}
       </div>
     </Container>
   );
