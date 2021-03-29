@@ -90,15 +90,16 @@ const Settings = props => {
         </FormGroup> */}
       </div>
       <div className="d-flex flex-row">
-        <div className="d-flex flex-column justify-content-center w-50">
+        <div className="d-flex flex-column justify-content-center w-75">
           <Card className="w-100 border-0 mt-4">
             <CardBody>
               <FormGroup className="mt-3 d-flex flex-row mb-3">
-                <Label for="defaultTool" className="w-50 m-auto">
+                <Label for="defaultTool" className="mr-1 my-auto w-25">
                   <span className="pr-3">{t('ActionType')}:</span>
                 </Label>
                 <Input
                   type="select"
+                  className="w-50"
                   onChange={e => {
                     setDefaultTool('no default');
                     setDefaultAction('no default');
@@ -130,11 +131,12 @@ const Settings = props => {
                 {t('FileFormat')}
               </CardTitle> */}
               <FormGroup className="mt-3 d-flex flex-row mb-3">
-                <Label for="defaultTool" className="w-50 m-auto">
+                <Label for="defaultTool" className="mr-1 my-auto w-25">
                   <span>{t('FileFormat')}:</span>
                 </Label>
                 <Input
                   type="select"
+                  className="w-50"
                   onChange={e => {
                     setDefaultTool('no default');
                     setDefaultAction('no default');
@@ -166,11 +168,12 @@ const Settings = props => {
                 {t('Tool')}
               </CardTitle> */}
               <FormGroup className="mt-3 d-flex flex-row mb-3">
-                <Label for="defaultTool" className="w-50 m-auto">
+                <Label for="defaultTool" className="mr-1 my-auto w-25">
                   <span>{t('defaultTool')}:</span>
                 </Label>
                 <Input
                   type="select"
+                  className="w-50"
                   value={
                     defaultTool
                   }
@@ -207,11 +210,12 @@ const Settings = props => {
                 {t('Action')}
               </CardTitle> */}
               <FormGroup className="mt-3 d-flex flex-row mb-3">
-                <Label for="defaultTool" className="w-50 m-auto">
+                <Label for="defaultTool" className="mr-1 my-auto w-25">
                   <span>{t('defaultAction')}:</span>
                 </Label>
                 <Input
                   type="select"
+                  className="w-50"
                   value={
                     defaultAction
                   }
@@ -252,40 +256,6 @@ const Settings = props => {
             {t('Apply')}
           </Button>
         </div>
-        {/* <div className="w-50">
-          <Card className="border-0">
-            <CardBody>
-              <FormGroup className="mt-3 d-flex flex-row mb-3">
-                <Label for="defaultTool" className="w-50 m-auto text-right">
-                  <span className="pr-3">{t('ActionType')}:</span>
-                </Label>
-                <Input
-                  type="select"
-                  className="w-50"
-                  onChange={e => {
-                    setDefaultActionType(e.target.value);
-                  }}
-                >
-                  {
-                    actionTypes ? (
-                      <>
-                        <option hidden>{t('chooseAllowedActionTypes')}</option>
-                        {actionTypes.map((e, i) => (
-                          <option key={i}>{e.id.name}</option>
-                        ))}
-                      </>
-                    ) : (
-                      <>
-                        <option hidden>{t('noActionTypes')}</option>
-                        <option disabled>{t('noActionTypes')}</option>
-                      </>
-                    )
-                  }
-                </Input>
-              </FormGroup>
-            </CardBody>
-          </Card>
-        </div> */}
       </div>
     </Container>
   );
