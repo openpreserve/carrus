@@ -58,7 +58,7 @@ const Settings = props => {
           <ArrowBackIcon />
         </Link>
         <h3 className="m-0 ml-3 font-weight-bold">{t('Tools')}</h3>
-        <FormGroup className="actipn-type-settings w-50 d-flex flex-row mb-0">
+        {/* <FormGroup className="actipn-type-settings w-50 d-flex flex-row mb-0">
           <Label for="defaultTool" className="w-50 m-auto text-right">
             <span className="pr-3">{t('ActionType')}:</span>
           </Label>
@@ -87,18 +87,51 @@ const Settings = props => {
               )
             }
           </Input>
-        </FormGroup>
+        </FormGroup> */}
       </div>
       <div className="d-flex flex-row">
         <div className="d-flex flex-column justify-content-center w-50">
           <Card className="w-100 border-0 mt-4">
             <CardBody>
-              <CardTitle tag="h5" className="font-weight-bold">
-                {t('FileFormat')}
-              </CardTitle>
               <FormGroup className="mt-3 d-flex flex-row mb-3">
                 <Label for="defaultTool" className="w-50 m-auto">
-                  <span>{t('defaultFileFormat')}:</span>
+                  <span className="pr-3">{t('ActionType')}:</span>
+                </Label>
+                <Input
+                  type="select"
+                  onChange={e => {
+                    setDefaultTool('no default');
+                    setDefaultAction('no default');
+                    setDefaultActionType(e.target.value);
+                  }}
+                >
+                  {
+                    actionTypes ? (
+                      <>
+                        <option hidden>{t('chooseAllowedActionTypes')}</option>
+                        {actionTypes.map((e, i) => (
+                          <option key={i}>{e.id.name}</option>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        <option hidden>{t('noActionTypes')}</option>
+                        <option disabled>{t('noActionTypes')}</option>
+                      </>
+                    )
+                  }
+                </Input>
+              </FormGroup>
+            </CardBody>
+          </Card>
+          <Card className="w-100 border-0">
+            <CardBody>
+              {/* <CardTitle tag="h5" className="font-weight-bold">
+                {t('FileFormat')}
+              </CardTitle> */}
+              <FormGroup className="mt-3 d-flex flex-row mb-3">
+                <Label for="defaultTool" className="w-50 m-auto">
+                  <span>{t('FileFormat')}:</span>
                 </Label>
                 <Input
                   type="select"
@@ -129,9 +162,9 @@ const Settings = props => {
           </Card>
           <Card className="w-100 border-0">
             <CardBody>
-              <CardTitle tag="h5" className="font-weight-bold">
+              {/* <CardTitle tag="h5" className="font-weight-bold">
                 {t('Tool')}
-              </CardTitle>
+              </CardTitle> */}
               <FormGroup className="mt-3 d-flex flex-row mb-3">
                 <Label for="defaultTool" className="w-50 m-auto">
                   <span>{t('defaultTool')}:</span>
@@ -148,7 +181,7 @@ const Settings = props => {
                   {mapTools(actions, defaultActionType, defaultFileType)}
                 </Input>
               </FormGroup>
-              {
+              {/* {
                 ((config.defaultValues.find((obj) => (
                   (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
                 )))?.defaultTool) ? (
@@ -165,14 +198,14 @@ const Settings = props => {
                   : (
                     <span>{t('noDefaultTools')}</span>
                   )
-              }
+              } */}
             </CardBody>
           </Card>
           <Card className="w-100 border-0">
             <CardBody>
-              <CardTitle tag="h5" className="font-weight-bold">
+              {/* <CardTitle tag="h5" className="font-weight-bold">
                 {t('Action')}
-              </CardTitle>
+              </CardTitle> */}
               <FormGroup className="mt-3 d-flex flex-row mb-3">
                 <Label for="defaultTool" className="w-50 m-auto">
                   <span>{t('defaultAction')}:</span>
@@ -189,7 +222,7 @@ const Settings = props => {
                   {mapActions(actions, defaultActionType, defaultFileType, defaultTool)}
                 </Input>
               </FormGroup>
-              {
+              {/* {
                 ((config.defaultValues.find((obj) => (
                   (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
                 )))?.defaultAction) ? (
@@ -206,7 +239,7 @@ const Settings = props => {
                   : (
                     <span>{t('noActions')}</span>
                   )
-              }
+              } */}
             </CardBody>
           </Card>
           <Button
