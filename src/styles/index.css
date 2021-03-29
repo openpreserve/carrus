@@ -131,3 +131,7 @@ label.custom-file-upload {
 .actipn-type-settings {
   margin-left: auto;
 }
+
+.titlebar.mb-3 {
+  z-index: 999;
+}

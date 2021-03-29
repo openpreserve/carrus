@@ -44,7 +44,7 @@ export default function mapTools(actions, defaultActionType, defaultFileType) {
   if (acceptedTools.length) {
     return (
       <>
-        <option hidden>{t('ChooseTool')}</option>
+        <option>no default</option>
         {unique(acceptedTools).map((tool, i) => (
           <option key={i}>{tool}</option>
         ))}
@@ -53,7 +53,7 @@ export default function mapTools(actions, defaultActionType, defaultFileType) {
   } else {
     return (
       <>
-        <option hidden>{t('noDefaultTools')}</option>
+        <option>no default</option>
         <option disabled>{t('noDefaultTools')}</option>
       </>
     );

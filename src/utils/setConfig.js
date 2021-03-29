@@ -86,3 +86,23 @@ export async function updateConfig(outFolder) {
     }
   }
 }
+
+export async function updateDefaultValues(defaultValues) {
+  const configDir = path.join(path.join(os.tmpdir(), 'jhove2020', 'config'));
+  if (await isExists(path.join(configDir, 'config.json'))) {
+    try {
+      let config = await reader(path.join(configDir, 'config.json'), 'utf8');
+      config = JSON.parse(config);
+      config.defaultValues = defaultValues;
+      await writer(path.join(configDir, 'config.json'), JSON.stringify(config));
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    try {
+      await writer(path.join(configDir, 'config.json'), JSON.stringify({ defaultValues }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}

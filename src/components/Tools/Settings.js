@@ -3,29 +3,54 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label, Button } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { ipcRenderer } from 'electron';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { green } from '@material-ui/core/colors';
 import mapTools from '../../utils/mapTools';
 import mapActions from '../../utils/mapActions';
-import setAcceptedActions from '../../utils/setAcceptedActions';
+import { setConfig } from '../../Redux/redux-reducers';
+import setDefaultValues from '../../utils/setDefaultValues';
 
 const Settings = props => {
-  const { actions, tools, fileFormats, actionTypes } = props;
+  const { actions, tools, fileFormats, actionTypes, config } = props;
   const { t } = useTranslation();
 
   const [defaultActionType, setDefaultActionType] = useState('');
   const [defaultFileType, setDefaultFileType] = useState('');
-  const [defaultTool, setDefaultTool] = useState('');
-  const [defaultAction, setDefaultAction] = useState('');
+  const [defaultTool, setDefaultTool] = useState('no default');
+  const [defaultAction, setDefaultAction] = useState('no default');
 
-  /* useEffect(() => console.log(props), [props]); */
-  useEffect(() => console.log(defaultTool), [defaultTool]);
+  const handleExecute = () => {
+    const defaultObj = {
+      defaultActionType,
+      defaultFileType,
+      defaultTool,
+      defaultAction,
+    };
+
+    if (config.defaultValues && config.defaultValues.length) {
+      config.defaultValues = setDefaultValues(defaultObj, config.defaultValues);
+      props.setConfig(config);
+      ipcRenderer.send('update-default-values', config.defaultValues);
+    } else {
+      config.defaultValues = [defaultObj];
+      props.setConfig(config);
+      ipcRenderer.send('update-default-values', [defaultObj]);
+    }
+
+    console.log(config);
+  };
+
+  useEffect(() => console.log(props), [props]);
+  /* useEffect(() => console.log(defaultTool), [defaultTool]);
+  useEffect(() => console.log(defaultAction), [defaultAction]); */
+
   return (
     <Container>
       <div className="d-flex w-100 flex-row align-items-center mb-5">
@@ -41,6 +66,8 @@ const Settings = props => {
             type="select"
             className="w-50"
             onChange={e => {
+              setDefaultTool('no default');
+              setDefaultAction('no default');
               setDefaultActionType(e.target.value);
             }}
           >
@@ -76,6 +103,8 @@ const Settings = props => {
                 <Input
                   type="select"
                   onChange={e => {
+                    setDefaultTool('no default');
+                    setDefaultAction('no default');
                     setDefaultFileType(e.target.value);
                   }}
                 >
@@ -109,6 +138,9 @@ const Settings = props => {
                 </Label>
                 <Input
                   type="select"
+                  value={
+                    defaultTool
+                  }
                   onChange={e => {
                     setDefaultTool(e.target.value);
                   }}
@@ -117,12 +149,19 @@ const Settings = props => {
                 </Input>
               </FormGroup>
               {
-                defaultTool ? (
+                ((config.defaultValues.find((obj) => (
+                  (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
+                )))?.defaultTool) ? (
                   <div className="d-flex flex-row w-50 mb-3">
                     <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                    <span className="ml-1">{defaultTool}</span>
+                    <span className="ml-1">{
+                      ((config.defaultValues.find((obj) => (
+                        (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
+                      )))?.defaultTool)
+                    }
+                    </span>
                   </div>
-                )
+                  )
                   : (
                     <span>{t('noDefaultTools')}</span>
                   )
@@ -140,6 +179,9 @@ const Settings = props => {
                 </Label>
                 <Input
                   type="select"
+                  value={
+                    defaultAction
+                  }
                   onChange={e => {
                     setDefaultAction(e.target.value);
                   }}
@@ -148,12 +190,19 @@ const Settings = props => {
                 </Input>
               </FormGroup>
               {
-                defaultAction ? (
+                ((config.defaultValues.find((obj) => (
+                  (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
+                )))?.defaultAction) ? (
                   <div className="d-flex flex-row w-50 mb-3">
                     <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                    <span className="ml-1">{defaultAction}</span>
+                    <span className="ml-1">{
+                      ((config.defaultValues.find((obj) => (
+                        (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
+                      )))?.defaultAction)
+                    }
+                    </span>
                   </div>
-                )
+                  )
                   : (
                     <span>{t('noActions')}</span>
                   )
@@ -164,7 +213,8 @@ const Settings = props => {
             color="success"
             value="Execute"
             className="w-25 mt-4 align-self-center"
-            disabled={!defaultTool || !defaultAction}
+            disabled={!defaultActionType || !defaultFileType}
+            onClick={handleExecute}
           >
             {t('Apply')}
           </Button>
@@ -219,6 +269,9 @@ const mapStateToProps = state => ({
   filePath: state.filePath,
   dirPath: state.dirPath,
   tools: state.tools,
+  config: state.config,
 });
 
-export default connect(mapStateToProps, {})(Settings);
+export default connect(mapStateToProps, {
+  setConfig,
+})(Settings);

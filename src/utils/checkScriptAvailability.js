@@ -42,8 +42,8 @@ export default function checkScriptAvailability(activeActionTypes, tools, accept
   });
 
   AvailableTools = AvailableTools.filter((tool) => {
-    const configTool = Object.keys(config).find(e => e === tool.toolName);
-    const OSconfigTool = configTool ? config[configTool].find(e => e.OS === os.platform()) : null;
+    const configTool = Object.keys(config?.tools).find(e => e === tool.toolName);
+    const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
     return OSconfigTool ? fs.existsSync(path.join(scriptPath, OSconfigTool.scriptPath)) : false;
   });
 

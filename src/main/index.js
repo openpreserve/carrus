@@ -15,7 +15,7 @@ import fs from 'fs';
 import os from 'os';
 import mime from 'mime-types';
 import { spawn } from 'child_process';
-import { setConfig, updateConfig } from '../utils/setConfig';
+import { setConfig, updateConfig, updateDefaultValues } from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
 import JobFailed from '../components/Report/JobFailed';
@@ -236,8 +236,8 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   let errorText = '';
   let dest = '';
 
-  const configTool = Object.keys(config).find(e => e === tool.toolName);
-  const OSconfigTool = configTool ? config[configTool].find(e => e.OS === os.platform()) : null;
+  const configTool = Object.keys(config?.tools).find(e => e === tool.toolName);
+  const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
   if (!OSconfigTool) {
     event.sender.send('receive-load', false);
     runJobFailed(`There is no ${tool.toolName} tool in config`);
@@ -345,5 +345,17 @@ ipcMain.on('execute-file-action', (event, arg) => {
     arg.filePath = arg.path;
     runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event, arg.config);
   }
-  updateConfig(outputPath);
+  try {
+    updateConfig(outputPath);
+  } catch (err) {
+    runJobFailed(err.message);
+  }
+});
+
+ipcMain.on('update-default-values', (event, defaultValues) => {
+  try {
+    updateDefaultValues(defaultValues);
+  } catch (err) {
+    runJobFailed(err.message);
+  }
 });

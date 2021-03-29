@@ -3,6 +3,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
+/* eslint-disable no-else-return */
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -79,9 +80,9 @@ const Main = props => {
     config.outFolder ? props.setDirPath(config.outFolder) : null;
   }, [config]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     console.log(props);
-  }, [props]); */
+  }, [props]);
 
   useEffect(() => {
     if (isURL(url)) {
@@ -108,6 +109,51 @@ const Main = props => {
       }
     });
     return result;
+  }
+
+  function handleDefaultValues(ToolRef, OptionRef, actionType) {
+    if (config.defaultValues && config.defaultValues.length) {
+      let AcceptedType = fileFormats.map(format => {
+        const type = format.identifiers.find(item => item.identifier === mimeType);
+        if (type) {
+          return {
+            mime: type.identifier,
+            name: format.id.name,
+          };
+        }
+        return {};
+      });
+      /* AcceptedType = AcceptedType.filter(e => e?.name);
+      if (AcceptedType.length) {
+        AcceptedType.forEach(type => {
+          const temp = config.defaultValues.find((obj) => (
+            (obj.defaultFileType === type.name && obj.defaultActionType === actionType)
+          ));
+          console.log(temp);
+        });
+      } */
+      AcceptedType = AcceptedType.find(e => e?.name);
+      if (AcceptedType) {
+        const currentObj = config.defaultValues.find((obj) => (
+          (obj.defaultFileType === AcceptedType.name && obj.defaultActionType === actionType)
+        ));
+        if (currentObj && currentObj.defaultTool !== 'no default') {
+          console.log(currentObj);
+          props.setTool(currentObj.defaultTool);
+          ToolRef = currentObj.defaultTool;
+        }
+        if (currentObj && currentObj.defaultAction !== 'no default') {
+          props.setOptions([{
+            value: acceptedActions
+              .find(action => action.id.name === currentObj.defaultAction).inputToolArguments.map(i => i.value),
+            name: currentObj.defaultAction,
+          }]);
+          OptionRef = currentObj.defaultAction;
+        }
+      }
+    }
+    /* props.setTool('JHOVE');
+    ToolRef = 'JHOVE'; */
   }
 
   return !load ? (
@@ -151,6 +197,7 @@ const Main = props => {
             InputActionTypeRef.current = e;
             InputToolRef.current ? document.querySelectorAll('select')[1].value = 'Choose Tool' : null;
             InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
+            handleDefaultValues(InputToolRef.current, InputOptionRef.current, e.target.value);
           }}
           defaultValue={activeActionTypes ? activeActionTypes.id.name : t('chooseAllowedActionTypes')}
         >
@@ -188,7 +235,13 @@ const Main = props => {
             InputToolRef.current = e;
             InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
           }}
-          defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'}
+          /* defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'} */
+          value={activeTool ? activeTool.id.name : 'Choose Tool'}
+          /* value={
+            activeTool
+              ? activeTool.id.name
+              : (mimeType && activeActionTypes ? ('JHOVE') : t('ChooseTool'))
+          } */
         >
           <option hidden>{t('ChooseTool')}</option>
           {activeActionTypes && mimeType.length ? (
@@ -208,7 +261,8 @@ const Main = props => {
         <Input
           className="w-50"
           type="select"
-          defaultValue={activeOption ? activeOption.name : 'Choose Option'}
+          /* defaultValue={activeOption ? activeOption.name : 'Choose Option'} */
+          value={activeOption ? activeOption.name : 'Choose Option'}
           onChange={e => {
             InputOptionRef.current = e;
             props.setOptions([{
