@@ -8,25 +8,15 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-function unique(arr) {
-  const result = [];
-  arr.forEach(item => {
-    if (!result.find(e => e === item)) {
-      result.push(item);
-    }
-  });
-  return result;
-}
-
-export default function mapTools(actions, defaultActionType, defaultFileType) {
+export default function mapActions(actions, defaultActionType, defaultFileType, defaultTool) {
   const { t } = useTranslation();
-  const acceptedTools = [];
+  const acceptedActions = [];
 
-  if (!defaultActionType || !defaultFileType) {
+  if (!defaultActionType || !defaultFileType || !defaultTool) {
     return (
       <>
-        <option hidden>{t('noDefaultTools')}</option>
-        <option disabled>{t('noDefaultTools')}</option>
+        <option hidden>{t('noActions')}</option>
+        <option disabled>{t('noActions')}</option>
       </>
     );
   }
@@ -37,25 +27,27 @@ export default function mapTools(actions, defaultActionType, defaultFileType) {
       && (action?.constraints.length === 0
       || action?.constraints[0]?.allowedFormats.find((format) => format?.id.name === defaultFileType))
     ) {
-      acceptedTools.push(action.tool.id.name);
+      acceptedActions.push(action);
     }
   });
 
-  if (acceptedTools.length) {
+  if (acceptedActions.length) {
     return (
       <>
         <option>no default</option>
-        {unique(acceptedTools).map((tool, i) => (
-          <option key={i}>{tool}</option>
-        ))}
-      </>
-    );
-  } else {
-    return (
-      <>
-        <option>no default</option>
-        <option disabled>{t('noDefaultTools')}</option>
+        {acceptedActions
+          .filter(action => (action.tool.id.name === defaultTool))
+          .map((action, i) => (
+            <option key={i}>{action.id.name}</option>
+          ))}
       </>
     );
   }
+
+  return (
+    <>
+      <option>no default</option>
+      <option disabled>{t('noActions')}</option>
+    </>
+  );
 }

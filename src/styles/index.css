@@ -127,3 +127,11 @@ label.custom-file-upload {
   top: 100%;
   font-size: 14px;
 }
+
+.actipn-type-settings {
+  margin-left: auto;
+}
+
+.titlebar.mb-3 {
+  z-index: 999;
+}

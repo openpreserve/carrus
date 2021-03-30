@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -22,9 +23,9 @@ const FileHandler = props => {
   const { fileName, mimeType, isTypeAccepted } = props;
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log(props);
-  }, [props]);
+  }, [props]); */
 
   return (
     <div className="mt-3">
@@ -35,12 +36,10 @@ const FileHandler = props => {
             : null;
           try {
             const MT = await FileType.fromFile(e[0].path);
-            console.log(MT);
             if (MT) {
               props.setFileInfo(e[0].name, e[0].path, MT.mime);
             } else {
               const newMT = mime.lookup(e[0].path);
-              console.log(newMT);
               props.setFileInfo(e[0].name, e[0].path, newMT);
             }
           } catch (err) {

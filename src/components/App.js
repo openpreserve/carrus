@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
@@ -10,6 +11,7 @@ import Tools from './Tools/Tools';
 import About from './About/About';
 import Report from './Report/Report';
 import JobFailed from './Report/JobFailed';
+import Settings from './Tools/Settings';
 import { setParData, setConfig } from '../Redux/redux-reducers';
 
 const App = props => {
@@ -39,8 +41,11 @@ const App = props => {
             {currentWindow === 'report' ? <Report /> : null}
             {currentWindow === 'jobFailed' ? <JobFailed /> : null}
           </Route>
-          <Route exact path="/tools">
+          {/* <Route exact path="/tools">
             <Tools />
+          </Route> */}
+          <Route exact path="/tools">
+            <Settings />
           </Route>
           <Route exact path="/about">
             <About />
