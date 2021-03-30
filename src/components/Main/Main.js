@@ -137,7 +137,7 @@ const Main = props => {
         if (currentObj && currentObj.defaultAction !== 'no default') {
           props.setOptions([{
             value: acceptedActions
-              .find(action => action.id.name === currentObj.defaultAction).inputToolArguments.map(i => i.value),
+              .find(action => action.id.name === currentObj.defaultAction)?.inputToolArguments.map(i => i.value),
             name: currentObj.defaultAction,
           }]);
           OptionRef = currentObj.defaultAction;
@@ -252,7 +252,7 @@ const Main = props => {
             InputOptionRef.current = e;
             props.setOptions([{
               value: acceptedActions
-                .find(action => action.id.name === e.target.value).inputToolArguments.map(i => i.value),
+                .find(action => action.id.name === e.target.value)?.inputToolArguments.map(i => i.value),
               name: e.target.value,
             }]);
           }}
