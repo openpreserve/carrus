@@ -1,5 +1,14 @@
 {
-    "docs": "Possible values are aix, darwin, freebsd, linux, openbsd, sunos, and win32",
+    "docs": ["Valid \"language\" values are \"defaut\" - the langauge is then taken from the user locale, or any language tag as defined by RFC 1766",
+        "",
+        "The \"tools\" dictionary defines OS specific tool parameters",
+        "Each tool is identified by its name, which should match the toll name in the PAR schema",
+        "",
+        "Valid \"OS\" values are \"aix\", \"darwin\" (for MacOS), \"freebsd\", \"linux\", \"openbsd\", \"sunos\", and \"win32\"",
+        "The \"scriptPath\" property is local to the libs subfolder in the application folder",
+        "The \"scriptType\" property is either \"shell\", in which case an OS-specific way of running scripts will be used\"", 
+        "or an interpreter CLI that will be run to execute the script."
+    ],
     "language": "default",
     "tools": {
         "FIDO": [

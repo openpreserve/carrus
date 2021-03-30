@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label, Button } from 'reactstrap';
@@ -25,6 +26,9 @@ const Settings = props => {
   const [defaultFileType, setDefaultFileType] = useState('');
   const [defaultTool, setDefaultTool] = useState('no default');
   const [defaultAction, setDefaultAction] = useState('no default');
+
+  const InputToolRef = useRef();
+  const InputActionRef = useRef();
 
   const handleExecute = () => {
     const defaultObj = {
@@ -51,6 +55,24 @@ const Settings = props => {
   /* useEffect(() => console.log(defaultTool), [defaultTool]);
   useEffect(() => console.log(defaultAction), [defaultAction]); */
 
+  function handleDefaultValues(ToolRef, ActionRef, actionType, fileType) {
+    console.log(actionType, fileType);
+    if (config.defaultValues && config.defaultValues.length) {
+      const currentObj = config.defaultValues.find((obj) => (
+        (obj.defaultFileType === fileType && obj.defaultActionType === actionType)
+      ));
+      console.log(currentObj);
+      if (currentObj) {
+        setDefaultTool(currentObj.defaultTool);
+        ToolRef = currentObj.defaultTool;
+      }
+      if (currentObj && currentObj.defaultTool !== 'no default') {
+        setDefaultAction(currentObj.defaultAction);
+        ActionRef = currentObj.defaultAction;
+      }
+    }
+  }
+
   return (
     <Container>
       <div className="d-flex w-100 flex-row align-items-center mb-5">
@@ -58,36 +80,6 @@ const Settings = props => {
           <ArrowBackIcon />
         </Link>
         <h3 className="m-0 ml-3 font-weight-bold">{t('Tools')}</h3>
-        {/* <FormGroup className="actipn-type-settings w-50 d-flex flex-row mb-0">
-          <Label for="defaultTool" className="w-50 m-auto text-right">
-            <span className="pr-3">{t('ActionType')}:</span>
-          </Label>
-          <Input
-            type="select"
-            className="w-50"
-            onChange={e => {
-              setDefaultTool('no default');
-              setDefaultAction('no default');
-              setDefaultActionType(e.target.value);
-            }}
-          >
-            {
-              actionTypes ? (
-                <>
-                  <option hidden>{t('chooseAllowedActionTypes')}</option>
-                  {actionTypes.map((e, i) => (
-                    <option key={i}>{e.id.name}</option>
-                  ))}
-                </>
-              ) : (
-                <>
-                  <option hidden>{t('noActionTypes')}</option>
-                  <option disabled>{t('noActionTypes')}</option>
-                </>
-              )
-            }
-          </Input>
-        </FormGroup> */}
       </div>
       <div className="d-flex flex-row">
         <div className="d-flex flex-column justify-content-center w-75">
@@ -104,6 +96,7 @@ const Settings = props => {
                     setDefaultTool('no default');
                     setDefaultAction('no default');
                     setDefaultActionType(e.target.value);
+                    handleDefaultValues(InputToolRef, InputActionRef, e.target.value, defaultFileType);
                   }}
                 >
                   {
@@ -127,9 +120,6 @@ const Settings = props => {
           </Card>
           <Card className="w-100 border-0">
             <CardBody>
-              {/* <CardTitle tag="h5" className="font-weight-bold">
-                {t('FileFormat')}
-              </CardTitle> */}
               <FormGroup className="mt-3 d-flex flex-row mb-3">
                 <Label for="defaultTool" className="mr-1 my-auto w-25">
                   <span>{t('FileFormat')}:</span>
@@ -141,6 +131,7 @@ const Settings = props => {
                     setDefaultTool('no default');
                     setDefaultAction('no default');
                     setDefaultFileType(e.target.value);
+                    handleDefaultValues(InputToolRef, InputActionRef, defaultActionType, e.target.value);
                   }}
                 >
                   {
@@ -164,9 +155,6 @@ const Settings = props => {
           </Card>
           <Card className="w-100 border-0">
             <CardBody>
-              {/* <CardTitle tag="h5" className="font-weight-bold">
-                {t('Tool')}
-              </CardTitle> */}
               <FormGroup className="mt-3 d-flex flex-row mb-3">
                 <Label for="defaultTool" className="mr-1 my-auto w-25">
                   <span>{t('defaultTool')}:</span>
@@ -179,6 +167,7 @@ const Settings = props => {
                   }
                   onChange={e => {
                     setDefaultTool(e.target.value);
+                    InputToolRef.current = e;
                   }}
                 >
                   {mapTools(actions, defaultActionType, defaultFileType)}
@@ -206,9 +195,6 @@ const Settings = props => {
           </Card>
           <Card className="w-100 border-0">
             <CardBody>
-              {/* <CardTitle tag="h5" className="font-weight-bold">
-                {t('Action')}
-              </CardTitle> */}
               <FormGroup className="mt-3 d-flex flex-row mb-3">
                 <Label for="defaultTool" className="mr-1 my-auto w-25">
                   <span>{t('defaultAction')}:</span>
@@ -221,6 +207,7 @@ const Settings = props => {
                   }
                   onChange={e => {
                     setDefaultAction(e.target.value);
+                    InputActionRef.current = e;
                   }}
                 >
                   {mapActions(actions, defaultActionType, defaultFileType, defaultTool)}

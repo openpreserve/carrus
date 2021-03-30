@@ -123,15 +123,7 @@ const Main = props => {
         }
         return {};
       });
-      /* AcceptedType = AcceptedType.filter(e => e?.name);
-      if (AcceptedType.length) {
-        AcceptedType.forEach(type => {
-          const temp = config.defaultValues.find((obj) => (
-            (obj.defaultFileType === type.name && obj.defaultActionType === actionType)
-          ));
-          console.log(temp);
-        });
-      } */
+
       AcceptedType = AcceptedType.find(e => e?.name);
       if (AcceptedType) {
         const currentObj = config.defaultValues.find((obj) => (
@@ -152,8 +144,6 @@ const Main = props => {
         }
       }
     }
-    /* props.setTool('JHOVE');
-    ToolRef = 'JHOVE'; */
   }
 
   return !load ? (
@@ -237,11 +227,6 @@ const Main = props => {
           }}
           /* defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'} */
           value={activeTool ? activeTool.id.name : 'Choose Tool'}
-          /* value={
-            activeTool
-              ? activeTool.id.name
-              : (mimeType && activeActionTypes ? ('JHOVE') : t('ChooseTool'))
-          } */
         >
           <option hidden>{t('ChooseTool')}</option>
           {activeActionTypes && mimeType.length ? (
