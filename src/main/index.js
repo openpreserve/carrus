@@ -249,12 +249,21 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
     : path.join(__dirname, '..', 'libs', OSconfigTool.scriptPath);
 
   const command = OSconfigTool.scriptType === 'shell' ? scriptPath : OSconfigTool.scriptType;
-
-  reportData = spawn(command, [
+  /* reportData = spawn(command, [
     OSconfigTool.scriptType !== 'shell' && scriptPath,
     ...optionArr,
     filePath,
-  ]);
+  ]); */
+  const optionObj = {};
+
+  OSconfigTool.scriptType === 'shell'
+    ? optionObj.cwd = path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory) : null;
+
+  reportData = spawn(command, [
+    ...OSconfigTool.scriptCommand,
+    ...optionArr,
+    filePath,
+  ], optionObj);
 
   reportData.stdout.on('data', (data) => {
     data ? reportText += data.toString() : null;
