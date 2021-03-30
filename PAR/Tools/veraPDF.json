@@ -4,7 +4,7 @@
       "name": "veraPDF",
       "namespace": "https://verapdf.org"
     },
-    "toolLabel": "veraPDF/verapdf.bat",
+    "toolLabel": "veraPDF",
     "toolName": "veraPDF",
     "toolOperatingEnvironments": [
       "windows command line",

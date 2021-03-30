@@ -31,15 +31,15 @@ export async function setConfig(isDevelopment) {
 
   try {
     if (await isExists(path.join(configDir, 'config.json'))) {
-      configuration = await reader(path.join(configDir, 'config.json'), 'utf8');
+      configuration = JSON.parse(await reader(path.join(configDir, 'config.json'), 'utf8'));
     } else {
       configuration = initialConfig;
     }
     if (await isExists(path.join(tempConfigDir, 'config.json'))) {
-      const tempConf = await reader(path.join(tempConfigDir, 'config.json'), 'utf8');
+      const tempConf = JSON.parse(await reader(path.join(tempConfigDir, 'config.json'), 'utf8'));
       configuration = {
-        ...JSON.parse(configuration),
-        ...JSON.parse(tempConf),
+        ...configuration,
+        ...tempConf,
       };
     } else {
       try {
@@ -81,6 +81,26 @@ export async function updateConfig(outFolder) {
   } else {
     try {
       await writer(path.join(configDir, 'config.json'), JSON.stringify({ outFolder }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export async function updateDefaultValues(defaultValues) {
+  const configDir = path.join(path.join(os.tmpdir(), 'jhove2020', 'config'));
+  if (await isExists(path.join(configDir, 'config.json'))) {
+    try {
+      let config = await reader(path.join(configDir, 'config.json'), 'utf8');
+      config = JSON.parse(config);
+      config.defaultValues = defaultValues;
+      await writer(path.join(configDir, 'config.json'), JSON.stringify(config));
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    try {
+      await writer(path.join(configDir, 'config.json'), JSON.stringify({ defaultValues }));
     } catch (error) {
       console.log(error);
     }
