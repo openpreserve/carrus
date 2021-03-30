@@ -54,7 +54,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "dist:linux": "yarn dist --linux",
     "dist:mac": "yarn dist --mac",
-    "fido": "yarn clone",
+    "fido": "yarn clone && yarn fido-setup",
     "clone": "git clone https://github.com/openpreserve/fido.git ./libs/fido && cd ./libs/fido && rm -rf .git",
     "fido-setup": "cd ./libs/fido && python setup.py install",
     "jhove": "cd ./libs && java -DINSTALL_PATH=%cd%/libs/jhove -jar jhove-latest.jar -options-system && del jhove-latest.jar",

@@ -14,5 +14,7 @@ install veraPDF : 1. *"yarn veraPDF-download"*
                   3.(win) *"yarn veraPDF"*
                   3.(linux) *"yarn veraPDF:linux"*
 
+install Jpylyzer : *"yarn run jpylyzer"*
+
 Production Build : *"yarn run dist"*
 Production Build (linux) : *"yarn run dist:linux"*
