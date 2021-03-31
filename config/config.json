@@ -15,48 +15,72 @@
             {
                 "OS": "win32",
                 "scriptPath": "fido/fido/fido.py",
-                "scriptType": "python"
+                "scriptType": "python",
+                "scriptCommand": [
+                    "-m",
+                    "fido.fido"
+                ],
+                "workingDirectory": "fido"
             },
             {
                 "OS": "linux",
                 "scriptPath": "fido/fido/fido.py",
-                "scriptType": "python3"
+                "scriptType": "python3",
+                "scriptCommand": [
+                    "-m",
+                    "fido.fido"
+                ],
+                "workingDirectory": "fido"
             }
         ],
         "JHOVE": [
             {
                 "OS": "win32",
                 "scriptPath": "jhove/jhove.bat",
-                "scriptType": "shell"
+                "scriptType": "shell",
+                "scriptCommand": []
             },
             {
                 "OS": "linux",
                 "scriptPath": "jhove/jhove",
-                "scriptType": "shell"
+                "scriptType": "shell",
+                "scriptCommand": []
             }
         ],
         "veraPDF": [
             {
                 "OS": "win32",
                 "scriptPath": "veraPDF/verapdf.bat",
-                "scriptType": "shell"
+                "scriptType": "shell",
+                "scriptCommand": []
             },
             {
                 "OS": "linux",
                 "scriptPath": "veraPDF/verapdf",
-                "scriptType": "shell"
+                "scriptType": "shell",
+                "scriptCommand": []
             }
         ],
         "Jpylyzer": [
             {
                 "OS": "win32",
                 "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
-                "scriptType": "python"
+                "scriptType": "python",
+                "scriptCommand": [
+                    "-m",
+                    "jpylyzer.jpylyzer"
+                ],
+                "workingDirectory": "jpylyzer"
             },
             {
                 "OS": "linux",
                 "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
-                "scriptType": "python3"
+                "scriptType": "python3",
+                "scriptCommand": [
+                    "-m",
+                    "jpylyzer.jpylyzer"
+                ],
+                "workingDirectory": "jpylyzer"
             }  
         ]
     }

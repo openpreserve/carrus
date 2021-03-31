@@ -250,11 +250,16 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 
   const command = OSconfigTool.scriptType === 'shell' ? scriptPath : OSconfigTool.scriptType;
 
+  const optionObj = {};
+
+  (OSconfigTool.scriptType === 'python' || OSconfigTool.scriptType === 'python3')
+    ? optionObj.cwd = path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory) : null;
+
   reportData = spawn(command, [
-    OSconfigTool.scriptType !== 'shell' && scriptPath,
+    ...OSconfigTool.scriptCommand,
     ...optionArr,
     filePath,
-  ]);
+  ], optionObj);
 
   reportData.stdout.on('data', (data) => {
     data ? reportText += data.toString() : null;

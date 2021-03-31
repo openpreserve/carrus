@@ -3,7 +3,7 @@
     "example": "veraPDF -f 2a ${inputfile}",
     "id": {
         "guid": "74475cac-acdd-431b-be75-d67a36fd578d",
-        "name": "2a validation profile",
+        "name": "PDF/A-2a",
         "namespace": "http://verapdf.org"
     },
     "inputFiles": [{
