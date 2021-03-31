@@ -16,7 +16,7 @@
                 "OS": "win32",
                 "scriptPath": "fido/fido/fido.py",
                 "scriptType": "python",
-                "scriptCommand": [
+                "scriptArguments": [
                     "-m",
                     "fido.fido"
                 ],
@@ -26,7 +26,7 @@
                 "OS": "linux",
                 "scriptPath": "fido/fido/fido.py",
                 "scriptType": "python3",
-                "scriptCommand": [
+                "scriptArguments": [
                     "-m",
                     "fido.fido"
                 ],
@@ -38,13 +38,13 @@
                 "OS": "win32",
                 "scriptPath": "jhove/jhove.bat",
                 "scriptType": "shell",
-                "scriptCommand": []
+                "scriptArguments": []
             },
             {
                 "OS": "linux",
                 "scriptPath": "jhove/jhove",
                 "scriptType": "shell",
-                "scriptCommand": []
+                "scriptArguments": []
             }
         ],
         "veraPDF": [
@@ -52,13 +52,13 @@
                 "OS": "win32",
                 "scriptPath": "veraPDF/verapdf.bat",
                 "scriptType": "shell",
-                "scriptCommand": []
+                "scriptArguments": []
             },
             {
                 "OS": "linux",
                 "scriptPath": "veraPDF/verapdf",
                 "scriptType": "shell",
-                "scriptCommand": []
+                "scriptArguments": []
             }
         ],
         "Jpylyzer": [
@@ -66,7 +66,7 @@
                 "OS": "win32",
                 "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
                 "scriptType": "python",
-                "scriptCommand": [
+                "scriptArguments": [
                     "-m",
                     "jpylyzer.jpylyzer"
                 ],
@@ -76,7 +76,7 @@
                 "OS": "linux",
                 "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
                 "scriptType": "python3",
-                "scriptCommand": [
+                "scriptArguments": [
                     "-m",
                     "jpylyzer.jpylyzer"
                 ],
