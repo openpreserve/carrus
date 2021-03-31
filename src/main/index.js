@@ -256,7 +256,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
     ? optionObj.cwd = path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory) : null;
 
   reportData = spawn(command, [
-    ...OSconfigTool.scriptCommand,
+    ...OSconfigTool.scriptArguments,
     ...optionArr,
     filePath,
   ], optionObj);
