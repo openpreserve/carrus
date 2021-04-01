@@ -92,7 +92,7 @@ async function createMainWindow() {
   });
 
   const translate = await setTranslate(isDevelopment);
-  const config = await setConfig(isDevelopment);
+  const config = await setConfig(isDevelopment, runJobFailed);
   pythonPath = config.pythonPath;
   const PAR = await setPAR(isDevelopment, runJobFailed);
   window.webContents.on('did-finish-load', () => {

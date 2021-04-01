@@ -4,16 +4,25 @@
 /* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 export default function setDefaultValues(defaultObj, defaultValues) {
-  const oldObjIndex = defaultValues.findIndex((obj) => (
-    (obj.defaultFileType === defaultObj.defaultFileType && obj.defaultActionType === defaultObj.defaultActionType)
-  ));
-  if (oldObjIndex !== (-1)) {
-    defaultValues[oldObjIndex].defaultAction = defaultObj.defaultAction;
-    defaultValues[oldObjIndex].defaultTool = defaultObj.defaultTool;
+  if (defaultValues[defaultObj.defaultActionType]) {
+    if (defaultValues[defaultObj.defaultActionType][defaultObj.defaultFileType]) {
+      defaultValues[defaultObj.defaultActionType][defaultObj.defaultFileType].defaultTool = defaultObj.defaultTool;
+      defaultValues[defaultObj.defaultActionType][defaultObj.defaultFileType].defaultAction = defaultObj.defaultAction;
+      return defaultValues;
+    }
+    defaultValues[defaultObj.defaultActionType][defaultObj.defaultFileType] = {
+      defaultTool: defaultObj.defaultTool,
+      defaultAction: defaultObj.defaultAction,
+    };
     return defaultValues;
   }
 
-  defaultValues.push(defaultObj);
+  defaultValues[defaultObj.defaultActionType] = {
+    [defaultObj.defaultFileType]: {
+      defaultTool: defaultObj.defaultTool,
+      defaultAction: defaultObj.defaultAction,
+    },
+  };
 
   return defaultValues;
 }

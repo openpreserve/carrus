@@ -38,38 +38,37 @@ const Settings = props => {
       defaultAction,
     };
 
-    if (config.defaultValues && config.defaultValues.length) {
+    if (defaultAction === 'no default' || defaultTool === 'no default') {
+      return;
+    }
+
+    if (config.defaultValues) {
       config.defaultValues = setDefaultValues(defaultObj, config.defaultValues);
       props.setConfig(config);
       ipcRenderer.send('update-default-values', config.defaultValues);
     } else {
-      config.defaultValues = [defaultObj];
+      config.defaultValues = {
+        [defaultObj.defaultActionType]: {
+          [defaultObj.defaultFileType]: {
+            defaultTool,
+            defaultAction,
+          },
+        },
+      };
       props.setConfig(config);
-      ipcRenderer.send('update-default-values', [defaultObj]);
+      ipcRenderer.send('update-default-values', config.defaultValues);
     }
-
-    console.log(config);
   };
 
-  useEffect(() => console.log(props), [props]);
-  /* useEffect(() => console.log(defaultTool), [defaultTool]);
-  useEffect(() => console.log(defaultAction), [defaultAction]); */
+  /* useEffect(() => console.log(props), [props]); */
 
   function handleDefaultValues(ToolRef, ActionRef, actionType, fileType) {
-    console.log(actionType, fileType);
-    if (config.defaultValues && config.defaultValues.length) {
-      const currentObj = config.defaultValues.find((obj) => (
-        (obj.defaultFileType === fileType && obj.defaultActionType === actionType)
-      ));
-      console.log(currentObj);
-      if (currentObj) {
-        setDefaultTool(currentObj.defaultTool);
-        ToolRef = currentObj.defaultTool;
-      }
-      if (currentObj && currentObj.defaultTool !== 'no default') {
-        setDefaultAction(currentObj.defaultAction);
-        ActionRef = currentObj.defaultAction;
-      }
+    if (config.defaultValues && config.defaultValues[actionType] && config.defaultValues[actionType][fileType]) {
+      const { defaultTool: tool, defaultAction: action } = config.defaultValues[actionType][fileType];
+      setDefaultTool(tool);
+      ToolRef = tool;
+      setDefaultAction(action);
+      ActionRef = action;
     }
   }
 
@@ -173,24 +172,6 @@ const Settings = props => {
                   {mapTools(actions, defaultActionType, defaultFileType)}
                 </Input>
               </FormGroup>
-              {/* {
-                ((config.defaultValues.find((obj) => (
-                  (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
-                )))?.defaultTool) ? (
-                  <div className="d-flex flex-row w-50 mb-3">
-                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                    <span className="ml-1">{
-                      ((config.defaultValues.find((obj) => (
-                        (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
-                      )))?.defaultTool)
-                    }
-                    </span>
-                  </div>
-                  )
-                  : (
-                    <span>{t('noDefaultTools')}</span>
-                  )
-              } */}
             </CardBody>
           </Card>
           <Card className="w-100 border-0">
@@ -202,6 +183,7 @@ const Settings = props => {
                 <Input
                   type="select"
                   className="w-50"
+                  disabled={!defaultTool || defaultTool === 'no default'}
                   value={
                     defaultAction
                   }
@@ -213,24 +195,6 @@ const Settings = props => {
                   {mapActions(actions, defaultActionType, defaultFileType, defaultTool)}
                 </Input>
               </FormGroup>
-              {/* {
-                ((config.defaultValues.find((obj) => (
-                  (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
-                )))?.defaultAction) ? (
-                  <div className="d-flex flex-row w-50 mb-3">
-                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                    <span className="ml-1">{
-                      ((config.defaultValues.find((obj) => (
-                        (obj.defaultFileType === defaultFileType && obj.defaultActionType === defaultActionType)
-                      )))?.defaultAction)
-                    }
-                    </span>
-                  </div>
-                  )
-                  : (
-                    <span>{t('noActions')}</span>
-                  )
-              } */}
             </CardBody>
           </Card>
           <Button

@@ -20,7 +20,7 @@ const initialConfig = {
   language: 'default',
 };
 
-export async function setConfig(isDevelopment) {
+export async function setConfig(isDevelopment, runJobFailed) {
   let configDir = path.join(__dirname, '..', 'config');
   if (isDevelopment) {
     configDir = path.join(__dirname, '..', '..', 'config');
@@ -36,7 +36,13 @@ export async function setConfig(isDevelopment) {
       configuration = initialConfig;
     }
     if (await isExists(path.join(tempConfigDir, 'config.json'))) {
-      const tempConf = JSON.parse(await reader(path.join(tempConfigDir, 'config.json'), 'utf8'));
+      let tempConf = {};
+      try {
+        tempConf = JSON.parse(await reader(path.join(tempConfigDir, 'config.json'), 'utf8'));
+      } catch (error) {
+        runJobFailed(`${error.message} ${path.join(tempConfigDir, 'config.json')}`);
+        console.log(error.message);
+      }
       configuration = {
         ...configuration,
         ...tempConf,
@@ -50,6 +56,7 @@ export async function setConfig(isDevelopment) {
         }
       } catch (err) {
         console.error(err);
+        runJobFailed(err.message);
       }
     }
     if (configuration.language === 'default') {

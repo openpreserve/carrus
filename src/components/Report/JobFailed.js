@@ -11,7 +11,6 @@ const JobFailed = (props) => {
   const { i18n } = useTranslation();
   const { t } = useTranslation();
   ipcRenderer.on('receive-err', (event, arg) => {
-    console.log(arg.report);
     setReport(arg.report);
   });
 

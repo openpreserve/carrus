@@ -34,7 +34,7 @@ export default function mapActions(actions, defaultActionType, defaultFileType, 
   if (acceptedActions.length) {
     return (
       <>
-        <option>no default</option>
+        <option hidden>{t('ChooseOption')}</option>
         {acceptedActions
           .filter(action => (action.tool.id.name === defaultTool))
           .map((action, i) => (
@@ -46,7 +46,7 @@ export default function mapActions(actions, defaultActionType, defaultFileType, 
 
   return (
     <>
-      <option>no default</option>
+      <option hidden>{t('noActions')}</option>
       <option disabled>{t('noActions')}</option>
     </>
   );

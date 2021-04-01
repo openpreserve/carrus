@@ -26,7 +26,7 @@ export default function checkScriptAvailability(activeActionTypes, tools, accept
     scriptPath = path.join(__dirname, '..', '..', 'libs');
   }
 
-  if (tools.length === 0) {
+  if (tools.length === 0 || !config.tools) {
     return <option disabled>No accepted tools</option>;
   }
 
@@ -41,11 +41,16 @@ export default function checkScriptAvailability(activeActionTypes, tools, accept
     }
   });
 
-  AvailableTools = AvailableTools.filter((tool) => {
-    const configTool = Object.keys(config?.tools).find(e => e === tool.toolName);
-    const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
-    return OSconfigTool ? fs.existsSync(path.join(scriptPath, OSconfigTool.scriptPath)) : false;
-  });
+  try {
+    AvailableTools = AvailableTools.filter((tool) => {
+      const configTool = Object.keys(config.tools).find(e => e === tool.toolName);
+      const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
+      return OSconfigTool ? fs.existsSync(path.join(scriptPath, OSconfigTool.scriptPath)) : false;
+    });
+  } catch (error) {
+    AvailableTools = '';
+    console.error(error);
+  }
 
   return (AvailableTools.length !== 0
     ? AvailableTools.map(e => <option key={e.id.guid}>{e.id.name}</option>)

@@ -80,9 +80,9 @@ const Main = props => {
     config.outFolder ? props.setDirPath(config.outFolder) : null;
   }, [config]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log(props);
-  }, [props]);
+  }, [props]); */
 
   useEffect(() => {
     if (isURL(url)) {
@@ -112,7 +112,7 @@ const Main = props => {
   }
 
   function handleDefaultValues(ToolRef, OptionRef, actionType) {
-    if (config.defaultValues && config.defaultValues.length) {
+    if (config.defaultValues) {
       let AcceptedType = fileFormats.map(format => {
         const type = format.identifiers.find(item => item.identifier === mimeType);
         if (type) {
@@ -125,22 +125,20 @@ const Main = props => {
       });
 
       AcceptedType = AcceptedType.find(e => e?.name);
+
       if (AcceptedType) {
-        const currentObj = config.defaultValues.find((obj) => (
-          (obj.defaultFileType === AcceptedType.name && obj.defaultActionType === actionType)
-        ));
-        if (currentObj && currentObj.defaultTool !== 'no default') {
-          console.log(currentObj);
-          props.setTool(currentObj.defaultTool);
-          ToolRef = currentObj.defaultTool;
-        }
-        if (currentObj && currentObj.defaultAction !== 'no default') {
+        if (config.defaultValues
+          && config.defaultValues[actionType]
+          && config.defaultValues[actionType][AcceptedType.name]) {
+          const { defaultTool: tool, defaultAction: action } = config.defaultValues[actionType][AcceptedType.name];
+          props.setTool(tool);
+          ToolRef = tool;
           props.setOptions([{
             value: acceptedActions
-              .find(action => action.id.name === currentObj.defaultAction)?.inputToolArguments.map(i => i.value),
-            name: currentObj.defaultAction,
+              .find(act => act.id.name === action)?.inputToolArguments.map(i => i.value),
+            name: action,
           }]);
-          OptionRef = currentObj.defaultAction;
+          OptionRef = action;
         }
       }
     }
