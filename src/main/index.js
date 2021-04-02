@@ -67,6 +67,7 @@ async function createMainWindow() {
   if (isDevelopment) {
     window.webContents.openDevTools();
   }
+  /* window.webContents.openDevTools(); */
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
@@ -252,8 +253,11 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 
   const optionObj = {};
 
-  (OSconfigTool.scriptType === 'python' || OSconfigTool.scriptType === 'python3')
-    ? optionObj.cwd = path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory) : null;
+  if (OSconfigTool.scriptType === 'python' || OSconfigTool.scriptType === 'python3') {
+    optionObj.cwd = isDevelopment
+      ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory)
+      : path.join(__dirname, '..', 'libs', OSconfigTool.workingDirectory);
+  }
 
   reportData = spawn(command, [
     ...OSconfigTool.scriptArguments,

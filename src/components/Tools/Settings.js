@@ -4,6 +4,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
+/* eslint-disable prefer-const */
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label, Button } from 'reactstrap';
@@ -31,7 +32,7 @@ const Settings = props => {
   const InputActionRef = useRef();
 
   const handleExecute = () => {
-    const defaultObj = {
+    let defaultObj = {
       defaultActionType,
       defaultFileType,
       defaultTool,

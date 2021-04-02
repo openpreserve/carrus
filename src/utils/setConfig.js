@@ -71,7 +71,7 @@ export async function setConfig(isDevelopment, runJobFailed) {
   }
 }
 
-export async function updateConfig(outFolder) {
+export async function updateConfig(outFolder, runJobFailed) {
   const configDir = path.join(path.join(os.tmpdir(), 'jhove2020', 'config'));
   if (await isExists(path.join(configDir, 'config.json'))) {
     try {
@@ -84,17 +84,19 @@ export async function updateConfig(outFolder) {
       await writer(path.join(configDir, 'config.json'), JSON.stringify(config));
     } catch (error) {
       console.log(error);
+      runJobFailed(error.message);
     }
   } else {
     try {
       await writer(path.join(configDir, 'config.json'), JSON.stringify({ outFolder }));
     } catch (error) {
       console.log(error);
+      runJobFailed(error.message);
     }
   }
 }
 
-export async function updateDefaultValues(defaultValues) {
+export async function updateDefaultValues(defaultValues, runJobFailed) {
   const configDir = path.join(path.join(os.tmpdir(), 'jhove2020', 'config'));
   if (await isExists(path.join(configDir, 'config.json'))) {
     try {
@@ -104,12 +106,14 @@ export async function updateDefaultValues(defaultValues) {
       await writer(path.join(configDir, 'config.json'), JSON.stringify(config));
     } catch (error) {
       console.log(error);
+      runJobFailed(error.message);
     }
   } else {
     try {
       await writer(path.join(configDir, 'config.json'), JSON.stringify({ defaultValues }));
     } catch (error) {
       console.log(error);
+      runJobFailed(error.message);
     }
   }
 }
