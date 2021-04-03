@@ -31,7 +31,17 @@
                     "fido.fido"
                 ],
                 "workingDirectory": "fido"
-            }
+            },
+            {
+                "OS": "darwin",
+                "scriptPath": "fido/fido/fido.py",
+                "scriptType": "/usr/local/bin/python3",
+                "scriptArguments": [
+                    "-m",
+                    "fido.fido"
+                ],
+                "workingDirectory": "fido"
+            }        
         ],
         "JHOVE": [
             {
@@ -42,6 +52,12 @@
             },
             {
                 "OS": "linux",
+                "scriptPath": "jhove/jhove",
+                "scriptType": "shell",
+                "scriptArguments": []
+            },
+            {
+                "OS": "darwin",
                 "scriptPath": "jhove/jhove",
                 "scriptType": "shell",
                 "scriptArguments": []
@@ -56,6 +72,12 @@
             },
             {
                 "OS": "linux",
+                "scriptPath": "veraPDF/verapdf",
+                "scriptType": "shell",
+                "scriptArguments": []
+            },
+            {
+                "OS": "darwin",
                 "scriptPath": "veraPDF/verapdf",
                 "scriptType": "shell",
                 "scriptArguments": []
@@ -76,6 +98,16 @@
                 "OS": "linux",
                 "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
                 "scriptType": "python3",
+                "scriptArguments": [
+                    "-m",
+                    "jpylyzer.jpylyzer"
+                ],
+                "workingDirectory": "jpylyzer"
+            },
+            {
+                "OS": "darwin",
+                "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
+                "scriptType": "/usr/local/bin/python3",
                 "scriptArguments": [
                     "-m",
                     "jpylyzer.jpylyzer"

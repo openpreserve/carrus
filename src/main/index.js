@@ -253,7 +253,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 
   const optionObj = {};
 
-  if (OSconfigTool.scriptType === 'python' || OSconfigTool.scriptType === 'python3') {
+  if (OSconfigTool.workingDirectory) {
     optionObj.cwd = isDevelopment
       ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory)
       : path.join(__dirname, '..', 'libs', OSconfigTool.workingDirectory);
