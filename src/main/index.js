@@ -18,7 +18,6 @@ import { spawn } from 'child_process';
 import { setConfig, updateConfig, updateDefaultValues } from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
-import JobFailed from '../components/Report/JobFailed';
 
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 
@@ -29,7 +28,6 @@ const request = require('request');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
-let pythonPath;
 let outputPath;
 
 async function createMainWindow() {
@@ -94,7 +92,6 @@ async function createMainWindow() {
 
   const translate = await setTranslate(isDevelopment);
   const config = await setConfig(isDevelopment, runJobFailed);
-  pythonPath = config.pythonPath;
   const PAR = await setPAR(isDevelopment, runJobFailed);
   window.webContents.on('did-finish-load', () => {
     window.webContents.send('translate', translate);
