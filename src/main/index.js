@@ -18,6 +18,7 @@ import { spawn } from 'child_process';
 import { setConfig, updateConfig, updateDefaultValues } from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
+import { APP_NAME } from '../utils/constants';
 
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 
@@ -50,7 +51,7 @@ async function createMainWindow() {
   const window = new BrowserWindow({
     minWidth,
     minHeight,
-    title: 'JHove 2020',
+    title: APP_NAME,
     frame: false,
     titleBarStyle: 'hidden',
     webPreferences: {
@@ -119,7 +120,7 @@ app.on('activate', () => {
 });
 
 const download = (url, dest) => new Promise((resolve, reject) => {
-  const downloadDir = path.join(path.join(os.tmpdir(), 'jhove2020', 'downloads'));
+  const downloadDir = path.join(path.join(os.tmpdir(), APP_NAME, 'downloads'));
   try {
     if (!fs.existsSync(downloadDir)) {
       fs.mkdirSync(downloadDir);
@@ -178,7 +179,7 @@ const runJobFailed = (error) => {
   const win = new BrowserWindow({
     minWidth: 1037,
     minHeight: 500,
-    title: 'JHove 2020',
+    title: APP_NAME,
     frame: false,
     titleBarStyle: 'hidden',
     webPreferences: {
@@ -271,7 +272,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
       const win = new BrowserWindow({
         minWidth: 1037,
         minHeight: 700,
-        title: 'JHove 2020',
+        title: APP_NAME,
         frame: false,
         titleBarStyle: 'hidden',
         webPreferences: {
@@ -333,7 +334,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 
 ipcMain.on('execute-file-action', (event, arg) => {
   if (arg.fileOrigin === 'url') {
-    arg.filePath = path.join(os.tmpdir(), 'jhove2020', 'downloads', `${getDateString()}-${arg.fileName}`);
+    arg.filePath = path.join(os.tmpdir(), APP_NAME, 'downloads', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
         .then(() => runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event, arg.config))

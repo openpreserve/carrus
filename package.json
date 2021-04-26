@@ -1,18 +1,18 @@
 {
-  "name": "jhove2020",
+  "name": "opf-carrus",
   "version": "1.0.0",
   "license": "MIT",
   "homepage": "https://www.electron.build/configuration/configuration#Metadata-homepage",
   "author": {
-    "name": "jhove2020",
+    "name": "OPF Carrus",
     "email": "duallab@gmail.com"
   },
   "engines": {
     "node": ">=12"
   },
   "build": {
-    "productName": "jhove2020",
-    "appId": "jhove2020",
+    "productName": "OPF Carrus",
+    "appId": "opf-carrus",
     "copyright": "Copyright © 2020 https://github.com/openpreserve/",
     "target": "NSIS",
     "win": {
