@@ -1,25 +1,44 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormGroup, Label, Input } from 'reactstrap';
+import { useTranslation } from 'react-i18next';
+import { FormGroup, Label, Input, FormFeedback, InputGroup, FormText } from 'reactstrap';
 import { setURL } from '../../Redux/redux-reducers';
 
-const UrlHandler = props => (
-  <div className="mt-3 d-flex flex-column">
-    <FormGroup className="mt-3 w-50 d-flex flex-row">
-      <Label for="action" className="mr-1 my-auto w-25">
-        <span>URL: </span>
-      </Label>
-      <Input
-        type="url"
-        name="url"
-        id="exampleUrl"
-        placeholder="Your url"
-        onChange={e => props.setURL(e.target.value)}
-      />
-    </FormGroup>
-  </div>
-);
+const UrlHandler = props => {
+  const { url, isValid, feedback, isEmpty, mimeType } = props;
+  const { t } = useTranslation();
 
-const mapStateToProps = state => ({ url: state.url });
+  return (
+    <div className="mt-3 d-flex flex-column">
+      <FormGroup className="mt-3 w-100 d-flex flex-row">
+        <Label for="action" className="mr-1 my-auto w-25">
+          <span>URL: </span>
+        </Label>
+        <InputGroup className="w-50">
+          <Input
+            type="url"
+            name="url"
+            id="exampleUrl"
+            placeholder="Your url"
+            onChange={e => {
+              document.querySelectorAll('select')[0].value = t('chooseAllowedActionTypes');
+              props.setURL(e.target.value);
+            }}
+            value={url}
+            valid={isValid && !isEmpty}
+            invalid={!isValid && !isEmpty}
+          />
+          {!isValid && <FormFeedback tooltip>{feedback}</FormFeedback>}
+          {mimeType && <FormText className="mimeTypeURL">{mimeType}</FormText>}
+        </InputGroup>
+      </FormGroup>
+    </div>
+  );
+};
+
+const mapStateToProps = state => ({ url: state.url, config: state.config, mimeType: state.mimeType });
 
 export default connect(mapStateToProps, { setURL })(UrlHandler);

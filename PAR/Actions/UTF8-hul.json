@@ -1,0 +1,45 @@
+{
+    "description": "The UTF8-hul module recognizes and validates content streams encoded with the Unicode UTF-8 encoding.",
+    "example": "-m UTF8-hul ${inputfile}",
+    "id": {
+        "guid": "9cb64bc3-4ae7-458d-81ed-de44780a7854",
+        "name": "UTF8-hul",
+        "namespace": "http://jhove.openpreservation.org/modules/utf8/"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+            "filepath": ""
+        },
+        "name": "inputfile.$ext"
+    }],
+    "constraints": [],
+    "inputToolArguments": [{
+            "description": "The UTF8-hul module.",
+            "type": "command_line",
+            "value": "-m"
+        },
+        {
+            "description": "The UTF8-hul module.",
+            "type": "command_line",
+            "value": "UTF8-hul"
+        }
+    ],
+    "outputFiles": [
+
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+            "name": "JHOVE",
+            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

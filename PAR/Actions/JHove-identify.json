@@ -1,0 +1,41 @@
+{
+    "description": "identify the file format of a digital object using JHOVE",
+    "example": "-ks ${inputfile}",
+    "id": {
+        "guid": "17bdd9f5-ab5f-49a7-a9cb-a790e49d54b3",
+        "name": "Identification based on internal signatures",
+        "namespace": "http://jhove.openpreservation.org/getting-started/#running"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+          "filepath": ""
+        },
+        "name": "inputfile.$ext"
+      }
+    ],
+    "constraints": [],
+    "inputToolArguments": [{
+        "description": "Calculate CRC32, MD5, and SHA-1 checksums and Format identification based on internal signatures only",
+        "type": "command_line",
+        "value": "-ks"
+        }
+    ],
+    "outputFiles": [
+  
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+            "name": "JHOVE",
+            "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+        }
+    },
+    "type": {
+      "id": {
+        "guid": "56c56576-8931-4d90-bf30-b21fc21001c0",
+        "name": "Identify",
+        "namespace": "https://openpreservation.org"
+      }
+    }
+}

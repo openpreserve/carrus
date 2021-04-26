@@ -1,0 +1,51 @@
+{
+  "description": "identify the file format of a digital object using FIDO",
+  "example": "-zip ${inputfile}",
+  "id": {
+    "guid": "b727bab0-c0cd-41a4-a2e0-5b6fdc021b80",
+    "name": "zip",
+    "namespace": "https://openpreservation.org/products/fido/"
+  },
+  "inputFiles": [{
+      "description": "File that will be acted upon",
+      "file": {
+        "filepath": ""
+      },
+      "name": "inputfile.zip"
+    }
+  ],
+  "constraints": [{
+      "allowedFormats": [{
+          "id": {
+            "guid": "6e0f8c1b-846b-4c87-9fa5-65d65c14c292",
+            "name": "zip",
+            "namespace": "https://openpreservation.org"
+          }
+        }
+      ]
+    }
+  ],
+  "inputToolArguments": [{
+      "description": "recurse into zip and tar files",
+      "type": "command_line",
+      "value": "-zip"
+    }
+  ],
+  "outputFiles": [
+
+  ],
+  "tool": {
+    "id": {
+      "guid": "e41fd267-627a-4a79-ac8f-725f3bdcfc1d",
+      "name": "FIDO",
+      "namespace": "https://github.com/openpreserve/fido/releases/tag/v1.4.1"
+    }
+  },
+  "type": {
+    "id": {
+      "guid": "56c56576-8931-4d90-bf30-b21fc21001c0",
+      "name": "Identify",
+      "namespace": "https://openpreservation.org"
+    }
+  }
+}

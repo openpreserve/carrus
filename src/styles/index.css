@@ -1,12 +1,19 @@
 .titlebar {
   -webkit-user-select: none;
   -webkit-app-region: drag;
-  background-color: whisper;
+  background-color: white;
+  width: 100%;
+  position: fixed;
+  top: 0;
 }
 
 button,
 svg {
   -webkit-app-region: no-drag;
+}
+
+.main-content {
+  margin-top: 75px;
 }
 
 .btn:focus {
@@ -56,9 +63,9 @@ a:hover {
   border-bottom: 1px solid #dee2e6;
 }
 
-.dropzone-selection{
+.dropzone-selection {
   cursor: pointer;
-} 
+}
 
 .dropzone-selection p::selection {
   background: transparent;
@@ -86,7 +93,7 @@ a:hover {
   background-color: white;
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
@@ -98,10 +105,25 @@ label.custom-file-upload {
   border: 1px solid #ced4da;
   padding: 6px 16px;
   cursor: pointer;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
 .dir_path.dir_path:focus {
   border-color: #ced4da;
   box-shadow: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.container.container {
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+.mimeTypeURL {
+  position: absolute;
+  top: 100%;
+  font-size: 14px;
 }

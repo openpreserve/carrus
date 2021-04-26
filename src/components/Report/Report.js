@@ -1,46 +1,47 @@
-/* eslint-disable no-console */
-import React, { useState } from 'react';
-import { ipcRenderer } from 'electron';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
+import { ipcRenderer, shell } from 'electron';
+import { connect } from 'react-redux';
+import * as os from 'os';
 import { Jumbotron, Container } from 'reactstrap';
-// import WarningIcon from '@material-ui/icons/Warning';
-// import CancelIcon from '@material-ui/icons/Cancel';
-// import ReportProblemIcon from '@material-ui/icons/ReportProblem';
-// import { orange } from '@material-ui/core/colors';
-
-const Report = () => {
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import * as clipboard from 'clipboard-polyfill/text';
+import showItemInFolder from '../../utils/linuxShowItem';
+import {
+  setLoad,
+} from '../../Redux/redux-reducers';
+/* eslint-disable no-console */
+const Report = (props) => {
   const [report, setReport] = useState('');
+  const [path, setPath] = useState('');
   ipcRenderer.on('receiver', (event, arg) => {
-    setReport(arg);
+    setReport(arg.report);
+    setPath(arg.path);
   });
+
+  /* useEffect(() => console.log(props), [props]); */
+
   return (
     <div>
       <Jumbotron fluid className="bg-white pt-0 pb-0 m-0">
         <Container fluid className="d-flex flex-column align-items-center">
-          {/* <h1 className="display-3">
-            <WarningIcon style={{ fontSize: 100 }} color="secondary" />
-          </h1>
-          <p className="lead m-0">{fileName}</p>
-          <p>
-            <span>Validation completed</span>
-          </p>
-          <Container className="w-75">
-            <Jumbotron className="p-4 bg-light align-self-center">
-              <p className="lead">
-                <p>The pdf you submitted has the following results:</p>
-              </p>
-              <div className="d-flex flex-row mb-3">
-                <CancelIcon color="secondary" />
-                <span className="ml-2">4 errors</span>
-              </div>{' '}
-              <div className="d-flex flex-row mb-4">
-                <ReportProblemIcon color="secondary" style={{ color: orange[500] }} />
-                <span className="ml-2">2 warnings</span>
-              </div>
-            </Jumbotron>
-          </Container> */}
           <Container>
-            <Jumbotron className="p-4 bg-light align-self-center m-0">
-              <p>{report}</p>
+            {report && path && (
+              <div className="d-flex flex-row mb-3 justify-content-end w-100">
+                <FileCopyIcon onClick={() => clipboard.writeText(report)} className="cursor-pointer" />
+                <FolderOpenIcon
+                  onClick={() => {
+                    if (os.platform() === 'linux') {
+                      showItemInFolder(path);
+                    } else shell.showItemInFolder(path);
+                  }}
+                  className="cursor-pointer"
+                />
+              </div>
+            )}
+            <Jumbotron className="p-4 bg-light align-self-center m-0 d-flex flex-row">
+              <pre className="w-100 text-left">{report}</pre>
             </Jumbotron>
           </Container>
         </Container>
@@ -49,4 +50,10 @@ const Report = () => {
   );
 };
 
-export default Report;
+const mapStateToProps = state => ({
+  load: state.load,
+});
+
+export default connect(mapStateToProps, {
+  setLoad,
+})(Report);

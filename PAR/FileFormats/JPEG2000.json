@@ -1,0 +1,20 @@
+{
+    "id": {
+        "guid": "dbf62923-44f3-4ab1-b2ff-c2729bda030b",
+        "name": "JPEG2000",
+        "namespace": "https://openpreservation.org"
+    },
+    "aliases": [
+      "JP2"
+    ],
+    "name": "JPEG2000 file format",
+    "lastUpdatedDate": "2021-01-04T13:45:30",
+    "identifiers": [{
+        "identifier": "image/jp2",
+        "identifierType": "MIME"
+      }, {
+        "identifier": "image/jpm",
+        "identifierType": "MIME"
+      }
+    ]
+}

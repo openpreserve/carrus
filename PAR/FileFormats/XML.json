@@ -1,0 +1,20 @@
+{
+    "id": {
+        "guid": "bd54596e-0ac9-4fc0-ac1e-62e03219382e",
+        "name": "XML",
+        "namespace": "https://openpreservation.org"
+    },
+    "aliases": [
+      "xml 1.0/1.1"
+    ],
+    "name": "Waveform Audio File Format",
+    "lastUpdatedDate": "2021-02-02T16:21:00",
+    "identifiers": [{
+        "identifier": "application/xml",
+        "identifierType": "MIME"
+      }, {
+        "identifier": " text/xml",
+        "identifierType": "MIME"
+      }
+    ]
+}

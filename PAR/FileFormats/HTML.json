@@ -1,0 +1,17 @@
+{
+    "id": {
+        "guid": "8251c857-bb3a-474b-82d9-7292f3ce8258",
+        "name": "HTML",
+        "namespace": "https://openpreservation.org"
+    },
+    "aliases": [
+      "TEXT"
+    ],
+    "name": "Hypertext Markup Language format",
+    "lastUpdatedDate": "2021-02-03T11:57:00",
+    "identifiers": [{
+        "identifier": "text/html",
+        "identifierType": "MIME"
+      }
+    ]
+}

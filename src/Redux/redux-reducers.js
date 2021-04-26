@@ -1,39 +1,57 @@
-/* eslint-disable no-console */
 import actionTypes from './types';
-import Validate from '../PAR/Actions/Validate.json';
-import Characterize from '../PAR/Actions/Characterize.json';
 
 const initialState = {
-  actions: [
-    {
-      ...Validate,
-      active: true,
-    },
-    {
-      ...Characterize,
-      active: false,
-    },
-  ],
-  tool: '',
-  outputFolder: '',
+  actions: [],
+  tools: [],
+  options: [],
+  fileFormats: [],
+  actionTypes: [],
   url: '',
   fileOrigin: 'file',
+  defaultPDFTool: '',
   defaultJPEGTool: 'JPEG hul',
   filePath: '',
   dirPath: '',
   fileName: '',
+  mimeType: '',
+  load: false,
+  config: {},
 };
 
 export const preproccessReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_ACTIONS: {
+      return {
+        ...state,
+        actions: action.payload,
+      };
+    }
     case actionTypes.SET_ACTION: {
       return {
         ...state,
         actions: state.actions.map(e => ({
           ...e,
-          active: e.preservationActionName === action.payload,
+          active: e.id.name === action.payload,
         })),
-        tool: state.actions.filter(e => e.active)[0].tool[0].toolName,
+        tools: state.tools.map(e => ({
+          ...e,
+          active: false,
+        })),
+        options: [],
+      };
+    }
+    case actionTypes.SET_ACTION_TYPE: {
+      return {
+        ...state,
+        actionTypes: state.actionTypes.map(e => ({
+          ...e,
+          active: e.id.name === action.payload,
+        })),
+        tools: state.tools.map(e => ({
+          ...e,
+          active: false,
+        })),
+        options: [],
       };
     }
     case actionTypes.SET_OPTIONS: {
@@ -45,7 +63,14 @@ export const preproccessReducer = (state = initialState, action) => {
     case actionTypes.SET_TOOL: {
       return {
         ...state,
-        tool: action.payload,
+        tools: state.tools.map(e => ({
+          ...e,
+          active: e.toolName === action.payload,
+        })),
+        options: state.options.map(e => ({
+          ...e,
+          active: false,
+        })),
       };
     }
     case actionTypes.SET_URL: {
@@ -54,16 +79,26 @@ export const preproccessReducer = (state = initialState, action) => {
         url: action.payload,
       };
     }
-    case actionTypes.SET_OUTPUT_FOLDER: {
-      return {
-        ...state,
-        outputFolder: action.payload,
-      };
-    }
     case actionTypes.SET_FILE_ORIGIN: {
       return {
         ...state,
         fileOrigin: action.payload,
+        actions: state.actions.map(e => ({
+          ...e,
+          active: false,
+        })),
+        tools: state.tools.map(e => ({
+          ...e,
+          active: false,
+        })),
+        options: state.options.map(e => ({
+          ...e,
+          active: false,
+        })),
+        mimeType: '',
+        fileName: '',
+        filePath: '',
+        url: '',
       };
     }
     case actionTypes.UPDATE_JPEG_TOOL: {
@@ -72,22 +107,67 @@ export const preproccessReducer = (state = initialState, action) => {
         defaultJPEGTool: action.payload,
       };
     }
-    case actionTypes.SET_FILE_PATH: {
-      return {
-        ...state,
-        filePath: action.payload,
-      };
-    }
-    case actionTypes.SET_FILE_NAME: {
-      return {
-        ...state,
-        fileName: action.payload,
-      };
-    }
+
     case actionTypes.SET_DIR_PATH: {
       return {
         ...state,
         dirPath: action.payload,
+      };
+    }
+    case actionTypes.SET_DEFAULT_PDF_TOOl: {
+      return {
+        ...state,
+        defaultPDFTool: action.payload,
+      };
+    }
+
+    case actionTypes.SET_FILE_INFO: {
+      return {
+        ...state,
+        mimeType: action.payload.type,
+        fileName: action.payload.name,
+        filePath: action.payload.path,
+        actionTypes: state.actionTypes.map(e => ({
+          ...e,
+          active: false,
+        })),
+        actions: state.actions.map(e => ({
+          ...e,
+          active: false,
+        })),
+        tools: state.tools.map(e => ({
+          ...e,
+          active: false,
+        })),
+        options: [],
+      };
+    }
+
+    case actionTypes.SET_PAR_DATA: {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+
+    case actionTypes.SET_MIME_TYPE: {
+      return {
+        ...state,
+        mimeType: action.payload,
+      };
+    }
+
+    case actionTypes.SET_CONFIG: {
+      return {
+        ...state,
+        config: action.payload,
+      };
+    }
+
+    case actionTypes.SET_LOAD: {
+      return {
+        ...state,
+        load: action.payload,
       };
     }
 
@@ -99,11 +179,19 @@ export const preproccessReducer = (state = initialState, action) => {
 
 export const setTool = value => ({ type: actionTypes.SET_TOOL, payload: value });
 export const setOptions = value => ({ type: actionTypes.SET_OPTIONS, payload: value });
+export const setActions = value => ({ type: actionTypes.SET_ACTIONS, payload: value });
 export const setAction = value => ({ type: actionTypes.SET_ACTION, payload: value });
+export const setActionType = value => ({ type: actionTypes.SET_ACTION_TYPE, payload: value });
 export const setURL = value => ({ type: actionTypes.SET_URL, payload: value });
-export const setOutputFolder = value => ({ type: actionTypes.SET_OUTPUT_FOLDER, payload: value });
 export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payload: value });
+export const setDefaultPDFTool = value => ({ type: actionTypes.SET_DEFAULT_PDF_TOOl, payload: value });
 export const updateJPEGTool = value => ({ type: actionTypes.UPDATE_JPEG_TOOL, payload: value });
-export const uploadFile = value => ({ type: actionTypes.SET_FILE_NAME, payload: value });
-export const setFilePath = value => ({ type: actionTypes.SET_FILE_PATH, payload: value });
 export const setDirPath = value => ({ type: actionTypes.SET_DIR_PATH, payload: value });
+export const setFileInfo = (fileName, filePath, fileMimeType) => ({
+  type: actionTypes.SET_FILE_INFO,
+  payload: { name: fileName, path: filePath, type: fileMimeType },
+});
+export const setMimeType = value => ({ type: actionTypes.SET_MIME_TYPE, payload: value });
+export const setParData = value => ({ type: actionTypes.SET_PAR_DATA, payload: value });
+export const setConfig = value => ({ type: actionTypes.SET_CONFIG, payload: value });
+export const setLoad = value => ({ type: actionTypes.SET_LOAD, payload: value });

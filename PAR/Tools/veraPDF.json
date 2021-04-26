@@ -1,0 +1,17 @@
+{
+    "id": {
+      "guid": "cc198b57-7a14-469e-afbd-feb170e692e1",
+      "name": "veraPDF",
+      "namespace": "https://verapdf.org"
+    },
+    "toolLabel": "veraPDF/verapdf.bat",
+    "toolName": "veraPDF",
+    "toolOperatingEnvironments": [
+      "windows command line",
+      "linux command line",
+      "MacOS command line"
+    ],
+    "toolAcceptedParameters": [],
+    "toolPublisher": "veraPDF Consortium",
+    "toolVersion": "1.18"
+}

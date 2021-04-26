@@ -1,0 +1,17 @@
+{
+    "id": {
+      "guid": "cc198b57-7a14-469e-afbd-feb170e692ef",
+      "name": "JHOVE",
+      "namespace": "https://github.com/openpreserve/jhove/releases/tag/v1.24.1"
+    },
+    "toolLabel": "jhove/jhove.bat",
+    "toolName": "JHOVE",
+    "toolOperatingEnvironments": [
+      "windows command line",
+      "linux command line",
+      "MacOS command line"
+    ],
+    "toolAcceptedParameters": [],
+    "toolPublisher": "Open Preservation Foundation",
+    "toolVersion": "1.24.1"
+}

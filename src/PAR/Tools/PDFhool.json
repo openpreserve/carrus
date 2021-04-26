@@ -1,7 +1,0 @@
-{
-  "id": "pdfhool",
-  "toolLabel": "PDFhool",
-  "toolName": "PDFhool",
-  "toolOperatingEnvironments": ["linux", "windows"],
-  "toolPublisher": "dual lab"
-}

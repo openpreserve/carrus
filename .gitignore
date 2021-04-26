@@ -5,9 +5,8 @@
 
 # Node artifact files
 node_modules/
+libs/*
 dist/
-
-.config.json
 
 # Compiled Java class files
 *.class

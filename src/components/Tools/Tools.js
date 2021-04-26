@@ -1,16 +1,33 @@
-/* eslint-disable max-len */
-import React from 'react';
+/* eslint-disable no-console */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-unused-expressions */
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Container, Card, CardTitle, FormGroup, Input, CardBody, Label } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { green } from '@material-ui/core/colors';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import { setTool, updateJPEGTool } from '../../Redux/redux-reducers';
+import mapTools from '../../utils/mapTools';
+import setAcceptedActions from '../../utils/setAcceptedActions';
 
 const Tools = props => {
+  const { actions, tools } = props;
   const { t } = useTranslation();
+  const PDFArray = [];
+  const JPEGArray = [];
+  setAcceptedActions(props.actions, props.fileFormats, 'application/pdf')
+    .forEach(item => {
+      !PDFArray.find(e => e === item.tool.id.name) ? PDFArray.push(item.tool.id.name) : null;
+    });
+  setAcceptedActions(props.actions, props.fileFormats, 'image/jpeg')
+    .forEach(item => {
+      !JPEGArray.find(e => e === item.tool.id.name) ? JPEGArray.push(item.tool.id.name) : null;
+    });
+
+  /* useEffect(() => console.log(props), [props]); */
+
   return (
     <Container>
       <div className="d-flex flex-column align-items-left">
@@ -29,19 +46,13 @@ const Tools = props => {
               <Label for="defaultTool" className="w-50 m-auto">
                 <span>{t('defaultTool')}:</span>
               </Label>
-              <Input type="select" onChange={e => props.setTool(e.target.value)}>
-                <option>PDF hul</option>
-                <option>veraPDF</option>
+              <Input type="select">
+                {PDFArray.map((e, i) => (
+                  <option key={i}>{e}</option>
+                ))}
               </Input>
             </FormGroup>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: green[500] }} />
-              <span className="ml-1">PDF hul</span>
-            </div>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: green[500] }} />
-              <span className="ml-1">veraPDF</span>
-            </div>
+            {mapTools(tools, actions, 'pdf')}
           </CardBody>
         </Card>
         <Card className="w-50 border-0">
@@ -53,29 +64,13 @@ const Tools = props => {
               <Label for="defaultTool" className="w-50 m-auto">
                 <span>{t('defaultTool')}:</span>
               </Label>
-              <Input type="select" onChange={e => props.updateJPEGTool(e.target.value)}>
-                <option>JPEG hul</option>
-                <option>PNG dgm</option>
+              <Input type="select">
+                {JPEGArray.map((e, i) => (
+                  <option key={(i * 2) / 0.4}>{e}</option>
+                ))}
               </Input>
             </FormGroup>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: green[500] }} />
-              <span className="ml-1">JPEG hul</span>
-            </div>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: 'white' }} />
-
-              <span className="ml-1">GIF hul</span>
-            </div>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: green[500] }} />
-              <span className="ml-1">PNG dgm</span>
-            </div>
-            <div className="d-flex flex-row w-50 mb-3">
-              <CheckCircleOutlineIcon style={{ color: 'white' }} />
-
-              <span className="ml-1">JPEG2000 hul</span>
-            </div>
+            {mapTools(tools, actions, 'image')}
           </CardBody>
         </Card>
       </div>
@@ -83,6 +78,16 @@ const Tools = props => {
   );
 };
 
-const mapStateToProps = state => ({ defaultPDF: state.tool, defaultJPEG: state.defaultJPEGTool });
+const mapStateToProps = state => ({
+  actions: state.actions,
+  fileFormats: state.fileFormats,
+  outputFolder: state.outputFolder,
+  url: state.url,
+  fileOrigin: state.fileOrigin,
+  fileName: state.fileName,
+  filePath: state.filePath,
+  dirPath: state.dirPath,
+  tools: state.tools,
+});
 
-export default connect(mapStateToProps, { updateJPEGTool, setTool })(Tools);
+export default connect(mapStateToProps, {})(Tools);

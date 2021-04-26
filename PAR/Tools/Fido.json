@@ -1,0 +1,17 @@
+{
+  "id": {
+    "guid": "e41fd267-627a-4a79-ac8f-725f3bdcfc1d",
+    "name": "FIDO",
+    "namespace": "https://github.com/openpreserve/fido/releases/tag/v1.4.1"
+  },
+  "toolLabel": "fido/fido/fido.py",
+  "toolName": "FIDO",
+  "toolOperatingEnvironments": [
+    "windows command line",
+    "linux command line",
+    "MacOS command line"
+  ],
+  "toolAcceptedParameters": [],
+  "toolPublisher": "Open Preservation Foundation",
+  "toolVersion": "1.4.1"
+}

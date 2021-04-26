@@ -2,25 +2,83 @@
   "name": "jhove2020",
   "version": "1.0.0",
   "license": "MIT",
+  "homepage": "https://www.electron.build/configuration/configuration#Metadata-homepage",
+  "author": {
+    "name": "jhove2020",
+    "email": "duallab@gmail.com"
+  },
+  "engines": {
+    "node": ">=12"
+  },
   "build": {
+    "productName": "jhove2020",
     "appId": "jhove2020",
+    "copyright": "Copyright © 2020 https://github.com/openpreserve/",
+    "target": "NSIS",
     "win": {
-      "icon": "build/icon.png"
-    }
+      "icon": "assets/icon.png",
+      "publisherName": "https://github.com/openpreserve/"
+    },
+    "directories": {
+      "buildResources": "src/components/assets"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "snap"
+      ],
+      "icon": "assets/icon.png",
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "assets/icon.png",
+      "target": "dmg"
+    },
+    "extraResources": [
+      "PAR",
+      "libs",
+      "config",
+      "translations",
+      "./node_modules/fido"
+    ]
   },
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "dist:linux": "yarn dist --linux",
+    "dist:mac": "yarn dist --mac",
+    "fido": "yarn clone && yarn patch",
+    "clone": "git clone https://github.com/openpreserve/fido.git ./libs/fido",
+    "patch": "cd ./libs/fido && git am ../../patches/0001-change-relative-imports.patch && rm -rf .git",
+    "jhove": "cd ./libs && java -DINSTALL_PATH=%cd%/libs/jhove -jar jhove-latest.jar -options-system && del jhove-latest.jar",
+    "jhove:linux": "cd ./libs && java -DINSTALL_PATH=$(pwd)/jhove -jar jhove-latest.jar -options-system && rm jhove-latest.jar",
+    "jhove-download": "cd ./libs && wget http://software.openpreservation.org/rel/jhove-latest.jar",
+    "veraPDF-download": "cd ./libs && wget https://software.verapdf.org/rel/verapdf-installer.zip",
+    "veraPDF-unzip": "cd ./libs && powershell Expand-Archive -Path verapdf-installer.zip -DestinationPath %cd%/libs/veraPDF",
+    "veraPDF-unzip:linux": "cd ./libs && unzip verapdf-installer.zip",
+    "veraPDF": "cd ./libs/veraPDF && java -DINSTALL_PATH=%cd%/libs/veraPDF -jar verapdf-greenfield-1.16.1/verapdf-izpack-installer-1.16.1.jar -options-system && rd /s /q verapdf-greenfield-1.16.1",
+    "veraPDF:linux": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.16.1/verapdf-izpack-installer-1.16.1.jar -options-system && rm -rf verapdf-greenfield-1.16.1"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@types/valid-url": "^1.0.3",
     "bootstrap": "^4.5.3",
+    "clipboard-polyfill": "^3.0.1",
+    "file-type": "^16.3.0",
     "i18next": "^19.8.3",
     "jquery": "^3.5.1",
+    "mime-types": "^2.1.28",
+    "node-fetch": "^2.6.1",
     "os-locale": "^5.0.0",
+    "python-shell": "^2.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-dropzone": "^11.2.4",
@@ -29,7 +87,10 @@
     "react-router-dom": "^5.2.0",
     "reactstrap": "^8.7.1",
     "redux": "^4.0.5",
-    "source-map-support": "0.5.9"
+    "request": "^2.88.2",
+    "source-map-support": "0.5.9",
+    "valid-url": "^1.0.9",
+    "validator": "^13.5.2"
   },
   "resolutions": {
     "upath": "1.0.5"

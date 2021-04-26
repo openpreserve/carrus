@@ -1,0 +1,41 @@
+{
+  "description": "identify the file format of a digital object using FIDO",
+  "example": "-q ${inputfile}",
+  "id": {
+    "guid": "f626e141-4ff5-4b5c-bc9e-9487de81d972",
+    "name": "quiet",
+    "namespace": "https://openpreservation.org/products/fido/"
+  },
+  "inputFiles": [{
+      "description": "File that will be acted upon",
+      "file": {
+        "filepath": ""
+      },
+      "name": "inputfile.$ext"
+    }
+  ],
+  "constraints": [],
+  "inputToolArguments": [{
+      "description": "un (more) quietly",
+      "type": "command_line",
+      "value": "-q"
+    }
+  ],
+  "outputFiles": [
+
+  ],
+  "tool": {
+    "id": {
+      "guid": "e41fd267-627a-4a79-ac8f-725f3bdcfc1d",
+      "name": "FIDO",
+      "namespace": "https://github.com/openpreserve/fido/releases/tag/v1.4.1"
+    }
+  },
+  "type": {
+    "id": {
+      "guid": "56c56576-8931-4d90-bf30-b21fc21001c0",
+      "name": "Identify",
+      "namespace": "https://openpreservation.org"
+    }
+  }
+}
