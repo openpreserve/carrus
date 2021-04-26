@@ -27,13 +27,17 @@
             "SelectFolder": "Select folder",
             "noDefaultTools": "No default tools for choosen action",
             "fileNotChoosen": "Choose file to see available actions",
+            "chooseAllowedActionTypes": "Choose allowed action types",
             "fileNotChoosenSub": "You have not choosen any files to proccess",
             "inappropriateType": "There is no action for such file mime type",
             "noActions": "No actions",
             "noActionTypes": "no Action Types",
             "invalidUrl": "Invalid URL",
             "corsErrorText": "Cant proccess link due to the cors policy error",
-            "fileTypesUnavailable": "text-based formats like .txt, .csv, .svg aren't available"
+            "fileTypesUnavailable": "text-based formats like .txt, .csv, .svg aren't available",
+            "JobFailed": "Job Failed",
+            "ChooseTool": "Choose Tool",
+            "ChooseOption": "Choose Option"
         }
     },
     "fr": {
@@ -64,13 +68,17 @@
             "SelectFolder": "Sélectionner le dossier",
             "noDefaultTools": "Pas d'outils par défaut pour l'action choisie",
             "fileNotChoosen": "Choisissez un fichier pour voir les actions disponibles",
+            "chooseAllowedActionTypes": "Choisissez les types d'actions autorisés",
             "fileNotChoosenSub": "Vous n'avez choisi aucun fichier à traiter",
             "inappropriateType": "Il n'y a pas d'action pour ce type de fichier mime",
             "noActions": "Il n'y a aucune action",
             "noActionTypes": "Aucun type d'action",
             "invalidUrl": "URL invalide",
             "corsErrorText": "Lien de processus Cant en raison de l'erreur de politique cors",
-            "fileTypesUnavailable": "Les formats textuels tels que .txt, .csv, .svg ne sont pas disponibles"
+            "fileTypesUnavailable": "Les formats textuels tels que .txt, .csv, .svg ne sont pas disponibles",
+            "JobFailed": "La tâche a échoué",
+            "ChooseTool": "Choisissez un outil",
+            "ChooseOption": "Choisir une action"
         }
     },
     "ru": {
@@ -101,13 +109,17 @@
             "SelectFolder": "Выберите папку",
             "noDefaultTools": "Нет подходящих инструментов",
             "fileNotChoosen": "Выберите файл, чтобы увидеть подходящие экшены",
+            "chooseAllowedActionTypes": "Выберите тип действия",
             "fileNotChoosenSub": "Вы не выбрали файл для обработки",
             "inappropriateType": "Нет действий для выбранного mime типа",
             "noActions": "Действий нет",
             "noActionTypes": "нет типа действия",
             "invalidUrl": "Недействительная ссылка",
             "corsErrorText": "Невозможно обработать ссылку из-за cors ошибки",
-            "fileTypesUnavailable": "Текстовые форматы, такие как .txt, .csv, .svg, не поддерживаются"
+            "fileTypesUnavailable": "Текстовые форматы, такие как .txt, .csv, .svg, не поддерживаются",
+            "JobFailed": "Действие не выпонено",
+            "ChooseTool": "Выберите инструмент",
+            "ChooseOption": "Выберите действие"
         }
     }
 }

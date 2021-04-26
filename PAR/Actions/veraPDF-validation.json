@@ -1,0 +1,43 @@
+{
+    "description": "The PDF-hul module recognizes and validates the PDF (Portable Document Format) format [PDF 1.4, PDF 1.5, PDF 1.6]. Documents created as PDF 1.7 will be identified as such, but PDF 1.7 is not supported, and documents using features specific to PDF 1.7 or later may be reported as not well-formed or not valid.",
+    "example": "veraPDF ${inputfile}",
+    "id": {
+        "guid": "f31910ae-0e83-4db3-9098-0dd9ecb1c221",
+        "name": "veraPDF",
+        "namespace": "http://verapdf.org"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+            "filepath": ""
+        },
+        "name": "inputfile.pdf"
+    }],
+    "constraints": [{
+        "allowedFormats": [{
+            "id": {
+                "guid": "7dcbd4bc-e1cd-4b71-bb01-b953281706e9",
+                "name": "pdf",
+                "namespace": "https://openpreservation.org"
+            }
+        }]
+    }],
+    "inputToolArguments": [
+    ],
+    "outputFiles": [
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692e1",
+            "name": "veraPDF",
+            "namespace": "https://verapdf.org"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

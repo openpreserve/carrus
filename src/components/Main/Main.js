@@ -24,6 +24,7 @@ import {
   setFileInfo,
   setActionType,
   setLoad,
+  setDirPath,
 } from '../../Redux/redux-reducers';
 import FolderInput from './FolderInput';
 
@@ -73,7 +74,13 @@ const Main = props => {
       props.setLoad(value);
     });
   };
-  /* useEffect(() => console.log(props), [props]); */
+  useEffect(() => {
+    config.outFolder ? props.setDirPath(config.outFolder) : null;
+  }, [config]);
+
+  useEffect(() => {
+    console.log(props);
+  }, [props]);
 
   useEffect(() => {
     if (isURL(url)) {
@@ -141,15 +148,15 @@ const Main = props => {
           onChange={e => {
             props.setActionType(e.target.value);
             InputActionTypeRef.current = e;
-            InputToolRef.current ? InputToolRef.current.target.value = 'Choose Tool' : null;
-            InputOptionRef.current ? InputOptionRef.current.target.value = 'Choose Option' : null;
+            InputToolRef.current ? document.querySelectorAll('select')[1].value = 'Choose Tool' : null;
+            InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
           }}
-          defaultValue={activeActionTypes ? activeActionTypes.id.name : 'Choose allowed action types'}
+          defaultValue={activeActionTypes ? activeActionTypes.id.name : t('chooseAllowedActionTypes')}
         >
           {mimeType.length ? (
             acceptedActions.length ? (
               <>
-                <option hidden>Choose allowed action types</option>
+                <option hidden>{t('chooseAllowedActionTypes')}</option>
                 {unique(acceptedActions).map(e => (
                   <option key={hashCode(e.id.guid + mimeType)}>{e.type.id.name}</option>
                 ))}
@@ -178,16 +185,16 @@ const Main = props => {
           onChange={e => {
             props.setTool(e.target.value);
             InputToolRef.current = e;
-            InputOptionRef.current ? InputOptionRef.current.target.value = 'Choose Option' : null;
+            InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
           }}
           defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'}
         >
-          <option hidden>Choose Tool</option>
+          <option hidden>{t('ChooseTool')}</option>
           {activeActionTypes && mimeType.length ? (
             checkScriptAvailability(activeActionTypes, tools, acceptedActions, config.isDevelopment)
           ) : (
             <>
-              <option hidden>Choose Tool</option>
+              <option hidden>{t('ChooseTool')}</option>
               <option disabled>No actions are chosen</option>
             </>
           )}
@@ -210,19 +217,7 @@ const Main = props => {
             }]);
           }}
         >
-          <option hidden>Choose Option</option>
-          {/* {activeTool ? (
-            activeTool.toolAcceptedParameters
-              .filter(param => acceptedActions
-                .find(a => ((a.id.guid === param.id.guid) && (a.type.id.name === activeActionTypes.id.name))))
-              .map(activeToolOption => (
-                <option key={activeToolOption.id.guid}>{activeToolOption.id.name}</option>
-              ))
-          ) : (
-            <>
-              <option disabled>No Tools are chosen</option>
-            </>
-          )} */}
+          <option hidden>{t('ChooseOption')}</option>
           {activeTool ? (
             acceptedActions
               .filter(a => (a.type.id.guid === activeActionTypes.id.guid && a.tool.id.guid === activeTool.id.guid))
@@ -231,7 +226,7 @@ const Main = props => {
               ))
           ) : (
             <>
-              <option hidden>Choose Option</option>
+              <option hidden>{t('ChooseOption')}</option>
               <option disabled>No Tools are chosen</option>
             </>
           )}
@@ -295,4 +290,5 @@ export default connect(mapStateToProps, {
   setFileInfo,
   setActionType,
   setLoad,
+  setDirPath,
 })(Main);

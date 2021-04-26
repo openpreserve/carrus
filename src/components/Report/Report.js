@@ -20,7 +20,7 @@ const Report = (props) => {
     setPath(arg.path);
   });
 
-  useEffect(() => console.log(props), [props]);
+  /* useEffect(() => console.log(props), [props]); */
 
   return (
     <div>

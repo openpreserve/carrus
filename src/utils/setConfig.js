@@ -7,6 +7,7 @@ import osLocale from 'os-locale';
 
 const reader = util.promisify(fs.readFile);
 const isExists = util.promisify(fs.exists);
+const writer = util.promisify(fs.writeFile);
 
 async function getOsLang() {
   const data = await osLocale();
@@ -17,7 +18,7 @@ const initialConfig = {
   language: 'en',
 };
 
-export default async function setConfig(isDevelopment) {
+export async function setConfig(isDevelopment) {
   let configDir = path.join(__dirname, '..', 'config');
 
   if (isDevelopment) {
@@ -45,5 +46,25 @@ export default async function setConfig(isDevelopment) {
     // in case of some errors we default configuration
     initialConfig.isDevelopment = isDevelopment;
     return initialConfig;
+  }
+}
+
+export async function updateConfig(isDevelopment, outFolder) {
+  let configDir = path.join(__dirname, '..', 'config');
+
+  if (isDevelopment) {
+    configDir = path.join(__dirname, '..', '..', 'config');
+  }
+
+  try {
+    let config = await reader(path.join(configDir, 'config.json'), 'utf8');
+    config = JSON.parse(config);
+    if (config.outFolder === outFolder) {
+      return;
+    }
+    config.outFolder = outFolder;
+    await writer(path.join(configDir, 'config.json'), JSON.stringify(config));
+  } catch (error) {
+    console.log(error);
   }
 }
