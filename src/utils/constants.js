@@ -1,4 +1,4 @@
-export const APP_NAME = 'jhove2020';
+export const APP_NAME = 'OPFCarrus';
 export const LANGUAGES = [
   'en',
   'fr',

@@ -18,7 +18,7 @@ export default function mapActions(actions, defaultActionType, defaultFileType, 
   actions.forEach(action => {
     if (
       action.type.id.name === defaultActionType
-      && (action?.constraints.length === 0
+      && (!action.constraints || action?.constraints.length === 0
       || action?.constraints[0]?.allowedFormats.find((format) => format?.id.name === defaultFileType))
     ) {
       acceptedActions.push(action);
