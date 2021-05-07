@@ -1,10 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable quote-props */
-/* eslint-disable quotes */
-/* eslint-disable no-else-return */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
 import path from 'path';
 import { readdirSync, readFileSync } from 'fs';
 
@@ -34,7 +27,6 @@ export default async function setPAR(isDevelopment, runJobFailed) {
           active: false,
         });
       } catch (error) {
-        console.log(error);
         runJobFailed(error.message);
       }
     });
@@ -49,7 +41,6 @@ export default async function setPAR(isDevelopment, runJobFailed) {
           active: false,
         });
       } catch (error) {
-        console.log(error);
         runJobFailed(error.message);
       }
     });
@@ -64,7 +55,6 @@ export default async function setPAR(isDevelopment, runJobFailed) {
           active: false,
         });
       } catch (error) {
-        console.log(error);
         runJobFailed(error.message);
       }
     });
@@ -79,12 +69,11 @@ export default async function setPAR(isDevelopment, runJobFailed) {
           active: false,
         });
       } catch (error) {
-        console.log(error);
         runJobFailed(error.message);
       }
     });
   } catch (error) {
-    console.log(error);
+    runJobFailed(error.message);
   }
   return {
     actions,

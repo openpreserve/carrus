@@ -1,9 +1,6 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-else-return */
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -36,9 +33,6 @@ const Main = props => {
     fileOrigin,
     filePath,
     dirPath,
-    actionTypes,
-    actions,
-    options,
     mimeType,
     acceptedActions,
     activeActionTypes,
@@ -79,10 +73,6 @@ const Main = props => {
   useEffect(() => {
     config.outFolder ? props.setDirPath(config.outFolder) : null;
   }, [config]);
-
-  /* useEffect(() => {
-    console.log(props);
-  }, [props]); */
 
   useEffect(() => {
     if (isURL(url)) {

@@ -1,11 +1,12 @@
 {
   "name": "opf-carrus",
-  "version": "1.0.0",
+  "version": "0.2.1",
   "license": "MIT",
   "homepage": "https://www.electron.build/configuration/configuration#Metadata-homepage",
   "author": {
-    "name": "OPF Carrus",
-    "email": "duallab@gmail.com"
+    "name": "Open Preservation Foundation",
+    "email": "carl.wilson@openpreservation.org"
+
   },
   "engines": {
     "node": ">=12"

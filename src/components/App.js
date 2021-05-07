@@ -1,13 +1,11 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { LANGUAGES } from '../utils/constants';
 import Main from './Main/Main';
 import Header from './Header/Header';
-import Tools from './Tools/Tools';
 import About from './About/About';
 import Report from './Report/Report';
 import JobFailed from './Report/JobFailed';
@@ -21,7 +19,7 @@ const App = props => {
   useEffect(() => {
     ipcRenderer.once('config', (event, config) => {
       props.setConfig(config);
-      if (config.language && (config.language === 'fr' || config.language === 'ru')) {
+      if (config.language && (LANGUAGES.find((e) => config.language === e))) {
         i18n.changeLanguage(config.language);
       }
     });
@@ -41,9 +39,6 @@ const App = props => {
             {currentWindow === 'report' ? <Report /> : null}
             {currentWindow === 'jobFailed' ? <JobFailed /> : null}
           </Route>
-          {/* <Route exact path="/tools">
-            <Tools />
-          </Route> */}
           <Route exact path="/tools">
             <Settings />
           </Route>
