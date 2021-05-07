@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import path from 'path';
 import fs from 'fs';
 import os from 'os';

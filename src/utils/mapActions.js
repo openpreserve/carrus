@@ -1,10 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
-/* eslint-disable no-console */
-/* eslint-disable arrow-body-style */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable no-else-return */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

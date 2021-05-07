@@ -1,2 +1,6 @@
-/* eslint-disable import/prefer-default-export */
 export const APP_NAME = 'jhove2020';
+export const LANGUAGES = [
+  'en',
+  'fr',
+  'ru',
+];

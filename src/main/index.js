@@ -1,10 +1,6 @@
-/* eslint-disable prefer-destructuring */
 /* eslint-disable no-console */
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
-/* eslint-disable operator-assignment */
-/* eslint-disable prefer-template */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable quotes */
@@ -21,9 +17,7 @@ import setPAR from '../utils/setPAR';
 
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 
-/* const FileType = require('file-type'); */
 const request = require('request');
-/* const fetch = require('node-fetch'); */
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -65,7 +59,6 @@ async function createMainWindow() {
   if (isDevelopment) {
     window.webContents.openDevTools();
   }
-  /* window.webContents.openDevTools(); */
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
@@ -101,10 +94,6 @@ async function createMainWindow() {
 
   return window;
 }
-
-/* app.on('before-quit', () => {
-  updateConfig(isDevelopment, outputPath);
-}); */
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -317,10 +306,9 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   reportData.stderr.on('data', (data) => {
     console.error(data.toString());
     errorText += data.toString();
-    /* event.sender.send('receive-load', false); */
   });
 
-  reportData.stderr.on('end', (data) => {
+  reportData.stderr.on('end', () => {
     event.sender.send('receive-load', false);
   });
 

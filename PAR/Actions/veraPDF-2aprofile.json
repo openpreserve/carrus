@@ -1,5 +1,5 @@
 {
-    "description": "Chooses built-in Validation Profile flavour",
+    "description": "Validate PDF documents against PDF/A-2a profile",
     "example": "veraPDF -f 2a ${inputfile}",
     "id": {
         "guid": "74475cac-acdd-431b-be75-d67a36fd578d",

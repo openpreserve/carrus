@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ipcRenderer, shell } from 'electron';
 import { connect } from 'react-redux';
 import * as os from 'os';
@@ -11,16 +10,14 @@ import showItemInFolder from '../../utils/linuxShowItem';
 import {
   setLoad,
 } from '../../Redux/redux-reducers';
-/* eslint-disable no-console */
-const Report = (props) => {
+
+const Report = () => {
   const [report, setReport] = useState('');
   const [path, setPath] = useState('');
   ipcRenderer.on('receiver', (event, arg) => {
     setReport(arg.report);
     setPath(arg.path);
   });
-
-  /* useEffect(() => console.log(props), [props]); */
 
   return (
     <div>

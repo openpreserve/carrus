@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import { Container, Jumbotron, Button } from 'reactstrap';
 import { ipcRenderer } from 'electron';
