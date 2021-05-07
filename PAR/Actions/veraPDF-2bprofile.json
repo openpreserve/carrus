@@ -1,0 +1,53 @@
+{
+    "description": "Validate PDF documents against PDF/A-2b profile",
+    "example": "veraPDF -f 2b ${inputfile}",
+    "id": {
+        "guid": "7e689c4b-cdff-4517-9a4a-64f64e42f80e",
+        "name": "PDF/A-2b",
+        "namespace": "http://verapdf.org"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+            "filepath": ""
+        },
+        "name": "inputfile.pdf"
+    }],
+    "constraints": [{
+        "allowedFormats": [{
+            "id": {
+                "guid": "7dcbd4bc-e1cd-4b71-bb01-b953281706e9",
+                "name": "pdf",
+                "namespace": "https://openpreservation.org"
+            }
+        }]
+    }],
+    "inputToolArguments": [
+        {
+            "description": "Chooses built-in Validation Profile flavour",
+            "type": "command_line",
+            "value": "-f"
+        },
+        {
+            "description": "Profile flavour",
+            "type": "command_line",
+            "value": "2b"
+        }
+    ],
+    "outputFiles": [
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692e1",
+            "name": "veraPDF",
+            "namespace": "https://verapdf.org"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

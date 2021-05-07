@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
@@ -35,9 +33,6 @@ const Main = props => {
     fileOrigin,
     filePath,
     dirPath,
-    actionTypes,
-    actions,
-    options,
     mimeType,
     acceptedActions,
     activeActionTypes,
@@ -68,6 +63,7 @@ const Main = props => {
       outputFolder: dirPath,
       tool: activeTool,
       option: activeOption,
+      config,
     };
     ipcRenderer.send('execute-file-action', dataToSend);
     ipcRenderer.on('receive-load', (event, value) => {
@@ -77,10 +73,6 @@ const Main = props => {
   useEffect(() => {
     config.outFolder ? props.setDirPath(config.outFolder) : null;
   }, [config]);
-
-  useEffect(() => {
-    console.log(props);
-  }, [props]);
 
   useEffect(() => {
     if (isURL(url)) {
@@ -107,6 +99,39 @@ const Main = props => {
       }
     });
     return result;
+  }
+
+  function handleDefaultValues(ToolRef, OptionRef, actionType) {
+    if (config.defaultValues) {
+      let AcceptedType = fileFormats.map(format => {
+        const type = format.identifiers.find(item => item.identifier === mimeType);
+        if (type) {
+          return {
+            mime: type.identifier,
+            name: format.id.name,
+          };
+        }
+        return {};
+      });
+
+      AcceptedType = AcceptedType.find(e => e?.name);
+
+      if (AcceptedType) {
+        if (config.defaultValues
+          && config.defaultValues[actionType]
+          && config.defaultValues[actionType][AcceptedType.name]) {
+          const { defaultTool: tool, defaultAction: action } = config.defaultValues[actionType][AcceptedType.name];
+          props.setTool(tool);
+          ToolRef = tool;
+          props.setOptions([{
+            value: acceptedActions
+              .find(act => act.id.name === action)?.inputToolArguments.map(i => i.value),
+            name: action,
+          }]);
+          OptionRef = action;
+        }
+      }
+    }
   }
 
   return !load ? (
@@ -150,6 +175,7 @@ const Main = props => {
             InputActionTypeRef.current = e;
             InputToolRef.current ? document.querySelectorAll('select')[1].value = 'Choose Tool' : null;
             InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
+            handleDefaultValues(InputToolRef.current, InputOptionRef.current, e.target.value);
           }}
           defaultValue={activeActionTypes ? activeActionTypes.id.name : t('chooseAllowedActionTypes')}
         >
@@ -163,13 +189,13 @@ const Main = props => {
               </>
             ) : (
               <>
-                <option hidden>{t('inappropriateType')} </option>
+                <option hidden>{t('chooseAllowedActionTypes')}</option>
                 <option disabled>{t('noActionTypes')}</option>
               </>
             )
           ) : (
             <>
-              <option hidden>{t('fileNotChoosen')}</option>
+              <option hidden>{t('chooseAllowedActionTypes')}</option>
               <option disabled>{t('fileNotChoosenSub')}</option>
             </>
           )}
@@ -187,11 +213,12 @@ const Main = props => {
             InputToolRef.current = e;
             InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
           }}
-          defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'}
+          /* defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'} */
+          value={activeTool ? activeTool.id.name : 'Choose Tool'}
         >
           <option hidden>{t('ChooseTool')}</option>
           {activeActionTypes && mimeType.length ? (
-            checkScriptAvailability(activeActionTypes, tools, acceptedActions, config.isDevelopment)
+            checkScriptAvailability(activeActionTypes, tools, acceptedActions, config)
           ) : (
             <>
               <option hidden>{t('ChooseTool')}</option>
@@ -207,12 +234,13 @@ const Main = props => {
         <Input
           className="w-50"
           type="select"
-          defaultValue={activeOption ? activeOption.name : 'Choose Option'}
+          /* defaultValue={activeOption ? activeOption.name : 'Choose Option'} */
+          value={activeOption ? activeOption.name : 'Choose Option'}
           onChange={e => {
             InputOptionRef.current = e;
             props.setOptions([{
               value: acceptedActions
-                .find(action => action.id.name === e.target.value).inputToolArguments.map(i => i.value),
+                .find(action => action.id.name === e.target.value)?.inputToolArguments.map(i => i.value),
               name: e.target.value,
             }]);
           }}

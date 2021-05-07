@@ -122,3 +122,16 @@ label.custom-file-upload {
   padding-left: 30px;
 }
 
+.mimeTypeURL {
+  position: absolute;
+  top: 100%;
+  font-size: 14px;
+}
+
+.actipn-type-settings {
+  margin-left: auto;
+}
+
+.titlebar.mb-3 {
+  z-index: 999;
+}

@@ -1,0 +1,53 @@
+{
+    "description": "Validate PDF documents against PDF/A-3u profile",
+    "example": "veraPDF -f 3u ${inputfile}",
+    "id": {
+        "guid": "9dd5f12e-75b1-48a6-8955-b895ee1ce6d6",
+        "name": "PDF/A-3u",
+        "namespace": "http://verapdf.org"
+    },
+    "inputFiles": [{
+        "description": "File that will be acted upon",
+        "file": {
+            "filepath": ""
+        },
+        "name": "inputfile.pdf"
+    }],
+    "constraints": [{
+        "allowedFormats": [{
+            "id": {
+                "guid": "7dcbd4bc-e1cd-4b71-bb01-b953281706e9",
+                "name": "pdf",
+                "namespace": "https://openpreservation.org"
+            }
+        }]
+    }],
+    "inputToolArguments": [
+        {
+            "description": "Chooses built-in Validation Profile flavour",
+            "type": "command_line",
+            "value": "-f"
+        },
+        {
+            "description": "Profile flavour",
+            "type": "command_line",
+            "value": "3u"
+        }
+    ],
+    "outputFiles": [
+    ],
+    "tool": {
+        "id": {
+            "guid": "cc198b57-7a14-469e-afbd-feb170e692e1",
+            "name": "veraPDF",
+            "namespace": "https://verapdf.org"
+        }
+    },
+    "type": {
+        "id": {
+            "guid": "cd8ca896-b825-4631-b530-a593ba23abc5",
+            "name": "Validate",
+            "namespace": "https://openpreservation.org"
+        }
+    }
+}

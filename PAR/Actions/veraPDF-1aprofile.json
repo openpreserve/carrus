@@ -1,9 +1,9 @@
 {
-    "description": "The PDF-hul module recognizes and validates the PDF (Portable Document Format) format [PDF 1.4, PDF 1.5, PDF 1.6]. Documents created as PDF 1.7 will be identified as such, but PDF 1.7 is not supported, and documents using features specific to PDF 1.7 or later may be reported as not well-formed or not valid.",
-    "example": "veraPDF ${inputfile}",
+    "description": "Validate PDF documents against PDF/A-1a profile",
+    "example": "veraPDF -f 1a ${inputfile}",
     "id": {
-        "guid": "f31910ae-0e83-4db3-9098-0dd9ecb1c221",
-        "name": "veraPDF",
+        "guid": "0a534f3f-731e-4005-90b2-57a52ea1aea5",
+        "name": "PDF/A-1a",
         "namespace": "http://verapdf.org"
     },
     "inputFiles": [{
@@ -23,6 +23,16 @@
         }]
     }],
     "inputToolArguments": [
+        {
+            "description": "Chooses built-in Validation Profile flavour",
+            "type": "command_line",
+            "value": "-f"
+        },
+        {
+            "description": "Profile flavour",
+            "type": "command_line",
+            "value": "1a"
+        }
     ],
     "outputFiles": [
     ],

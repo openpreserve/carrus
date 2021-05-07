@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
@@ -6,10 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Main from './Main/Main';
 import Header from './Header/Header';
-import Tools from './Tools/Tools';
 import About from './About/About';
 import Report from './Report/Report';
 import JobFailed from './Report/JobFailed';
+import Settings from './Tools/Settings';
 import { setParData, setConfig } from '../Redux/redux-reducers';
 
 const App = props => {
@@ -19,7 +18,7 @@ const App = props => {
   useEffect(() => {
     ipcRenderer.once('config', (event, config) => {
       props.setConfig(config);
-      if (config.language && (config.language === 'fr' || config.language === 'ru')) {
+      if (config.language) {
         i18n.changeLanguage(config.language);
       }
     });
@@ -40,7 +39,7 @@ const App = props => {
             {currentWindow === 'jobFailed' ? <JobFailed /> : null}
           </Route>
           <Route exact path="/tools">
-            <Tools />
+            <Settings />
           </Route>
           <Route exact path="/about">
             <About />

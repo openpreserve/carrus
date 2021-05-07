@@ -1,1 +1,119 @@
-{"language":"default","outFolder":"C:\\Users\\Никита\\Desktop"}
+{
+    "docs": ["Valid \"language\" values are \"defaut\" - the langauge is then taken from the user locale, or any language tag as defined by RFC 1766",
+        "",
+        "The \"tools\" dictionary defines OS specific tool parameters",
+        "Each tool is identified by its name, which should match the toll name in the PAR schema",
+        "",
+        "Valid \"OS\" values are \"aix\", \"darwin\" (for MacOS), \"freebsd\", \"linux\", \"openbsd\", \"sunos\", and \"win32\"",
+        "The \"scriptPath\" property is local to the libs subfolder in the application folder",
+        "The \"scriptType\" property is either \"shell\", in which case an OS-specific way of running scripts will be used\"", 
+        "or an interpreter CLI that will be run to execute the script."
+    ],
+    "language": "default",
+    "tools": {
+        "FIDO": [
+            {
+                "OS": "win32",
+                "scriptPath": "fido/fido/fido.py",
+                "scriptType": "python",
+                "scriptArguments": [
+                    "-m",
+                    "fido.fido"
+                ],
+                "workingDirectory": "fido"
+            },
+            {
+                "OS": "linux",
+                "scriptPath": "fido/fido/fido.py",
+                "scriptType": "python3",
+                "scriptArguments": [
+                    "-m",
+                    "fido.fido"
+                ],
+                "workingDirectory": "fido"
+            },
+            {
+                "OS": "darwin",
+                "scriptPath": "fido/fido/fido.py",
+                "scriptType": "/usr/local/bin/python3",
+                "scriptArguments": [
+                    "-m",
+                    "fido.fido"
+                ],
+                "workingDirectory": "fido"
+            }        
+        ],
+        "JHOVE": [
+            {
+                "OS": "win32",
+                "scriptPath": "jhove/jhove.bat",
+                "scriptType": "shell",
+                "scriptArguments": []
+            },
+            {
+                "OS": "linux",
+                "scriptPath": "jhove/jhove",
+                "scriptType": "shell",
+                "scriptArguments": []
+            },
+            {
+                "OS": "darwin",
+                "scriptPath": "jhove/jhove",
+                "scriptType": "shell",
+                "scriptArguments": []
+            }
+        ],
+        "veraPDF": [
+            {
+                "OS": "win32",
+                "scriptPath": "veraPDF/verapdf.bat",
+                "scriptType": "shell",
+                "scriptArguments": []
+            },
+            {
+                "OS": "linux",
+                "scriptPath": "veraPDF/verapdf",
+                "scriptType": "shell",
+                "scriptArguments": []
+            },
+            {
+                "OS": "darwin",
+                "scriptPath": "veraPDF/verapdf",
+                "scriptType": "shell",
+                "scriptArguments": []
+            }
+        ],
+        "Jpylyzer": [
+            {
+                "OS": "win32",
+                "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
+                "scriptType": "python",
+                "scriptArguments": [
+                    "-m",
+                    "jpylyzer.jpylyzer"
+                ],
+                "workingDirectory": "jpylyzer"
+            },
+            {
+                "OS": "linux",
+                "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
+                "scriptType": "python3",
+                "scriptArguments": [
+                    "-m",
+                    "jpylyzer.jpylyzer"
+                ],
+                "workingDirectory": "jpylyzer"
+            },
+            {
+                "OS": "darwin",
+                "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
+                "scriptType": "/usr/local/bin/python3",
+                "scriptArguments": [
+                    "-m",
+                    "jpylyzer.jpylyzer"
+                ],
+                "workingDirectory": "jpylyzer"
+            }  
+        ]
+    }
+}

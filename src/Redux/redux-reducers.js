@@ -67,10 +67,7 @@ export const preproccessReducer = (state = initialState, action) => {
           ...e,
           active: e.toolName === action.payload,
         })),
-        options: state.options.map(e => ({
-          ...e,
-          active: false,
-        })),
+        options: [],
       };
     }
     case actionTypes.SET_URL: {
