@@ -23,10 +23,6 @@ const FileHandler = props => {
   const { fileName, mimeType, isTypeAccepted } = props;
   const [error, setError] = useState('');
 
-  /* useEffect(() => {
-    console.log(props);
-  }, [props]); */
-
   return (
     <div className="mt-3">
       <Dropzone

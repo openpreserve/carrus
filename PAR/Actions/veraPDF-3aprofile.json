@@ -1,9 +1,9 @@
 {
-    "description": "Validate PDF documents against PDF/A-2a profile",
-    "example": "veraPDF -f 2a ${inputfile}",
+    "description": "Validate PDF documents against PDF/A-3a profile",
+    "example": "veraPDF -f 3a ${inputfile}",
     "id": {
-        "guid": "74475cac-acdd-431b-be75-d67a36fd578d",
-        "name": "PDF/A-2a",
+        "guid": "c6927594-9117-41b3-bc53-d001fcbc2245",
+        "name": "PDF/A-3a",
         "namespace": "http://verapdf.org"
     },
     "inputFiles": [{
@@ -31,7 +31,7 @@
         {
             "description": "Profile flavour",
             "type": "command_line",
-            "value": "2a"
+            "value": "3a"
         }
     ],
     "outputFiles": [

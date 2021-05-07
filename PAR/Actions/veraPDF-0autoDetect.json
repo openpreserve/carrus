@@ -1,9 +1,9 @@
 {
-    "description": "Validate PDF documents against PDF/A-2a profile",
-    "example": "veraPDF -f 2a ${inputfile}",
+    "description": "Validate PDF documents against PDF/A part and level specified in the document metadata (or against PDF/A-1b if such PDF/A Metadata is missing)",
+    "example": "veraPDF ${inputfile}",
     "id": {
-        "guid": "74475cac-acdd-431b-be75-d67a36fd578d",
-        "name": "PDF/A-2a",
+        "guid": "f31910ae-0e83-4db3-9098-0dd9ecb1c221",
+        "name": "Auto detect",
         "namespace": "http://verapdf.org"
     },
     "inputFiles": [{
@@ -23,16 +23,6 @@
         }]
     }],
     "inputToolArguments": [
-        {
-            "description": "Chooses built-in Validation Profile flavour",
-            "type": "command_line",
-            "value": "-f"
-        },
-        {
-            "description": "Profile flavour",
-            "type": "command_line",
-            "value": "2a"
-        }
     ],
     "outputFiles": [
     ],
