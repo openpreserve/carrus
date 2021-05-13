@@ -12,8 +12,12 @@ export default function setAcceptedActions(actions, fileFormats, mimeType) {
     return {};
   });
   AcceptedType = AcceptedType.find(e => e?.name);
-  const AcceptedActions = actions.filter(action => action?.constraints[0]?.allowedFormats
-    .find(item => item?.id.name === AcceptedType?.name));
-  const AcceptAll = actions.filter(action => action.constraints.length === 0);
+  const AcceptedActions = actions.filter(action => {
+    if (action.constraints) {
+      return action?.constraints[0]?.allowedFormats
+        .find(item => item?.id.name === AcceptedType?.name);
+    }
+  });
+  const AcceptAll = actions.filter(action => (!action.constraints || action.constraints.length === 0));
   return [...AcceptedActions, ...AcceptAll];
 }
