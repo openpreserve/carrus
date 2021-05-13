@@ -1,18 +1,19 @@
 {
-  "name": "jhove2020",
-  "version": "0.2.1",
+  "name": "opf-carrus",
+  "version": "0.2.2",
   "license": "MIT",
   "homepage": "https://www.electron.build/configuration/configuration#Metadata-homepage",
   "author": {
     "name": "Open Preservation Foundation",
     "email": "carl.wilson@openpreservation.org"
+
   },
   "engines": {
     "node": ">=12"
   },
   "build": {
-    "productName": "jhove2020",
-    "appId": "jhove2020",
+    "productName": "OPF Carrus",
+    "appId": "opf-carrus",
     "copyright": "Copyright © 2020 https://github.com/openpreserve/",
     "target": "NSIS",
     "win": {
@@ -67,9 +68,9 @@
     "veraPDF-unzip": "cd ./libs && powershell Expand-Archive -Path verapdf-installer.zip -DestinationPath %cd%/libs/veraPDF && del verapdf-installer.zip",
     "veraPDF-unzip:linux": "cd ./libs && unzip verapdf-installer.zip && rm -rf verapdf-installer.zip",
     "veraPDF-unzip:mac": "cd ./libs && unzip verapdf-installer.zip",
-    "veraPDF": "cd ./libs/veraPDF && java -DINSTALL_PATH=%cd%/libs/veraPDF -jar verapdf-greenfield-1.18.6/verapdf-izpack-installer-1.18.6.jar -options-system && rd /s /q verapdf-greenfield-1.16.1",
-    "veraPDF:linux": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.18.6/verapdf-izpack-installer-1.18.6.jar -options-system && rm -rf verapdf-greenfield-1.16.1",
-    "veraPDF:mac": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.18.6/verapdf-izpack-installer-1.18.6.jar -options-system && rm -rf verapdf-greenfield-1.16.1",
+    "veraPDF": "cd ./libs/veraPDF && java -DINSTALL_PATH=%cd%/libs/veraPDF -jar verapdf-greenfield-1.16.1/verapdf-izpack-installer-1.16.1.jar -options-system && rd /s /q verapdf-greenfield-1.16.1",
+    "veraPDF:linux": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.16.1/verapdf-izpack-installer-1.16.1.jar -options-system && rm -rf verapdf-greenfield-1.16.1",
+    "veraPDF:mac": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.16.1/verapdf-izpack-installer-1.16.1.jar -options-system && rm -rf verapdf-greenfield-1.16.1",
     "jpylyzer": "git clone https://github.com/openpreserve/jpylyzer.git ./libs/jpylyzer && cd ./libs/jpylyzer && rm -rf .git"
   },
   "dependencies": {

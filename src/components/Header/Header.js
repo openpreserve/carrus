@@ -4,6 +4,7 @@ import { remote } from 'electron';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icons from './Icons';
+import { APP_NAME } from '../../utils/constants';
 
 const Header = () => {
   const currentWindow = (() => remote.getCurrentWindow()._id)();
@@ -35,7 +36,7 @@ const Header = () => {
           </DropdownMenu>
         </Dropdown>
         <NavbarBrand href="/" className="mx-auto">
-          JHove 2020
+          {APP_NAME}
         </NavbarBrand>
         <Icons />
       </Navbar>
