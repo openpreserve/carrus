@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router-dom';
 import { remote, ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { LANGUAGES } from '../utils/constants';
 import Main from './Main/Main';
 import Header from './Header/Header';
 import About from './About/About';
@@ -19,7 +18,7 @@ const App = props => {
   useEffect(() => {
     ipcRenderer.once('config', (event, config) => {
       props.setConfig(config);
-      if (config.language && (LANGUAGES.find((e) => config.language === e))) {
+      if (config.language) {
         i18n.changeLanguage(config.language);
       }
     });

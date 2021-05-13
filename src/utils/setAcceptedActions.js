@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 export default function setAcceptedActions(actions, fileFormats, mimeType) {
   let AcceptedType = fileFormats.map(format => {
     const type = format.identifiers.find(item => item.identifier === mimeType);
