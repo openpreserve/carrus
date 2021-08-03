@@ -34,7 +34,7 @@
             "chooseAllowedActionTypes": "Choose allowed action types",
             "fileNotChoosenSub": "You have not choosen any files to proccess",
             "inappropriateType": "There is no action for such file mime type",
-            "noActions": "No actions",
+            "noActions": "No options",
             "noActionTypes": "no Action Types",
             "invalidUrl": "Invalid URL",
             "corsErrorText": "Cant proccess link due to the cors policy error",
