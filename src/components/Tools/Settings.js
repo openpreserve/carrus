@@ -83,41 +83,6 @@ const Settings = props => {
       </div>
       <div className="d-flex flex-row">
         <div className="d-flex flex-column justify-content-center w-75">
-          <Card className="w-100 border-0 mt-4">
-            <CardBody>
-              <FormGroup className="mt-3 d-flex flex-row mb-3">
-                <Label for="defaultTool" className="mr-1 my-auto w-25">
-                  <span className="pr-3">{t('ActionType')}:</span>
-                </Label>
-                <Input
-                  type="select"
-                  className="w-50"
-                  onChange={e => {
-                    setDefaultTool('no default');
-                    setDefaultAction('no default');
-                    setDefaultActionType(e.target.value);
-                    handleDefaultValues(InputToolRef, InputActionRef, e.target.value, defaultFileType);
-                  }}
-                >
-                  {
-                    actionTypes ? (
-                      <>
-                        <option hidden>{t('chooseAllowedActionTypes')}</option>
-                        {actionTypes.map((e, i) => (
-                          <option key={i}>{e.id.name}</option>
-                        ))}
-                      </>
-                    ) : (
-                      <>
-                        <option hidden>{t('noActionTypes')}</option>
-                        <option disabled>{t('noActionTypes')}</option>
-                      </>
-                    )
-                  }
-                </Input>
-              </FormGroup>
-            </CardBody>
-          </Card>
           <Card className="w-100 border-0">
             <CardBody>
               <FormGroup className="mt-3 d-flex flex-row mb-3">
@@ -146,6 +111,41 @@ const Settings = props => {
                       <>
                         <option hidden>{t('fileTypesUnavailable')}</option>
                         <option disabled>{t('fileTypesUnavailable')}</option>
+                      </>
+                    )
+                  }
+                </Input>
+              </FormGroup>
+            </CardBody>
+          </Card>
+          <Card className="w-100 border-0 mt-4">
+            <CardBody>
+              <FormGroup className="mt-3 d-flex flex-row mb-3">
+                <Label for="defaultTool" className="mr-1 my-auto w-25">
+                  <span className="pr-3">{t('ActionType')}:</span>
+                </Label>
+                <Input
+                  type="select"
+                  className="w-50"
+                  onChange={e => {
+                    setDefaultTool('no default');
+                    setDefaultAction('no default');
+                    setDefaultActionType(e.target.value);
+                    handleDefaultValues(InputToolRef, InputActionRef, e.target.value, defaultFileType);
+                  }}
+                >
+                  {
+                    actionTypes ? (
+                      <>
+                        <option hidden>{t('chooseAllowedActionTypes')}</option>
+                        {actionTypes.map((e, i) => (
+                          <option key={i}>{e.id.name}</option>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        <option hidden>{t('noActionTypes')}</option>
+                        <option disabled>{t('noActionTypes')}</option>
                       </>
                     )
                   }
