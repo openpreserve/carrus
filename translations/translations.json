@@ -1,7 +1,7 @@
 {
     "en": {
         "translation": {
-            "Action": "Action",
+            "Action": "Option",
             "ActionType": "Action Type",
             "Tool": "Tool",
             "YourFile": "Your File",
@@ -19,7 +19,7 @@
             "About": "About",
             "mainPage": "Main Page",
             "defaultTool": "Default Tool",
-            "defaultAction": "Default Action",
+            "defaultAction": "Default Option",
             "defaultFileFormat": "Default File Format",
             "Loading": "Loading...",
             "DerivedFrom": "Derived from software Copyright 2004-2011 by the President and Fellows of Harvard College.",
