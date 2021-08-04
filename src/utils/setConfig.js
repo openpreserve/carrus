@@ -50,8 +50,24 @@ export async function setConfig(isDevelopment, runJobFailed) {
     } else {
       try {
         if (!fs.existsSync(tempDir)) {
+          const defConfig = {
+            defaultValues: {
+              Identify: {
+                pdf: {
+                  defaultAction: 'Identification based on internal signatures',
+                  defaultTool: 'JHOVE',
+                },
+              },
+            },
+          };
+          configuration = {
+            ...configuration,
+            ...defConfig,
+          };
           dirMaker(tempDir).then(() => {
-            dirMaker(tempConfigDir);
+            dirMaker(tempConfigDir).then(async () => {
+              await writer(path.join(tempConfigDir, 'config.json'), JSON.stringify(defConfig));
+            });
           });
         }
       } catch (err) {
