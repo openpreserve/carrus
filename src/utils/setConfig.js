@@ -54,11 +54,12 @@ export async function setConfig(isDevelopment, runJobFailed) {
             defaultValues: {
               Identify: {
                 pdf: {
-                  defaultAction: 'Identification based on internal signatures',
-                  defaultTool: 'JHOVE',
+                  defaultAction: 'pronom only',
+                  defaultTool: 'FIDO',
                 },
               },
             },
+            defaultPath: os.homedir(),
           };
           configuration = {
             ...configuration,

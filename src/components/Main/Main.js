@@ -71,7 +71,7 @@ const Main = props => {
     });
   };
   useEffect(() => {
-    config.outFolder ? props.setDirPath(config.outFolder) : null;
+    config.outFolder ? props.setDirPath(config.outFolder) : config.defaultPath;
   }, [config]);
 
   useEffect(() => {
@@ -264,7 +264,7 @@ const Main = props => {
         <Label for="customFile" className="mr-1 my-auto w-25">
           {t('OutputFolder')}:
         </Label>
-        <Input className="dir_path w-50" readOnly placeholder={dirPath} />
+        <Input className="dir_path w-50" readOnly placeholder={!dirPath ? config.defaultPath : dirPath} />
         <FolderInput />
       </FormGroup>
       <Button
@@ -273,7 +273,6 @@ const Main = props => {
         disabled={
           (fileOrigin === 'file' && !filePath.length)
           || (fileOrigin === 'url' && !isURL(url))
-          || !dirPath.length
           || !activeTool
           || !activeOption
         }
