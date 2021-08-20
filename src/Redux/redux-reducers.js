@@ -126,7 +126,6 @@ export const preproccessReducer = (state = initialState, action) => {
         filePath: action.payload.path,
         actionTypes: state.actionTypes.map(e => ({
           ...e,
-          active: false,
         })),
         actions: state.actions.map(e => ({
           ...e,

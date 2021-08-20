@@ -27,9 +27,6 @@ const FileHandler = props => {
     <div className="mt-3">
       <Dropzone
         onDrop={async (e) => {
-          props.InputActionTypeRef.current
-            ? document.querySelector('select').value = t('chooseAllowedActionTypes')
-            : null;
           try {
             const MT = await FileType.fromFile(e[0].path);
             if (MT) {

@@ -177,7 +177,7 @@ const Main = props => {
             InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
             handleDefaultValues(InputToolRef.current, InputOptionRef.current, e.target.value);
           }}
-          defaultValue={activeActionTypes ? activeActionTypes.id.name : t('chooseAllowedActionTypes')}
+          value={activeActionTypes ? activeActionTypes.id.name : t('chooseAllowedActionTypes')}
         >
           {mimeType.length ? (
             acceptedActions.length ? (
