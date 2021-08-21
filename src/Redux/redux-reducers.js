@@ -129,11 +129,11 @@ export const preproccessReducer = (state = initialState, action) => {
         })),
         actions: state.actions.map(e => ({
           ...e,
-          active: false,
+          active: state.mimeType === action.payload.type,
         })),
         tools: state.tools.map(e => ({
           ...e,
-          active: false,
+          active: state.mimeType === action.payload.type,
         })),
         options: [],
       };
