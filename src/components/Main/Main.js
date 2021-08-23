@@ -11,6 +11,7 @@ import setAcceptedActions from '../../utils/setAcceptedActions';
 import checkScriptAvailability from '../../utils/checkScriptAvailability';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
+import FolderHandler from './FolderHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from '../Header/SemiHeader';
 import {
@@ -146,6 +147,14 @@ const Main = props => {
             {t('YourFile')}
           </NavLink>
         </NavItem>
+        <NavItem className="mr-1">
+          <NavLink
+            className={fileOrigin === 'folder' ? 'active text-success font-weight-bold' : 'bg-light text-dark'}
+            onClick={() => props.setFileOrigin('folder')}
+          >
+            {t('YourFolder')}
+          </NavLink>
+        </NavItem>
         <NavItem>
           <NavLink
             className={fileOrigin === 'url' ? 'active text-success font-weight-bold' : 'bg-light text-dark '}
@@ -158,6 +167,9 @@ const Main = props => {
       <TabContent activeTab={fileOrigin}>
         <TabPane tabId="file">
           <FileHandler InputActionTypeRef={InputActionTypeRef} />
+        </TabPane>
+        <TabPane tabId="folder">
+          <FolderHandler InputActionTypeRef={InputActionTypeRef} />
         </TabPane>
         <TabPane tabId="url">
           <UrlHandler isValid={!error.length} isEmpty={!url.length} feedback={error} />
