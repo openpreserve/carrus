@@ -8,6 +8,7 @@ const initialState = {
   actionTypes: [],
   url: '',
   fileOrigin: 'file',
+  batchPath: '',
   defaultPDFTool: '',
   defaultJPEGTool: 'JPEG hul',
   filePath: '',
@@ -16,6 +17,7 @@ const initialState = {
   mimeType: '',
   load: false,
   config: {},
+  recursive: false,
 };
 
 export const preproccessReducer = (state = initialState, action) => {
@@ -111,6 +113,12 @@ export const preproccessReducer = (state = initialState, action) => {
         dirPath: action.payload,
       };
     }
+    case actionTypes.SET_BATCH_PATH: {
+      return {
+        ...state,
+        batchPath: action.payload,
+      };
+    }
     case actionTypes.SET_DEFAULT_PDF_TOOl: {
       return {
         ...state,
@@ -167,6 +175,13 @@ export const preproccessReducer = (state = initialState, action) => {
       };
     }
 
+    case actionTypes.SET_RECURSIVE: {
+      return {
+        ...state,
+        recursive: action.payload,
+      };
+    }
+
     default: {
       return state;
     }
@@ -183,6 +198,7 @@ export const setFileOrigin = value => ({ type: actionTypes.SET_FILE_ORIGIN, payl
 export const setDefaultPDFTool = value => ({ type: actionTypes.SET_DEFAULT_PDF_TOOl, payload: value });
 export const updateJPEGTool = value => ({ type: actionTypes.UPDATE_JPEG_TOOL, payload: value });
 export const setDirPath = value => ({ type: actionTypes.SET_DIR_PATH, payload: value });
+export const setBatchPath = value => ({ type: actionTypes.SET_BATCH_PATH, payload: value });
 export const setFileInfo = (fileName, filePath, fileMimeType) => ({
   type: actionTypes.SET_FILE_INFO,
   payload: { name: fileName, path: filePath, type: fileMimeType },
@@ -191,3 +207,4 @@ export const setMimeType = value => ({ type: actionTypes.SET_MIME_TYPE, payload:
 export const setParData = value => ({ type: actionTypes.SET_PAR_DATA, payload: value });
 export const setConfig = value => ({ type: actionTypes.SET_CONFIG, payload: value });
 export const setLoad = value => ({ type: actionTypes.SET_LOAD, payload: value });
+export const setRecursive = value => ({ type: actionTypes.SET_RECURSIVE, payload: value });

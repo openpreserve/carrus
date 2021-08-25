@@ -169,7 +169,11 @@ const Main = props => {
           <FileHandler InputActionTypeRef={InputActionTypeRef} />
         </TabPane>
         <TabPane tabId="folder">
-          <FolderHandler InputActionTypeRef={InputActionTypeRef} />
+          <FolderHandler
+            InputActionTypeRef={InputActionTypeRef}
+            InputToolRef={InputToolRef}
+            InputOptionRef={InputOptionRef}
+          />
         </TabPane>
         <TabPane tabId="url">
           <UrlHandler isValid={!error.length} isEmpty={!url.length} feedback={error} />

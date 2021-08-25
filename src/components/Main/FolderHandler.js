@@ -5,43 +5,34 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import Dropzone from 'react-dropzone';
-import { Jumbotron, Container } from 'reactstrap';
-import mime from 'mime-types';
-import FileType from 'file-type';
-import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
-import { green } from '@material-ui/core/colors';
-import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
-import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
-import {
-  setFileInfo,
-} from '../../Redux/redux-reducers';
-import setAcceptedType from '../../utils/setAcceptedType';
+import { setBatchPath, setRecursive } from '../../Redux/redux-reducers';
 
 const FolderHandler = props => {
-  const batchDirRef = useRef();
+  const BatchDirRef = useRef();
   const { t } = useTranslation();
-  const { fileName, mimeType, isTypeAccepted } = props;
+  const { fileName, mimeType, isTypeAccepted, batchPath } = props;
   const [error, setError] = useState('');
-  const [batchDir, setBatchDir] = useState('');
+  const store = useSelector(state => state);
 
-  function getFolder() {
-    setBatchDir(batchDirRef.current.files[0].path);
+  function setPath() {
+    props.setBatchPath(BatchDirRef.current.files[0].path);
+    console.log(store);
   }
   function checkboxHandleChange(e) {
-    console.log(e.target.checked);
+    props.setRecursive(e.target.checked);
+    console.log(store);
   }
 
   return (
     <div className="mt-3">
       <FormGroup className="mt-3 w-100 d-flex flex-row align-items-center">
         <Label for="customFile" className="mr-1 my-auto w-25">
-          {t('OutputFolder')}:
+          Batch directory:
         </Label>
-        <Input className="dir_path w-50" readOnly placeholder={batchDir} />
+        <Input className="dir_path w-50" readOnly placeholder={batchPath} />
         <div className="w-25 d-flex flex-row">
           <label className="custom-file-upload ml-3">
             <input
@@ -49,8 +40,8 @@ const FolderHandler = props => {
               directory=""
               webkitdirectory=""
               type="file"
-              ref={batchDirRef}
-              onChange={getFolder}
+              ref={BatchDirRef}
+              onChange={setPath}
             />
             {t('SelectFolder')}
           </label>
@@ -65,12 +56,7 @@ const FolderHandler = props => {
 };
 
 const mapStateToProps = state => ({
-  fileName: state.fileName,
-  mimeType: state.mimeType,
-  fileFormats: state.fileFormats,
-  actions: state.actions,
-  isTypeAccepted: !setAcceptedType(state.actions, state.mimeType, state.fileFormats),
+  batchPath: state.batchPath,
+  recursive: state.recursive,
 });
-export default connect(mapStateToProps, {
-  setFileInfo,
-})(FolderHandler);
+export default connect(mapStateToProps, { setBatchPath, setRecursive })(FolderHandler);
