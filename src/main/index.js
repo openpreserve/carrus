@@ -22,7 +22,7 @@ require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 const request = require('request');
 
-const files = [];
+let files = [];
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
@@ -341,8 +341,9 @@ function parseBatch(bpath, recur) {
 }
 
 ipcMain.on('execute-file-action', (event, arg) => {
+  files = [];
   if (arg.fileOrigin === 'folder') {
-    console.log(parseBatch(arg.batchPath, arg.filePath));
+    console.log(parseBatch(arg.batchPath, arg.recursive));
   } else
   if (arg.fileOrigin === 'url') {
     arg.filePath = path.join(os.tmpdir(), APP_NAME, 'downloads', `${getDateString()}-${arg.fileName}`);
