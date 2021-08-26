@@ -48,6 +48,7 @@ const Main = props => {
     config,
     load,
     batchPath,
+    recursive,
   } = props;
   const { t } = useTranslation();
   const InputActionTypeRef = useRef();
@@ -67,6 +68,8 @@ const Main = props => {
       tool: activeTool,
       option: activeOption,
       config,
+      recursive,
+      batchPath,
     };
     ipcRenderer.send('execute-file-action', dataToSend);
     ipcRenderer.on('receive-load', (event, value) => {
@@ -302,8 +305,8 @@ const Main = props => {
           || (fileOrigin === 'url' && !isURL(url)
           || (fileOrigin === 'folder' && !batchPath.length)
           || !dirPath.length
-          || !activeTool
-          || !activeOption)
+          || (!activeTool && fileOrigin === 'file')
+          || (!activeOption && fileOrigin === 'file'))
         }
         className="mt-3 align-self-center"
         onClick={handleExecute}
@@ -336,6 +339,7 @@ const mapStateToProps = state => ({
   config: state.config,
   load: state.load,
   batchPath: state.batchPath,
+  recursive: state.recursive,
 });
 
 export default connect(mapStateToProps, {
