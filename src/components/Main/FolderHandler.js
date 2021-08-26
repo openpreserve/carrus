@@ -45,7 +45,6 @@ const FolderHandler = props => {
 
   function checkboxHandleChange(e) {
     props.setRecursive(e.target.checked);
-    console.log(store);
   }
 
   return (

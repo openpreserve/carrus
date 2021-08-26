@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
@@ -198,8 +199,8 @@ const Main = props => {
           }}
           value={activeActionTypes ? activeActionTypes.id.name : t('chooseAllowedActionTypes')}
         >
-          {mimeType.length ? (
-            acceptedActions.length ? (
+          {mimeType.length || fileOrigin.length && fileOrigin === 'folder' ? (
+            acceptedActions.length || fileOrigin.length ? (
               <>
                 <option hidden>{t('chooseAllowedActionTypes')}</option>
                 {unique(acceptedActions).map(e => (
@@ -298,10 +299,11 @@ const Main = props => {
         value="Execute"
         disabled={
           (fileOrigin === 'file' && !filePath.length)
-          || (fileOrigin === 'url' && !isURL(url)) || (fileOrigin === 'folder' && !batchPath.length)
+          || (fileOrigin === 'url' && !isURL(url)
+          || (fileOrigin === 'folder' && !batchPath.length)
           || !dirPath.length
           || !activeTool
-          || !activeOption
+          || !activeOption)
         }
         className="mt-3 align-self-center"
         onClick={handleExecute}
