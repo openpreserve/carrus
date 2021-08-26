@@ -1,7 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-unsafe-finally */
-/* eslint-disable import/no-duplicates */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
@@ -20,7 +19,7 @@ const FolderHandler = props => {
   const { batchPath, recursive } = props;
   const store = useSelector(state => state);
   const files = [];
-
+  // TODO: delete completely this function here
   function parseBatch(path, recur) {
     try {
       readdirSync(path, 'utf8').map(item => {
@@ -40,7 +39,6 @@ const FolderHandler = props => {
 
   async function setPath() {
     props.setBatchPath(BatchDirRef.current.files[0].path);
-    console.log(parseBatch(batchPath, recursive));
   }
 
   function checkboxHandleChange(e) {

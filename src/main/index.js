@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable no-unsafe-finally */
 /* eslint-disable no-console */
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-param-reassign */
@@ -7,7 +9,7 @@
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
-import fs from 'fs';
+import fs, { readdirSync, lstatSync } from 'fs';
 import os from 'os';
 import mime from 'mime-types';
 import { spawn } from 'child_process';
@@ -20,6 +22,7 @@ require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 const request = require('request');
 
+const files = [];
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
@@ -320,7 +323,27 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   outputPath = outFol;
 };
 
+function parseBatch(bpath, recur) {
+  try {
+    readdirSync(bpath, 'utf8').map(item => {
+      const file = {
+        path: `${bpath}/${item}`,
+        name: item,
+        isDir: lstatSync(`${bpath}/${item}`).isDirectory(),
+      };
+      recur && file.isDir ? parseBatch(file.path) : !file.isDir && files.push(file);
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return files;
+  }
+}
+
 ipcMain.on('execute-file-action', (event, arg) => {
+  if (arg.fileOrigin === 'folder') {
+    console.log(parseBatch(arg.batchPath, arg.filePath));
+  } else
   if (arg.fileOrigin === 'url') {
     arg.filePath = path.join(os.tmpdir(), APP_NAME, 'downloads', `${getDateString()}-${arg.fileName}`);
     try {
