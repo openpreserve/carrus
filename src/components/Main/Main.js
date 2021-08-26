@@ -46,6 +46,7 @@ const Main = props => {
     fileFormats,
     config,
     load,
+    batchPath,
   } = props;
   const { t } = useTranslation();
   const InputActionTypeRef = useRef();
@@ -150,7 +151,9 @@ const Main = props => {
         <NavItem className="mr-1">
           <NavLink
             className={fileOrigin === 'folder' ? 'active text-success font-weight-bold' : 'bg-light text-dark'}
-            onClick={() => props.setFileOrigin('folder')}
+            onClick={() => {
+              props.setFileOrigin('folder');
+            }}
           >
             {t('YourFolder')}
           </NavLink>
@@ -218,63 +221,70 @@ const Main = props => {
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-100 d-flex flex-row">
-        <Label for="tool" className="mr-1 my-auto w-25">
-          <span>{t('Tool')}: </span>
-        </Label>
-        <Input
-          className="w-50"
-          type="select"
-          onChange={e => {
-            props.setTool(e.target.value);
-            InputToolRef.current = e;
-            InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
-          }}
-          /* defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'} */
-          value={activeTool ? activeTool.id.name : 'Choose Tool'}
-        >
-          <option hidden>{t('ChooseTool')}</option>
-          {activeActionTypes && mimeType.length ? (
-            checkScriptAvailability(activeActionTypes, tools, acceptedActions, config)
-          ) : (
-            <>
+        { fileOrigin !== 'folder' && (
+          <>
+            <Label for="tool" className="mr-1 my-auto w-25">
+              <span>{t('Tool')}: </span>
+            </Label>
+            <Input
+              className="w-50"
+              type="select"
+              onChange={e => {
+                props.setTool(e.target.value);
+                InputToolRef.current = e;
+                InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
+              }}
+              value={activeTool ? activeTool.id.name : 'Choose Tool'}
+            >
               <option hidden>{t('ChooseTool')}</option>
-              <option disabled>No actions are chosen</option>
-            </>
-          )}
-        </Input>
+              {activeActionTypes && mimeType.length ? (
+                checkScriptAvailability(activeActionTypes, tools, acceptedActions, config)
+              ) : (
+                <>
+                  <option hidden>{t('ChooseTool')}</option>
+                  <option disabled>No actions are chosen</option>
+                </>
+              )}
+            </Input>
+          </>
+        )}
       </FormGroup>
       <FormGroup className="mt-3 w-100 d-flex flex-row">
-        <Label for="action" className="mr-1 my-auto w-25">
-          <span>{t('Action')}: </span>
-        </Label>
-        <Input
-          className="w-50"
-          type="select"
-          /* defaultValue={activeOption ? activeOption.name : 'Choose Option'} */
-          value={activeOption ? activeOption.name : 'Choose Option'}
-          onChange={e => {
-            InputOptionRef.current = e;
-            props.setOptions([{
-              value: acceptedActions
-                .find(action => action.id.name === e.target.value)?.inputToolArguments.map(i => i.value),
-              name: e.target.value,
-            }]);
-          }}
-        >
-          <option hidden>{t('ChooseOption')}</option>
-          {activeTool ? (
-            acceptedActions
-              .filter(a => (a.type.id.guid === activeActionTypes.id.guid && a.tool.id.guid === activeTool.id.guid))
-              .map(avaliableOption => (
-                <option key={avaliableOption.id.guid}>{avaliableOption.id.name}</option>
-              ))
-          ) : (
-            <>
-              <option hidden>{t('ChooseOption')}</option>
-              <option disabled>No Tools are chosen</option>
-            </>
-          )}
-        </Input>
+        { fileOrigin !== 'folder'
+        && (
+        <>
+          <Label for="action" className="mr-1 my-auto w-25">
+            <span>{t('Action')}: </span>
+          </Label>
+          <Input
+            className="w-50"
+            type="select"
+            value={activeOption ? activeOption.name : 'Choose Option'}
+            onChange={e => {
+              InputOptionRef.current = e;
+              props.setOptions([{
+                value: acceptedActions
+                  .find(action => action.id.name === e.target.value)?.inputToolArguments.map(i => i.value),
+                name: e.target.value,
+              }]);
+            }}
+          >
+            <option hidden>{t('ChooseOption')}</option>
+            {activeTool ? (
+              acceptedActions
+                .filter(a => (a.type.id.guid === activeActionTypes.id.guid && a.tool.id.guid === activeTool.id.guid))
+                .map(avaliableOption => (
+                  <option key={avaliableOption.id.guid}>{avaliableOption.id.name}</option>
+                ))
+            ) : (
+              <>
+                <option hidden>{t('ChooseOption')}</option>
+                <option disabled>No Tools are chosen</option>
+              </>
+            )}
+          </Input>
+        </>
+        )}
       </FormGroup>
       <FormGroup className="mt-3 w-100 d-flex flex-row align-items-center">
         <Label for="customFile" className="mr-1 my-auto w-25">
@@ -288,7 +298,7 @@ const Main = props => {
         value="Execute"
         disabled={
           (fileOrigin === 'file' && !filePath.length)
-          || (fileOrigin === 'url' && !isURL(url))
+          || (fileOrigin === 'url' && !isURL(url)) || (fileOrigin === 'folder' && !batchPath.length)
           || !dirPath.length
           || !activeTool
           || !activeOption
@@ -323,6 +333,7 @@ const mapStateToProps = state => ({
   activeOption: state.options[0],
   config: state.config,
   load: state.load,
+  batchPath: state.batchPath,
 });
 
 export default connect(mapStateToProps, {

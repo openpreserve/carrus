@@ -1,3 +1,6 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable no-template-curly-in-string */
+/* eslint-disable no-unsafe-finally */
 /* eslint-disable import/no-duplicates */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-console */
@@ -7,20 +10,39 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Button } from 'reactstrap';
+import { FormGroup, Label, Input, Button } from 'reactstrap';
+import { readdirSync, lstatSync } from 'fs';
 import { setBatchPath, setRecursive } from '../../Redux/redux-reducers';
 
 const FolderHandler = props => {
   const BatchDirRef = useRef();
   const { t } = useTranslation();
-  const { fileName, mimeType, isTypeAccepted, batchPath } = props;
-  const [error, setError] = useState('');
+  const { batchPath, recursive } = props;
   const store = useSelector(state => state);
+  const files = [];
 
-  function setPath() {
-    props.setBatchPath(BatchDirRef.current.files[0].path);
-    console.log(store);
+  function parseBatch(path, recur) {
+    try {
+      readdirSync(path, 'utf8').map(item => {
+        const file = {
+          path: `${path}/${item}`,
+          name: item,
+          isDir: lstatSync(`${path}/${item}`).isDirectory(),
+        };
+        recur && file.isDir ? parseBatch(file.path) : !file.isDir && files.push(file);
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      return files;
+    }
   }
+
+  async function setPath() {
+    props.setBatchPath(BatchDirRef.current.files[0].path);
+    console.log(parseBatch(batchPath, recursive));
+  }
+
   function checkboxHandleChange(e) {
     props.setRecursive(e.target.checked);
     console.log(store);
