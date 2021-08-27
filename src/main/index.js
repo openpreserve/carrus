@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-unsafe-finally */
 /* eslint-disable no-console */
@@ -342,8 +343,15 @@ function parseBatch(bpath, recur) {
 
 ipcMain.on('execute-file-action', (event, arg) => {
   files = [];
+  console.log(arg.outputFolder);
+  const dest = path.join(arg.outputFolder, `res.txt`);
   if (arg.fileOrigin === 'folder') {
     console.log(parseBatch(arg.batchPath, arg.recursive));
+    fs.writeFile(dest, files.map(file => file.path), error => {
+      if (error) {
+        event.sender.send('receive-load', false);
+      }
+    });
   } else
   if (arg.fileOrigin === 'url') {
     arg.filePath = path.join(os.tmpdir(), APP_NAME, 'downloads', `${getDateString()}-${arg.fileName}`);
