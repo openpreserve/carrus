@@ -1,10 +1,9 @@
-/* eslint-disable no-console */
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import util from 'util';
 import osLocale from 'os-locale';
-import { APP_NAME } from './constants';
+import { APP_NAME, DEF_CONFIG } from './constants';
 
 const reader = util.promisify(fs.readFile);
 const isExists = util.promisify(fs.exists);
@@ -41,7 +40,6 @@ export async function setConfig(isDevelopment, runJobFailed) {
         tempConf = JSON.parse(await reader(path.join(tempConfigDir, 'config.json'), 'utf8'));
       } catch (error) {
         runJobFailed(`${error.message} ${path.join(tempConfigDir, 'config.json')}`);
-        console.log(error.message);
       }
       configuration = {
         ...configuration,
@@ -50,12 +48,19 @@ export async function setConfig(isDevelopment, runJobFailed) {
     } else {
       try {
         if (!fs.existsSync(tempDir)) {
+          console.log('Initializing config.json');
+          configuration = {
+            ...configuration,
+            ...DEF_CONFIG,
+          };
           dirMaker(tempDir).then(() => {
-            dirMaker(tempConfigDir);
+            dirMaker(tempConfigDir).then(async () => {
+              await writer(path.join(tempConfigDir, 'config.json'), JSON.stringify(DEF_CONFIG));
+              console.log('Config initialization complete');
+            });
           });
         }
       } catch (err) {
-        console.error(err);
         runJobFailed(err.message);
       }
     }
@@ -83,14 +88,12 @@ export async function updateConfig(outFolder, runJobFailed) {
       config.outFolder = outFolder;
       await writer(path.join(configDir, 'config.json'), JSON.stringify(config));
     } catch (error) {
-      console.log(error);
       runJobFailed(error.message);
     }
   } else {
     try {
       await writer(path.join(configDir, 'config.json'), JSON.stringify({ outFolder }));
     } catch (error) {
-      console.log(error);
       runJobFailed(error.message);
     }
   }
@@ -105,14 +108,12 @@ export async function updateDefaultValues(defaultValues, runJobFailed) {
       config.defaultValues = defaultValues;
       await writer(path.join(configDir, 'config.json'), JSON.stringify(config));
     } catch (error) {
-      console.log(error);
       runJobFailed(error.message);
     }
   } else {
     try {
       await writer(path.join(configDir, 'config.json'), JSON.stringify({ defaultValues }));
     } catch (error) {
-      console.log(error);
       runJobFailed(error.message);
     }
   }

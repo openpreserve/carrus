@@ -121,7 +121,6 @@ const Main = props => {
       });
 
       AcceptedType = AcceptedType.find(e => e?.name);
-
       if (AcceptedType) {
         if (config.defaultValues
           && config.defaultValues[actionType]
@@ -294,7 +293,7 @@ const Main = props => {
         <Label for="customFile" className="mr-1 my-auto w-25">
           {t('OutputFolder')}:
         </Label>
-        <Input className="dir_path w-50" readOnly placeholder={dirPath} />
+        <Input className="dir_path w-50" readOnly placeholder={!dirPath ? config.defaultPath : dirPath} />
         <FolderInput />
       </FormGroup>
       <Button
@@ -304,7 +303,6 @@ const Main = props => {
           (fileOrigin === 'file' && !filePath.length)
           || (fileOrigin === 'url' && !isURL(url)
           || (fileOrigin === 'folder' && !batchPath.length)
-          || !dirPath.length
           || (!activeTool && fileOrigin === 'file')
           || (!activeOption && fileOrigin === 'file'))
         }
