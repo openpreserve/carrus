@@ -11,11 +11,11 @@
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
+import FileType from 'file-type';
 import fs, { readdirSync, lstatSync } from 'fs';
 import os from 'os';
 import mime from 'mime-types';
 import { spawn } from 'child_process';
-// import FileType from 'file-type';
 import { setConfig, updateConfig, updateDefaultValues } from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
@@ -25,7 +25,6 @@ require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 const request = require('request');
 
-let files = [];
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
@@ -325,7 +324,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   outputPath = outFol;
 };
 
-// function setDefaultValues(args) {
+// function setDefaultValues(...args) {
 //   console.log('setDefaultValues \n');
 //   const { defaultValues } = args.config;
 //   console.log(args.mimeType);
@@ -353,32 +352,36 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 //   }
 // }
 
-function parseBatch(bpath, recur) {
+async function setMimeType(p) {
   try {
-    readdirSync(bpath, 'utf8').map(item => {
+    const MT = await FileType.fromFile(p);
+    if (MT) {
+      return MT;
+    }
+    const newMT = mime.lookup(p);
+    return newMT;
+  } catch (err) {
+    return null;
+  }
+}
+
+function parseBatch(bpath, recur) {
+  const files = [];
+  try {
+    readdirSync(bpath, 'utf8').map(async item => {
       const filePath = `${bpath}/${item}`;
-      // const checkMimeType = async (e) => {
-      //   try {
-      //     const MT = await FileType.fromFile(e[0].path);
-      //     if (MT) {
-      //       props.setFileInfo(e[0].name, e[0].path, MT.mime);
-      //     } else {
-      //       const newMT = mime.lookup(e[0].path);
-      //       props.setFileInfo(e[0].name, e[0].path, newMT);
-      //     }
-      //   } catch (err) {
-      //     props.setFileInfo('', '', '');
-      //     setError(err.message);
-      //   }
-      // }}
+      const mimeType = await setMimeType(filePath);
       const file = {
         filePath,
+        mimeType,
         name: item,
-        // mimeType: checkMimeType(),
         isDir: lstatSync(filePath).isDirectory(),
       };
+      files.push(file);
+      console.log(file);
       recur && file.isDir ? parseBatch(file.path) : !file.isDir && files.push(file);
     });
+    return files;
   } catch (error) {
     console.log(error);
   } finally {
@@ -387,11 +390,10 @@ function parseBatch(bpath, recur) {
 }
 
 ipcMain.on('execute-file-action', (event, arg) => {
-  files = [];
-  // setDefaultValues(arg);
   const dest = path.join(arg.outputFolder, `res.txt`);
   if (arg.fileOrigin === 'folder') {
-    console.log(parseBatch(arg.batchPath, arg.recursive));
+    const files = parseBatch(arg.batchPath, arg.recursive);
+    console.log(files);
     fs.writeFile(dest, files.map(file => file.path), error => {
       if (error) {
         event.sender.send('receive-load', false);
