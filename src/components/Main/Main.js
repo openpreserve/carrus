@@ -60,6 +60,7 @@ const Main = props => {
     const dataToSend = {
       fileName,
       mimeType,
+      fileFormats,
       fileOrigin,
       path: fileOrigin === 'url' ? url : filePath,
       actionType: activeActionTypes,

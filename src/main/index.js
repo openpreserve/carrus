@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-sequences */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-unsafe-finally */
@@ -14,6 +15,7 @@ import fs, { readdirSync, lstatSync } from 'fs';
 import os from 'os';
 import mime from 'mime-types';
 import { spawn } from 'child_process';
+// import FileType from 'file-type';
 import { setConfig, updateConfig, updateDefaultValues } from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
@@ -43,7 +45,6 @@ async function createMainWindow() {
     minWidth = 740;
     minHeight = 650;
   }
-
   process.setMaxListeners(Infinity);
 
   const window = new BrowserWindow({
@@ -324,13 +325,57 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   outputPath = outFol;
 };
 
+// function setDefaultValues(args) {
+//   console.log('setDefaultValues \n');
+//   const { defaultValues } = args.config;
+//   console.log(args.mimeType);
+//   if (defaultValues) {
+//     let AcceptedType = args.fileFormats.map(format => {
+//       const type = format.identifiers.find(item => item.identifier === args.mimeType);
+//       if (type) {
+//         return {
+//           mime: type.identifier,
+//           name: format.id.name,
+//         };
+//       }
+//       return {};
+//     });
+
+//     AcceptedType = AcceptedType.find(e => e?.name);
+//     if (AcceptedType) {
+//       if (defaultValues
+//         && defaultValues[args.actionType]
+//         && defaultValues[args.actionType][AcceptedType.name]) {
+//         // const { defaultTool: tool, defaultAction: action } = defaultValues[args.actionType][AcceptedType.name];
+//       }
+//     }
+//     return true;
+//   }
+// }
+
 function parseBatch(bpath, recur) {
   try {
     readdirSync(bpath, 'utf8').map(item => {
+      const filePath = `${bpath}/${item}`;
+      // const checkMimeType = async (e) => {
+      //   try {
+      //     const MT = await FileType.fromFile(e[0].path);
+      //     if (MT) {
+      //       props.setFileInfo(e[0].name, e[0].path, MT.mime);
+      //     } else {
+      //       const newMT = mime.lookup(e[0].path);
+      //       props.setFileInfo(e[0].name, e[0].path, newMT);
+      //     }
+      //   } catch (err) {
+      //     props.setFileInfo('', '', '');
+      //     setError(err.message);
+      //   }
+      // }}
       const file = {
-        path: `${bpath}/${item}`,
+        filePath,
         name: item,
-        isDir: lstatSync(`${bpath}/${item}`).isDirectory(),
+        // mimeType: checkMimeType(),
+        isDir: lstatSync(filePath).isDirectory(),
       };
       recur && file.isDir ? parseBatch(file.path) : !file.isDir && files.push(file);
     });
@@ -343,7 +388,7 @@ function parseBatch(bpath, recur) {
 
 ipcMain.on('execute-file-action', (event, arg) => {
   files = [];
-  console.log(arg.outputFolder);
+  // setDefaultValues(arg);
   const dest = path.join(arg.outputFolder, `res.txt`);
   if (arg.fileOrigin === 'folder') {
     console.log(parseBatch(arg.batchPath, arg.recursive));
