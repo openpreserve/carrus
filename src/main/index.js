@@ -1,4 +1,5 @@
-/* eslint-disable consistent-return */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-sequences */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-unsafe-finally */
@@ -11,11 +12,11 @@
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
-import FileType from 'file-type';
 import fs, { readdirSync, lstatSync } from 'fs';
 import os from 'os';
 import mime from 'mime-types';
 import { spawn } from 'child_process';
+import FileType from 'file-type';
 import { setConfig, updateConfig, updateDefaultValues } from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
@@ -25,6 +26,7 @@ require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 const request = require('request');
 
+let files = [];
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
@@ -44,6 +46,7 @@ async function createMainWindow() {
     minWidth = 740;
     minHeight = 650;
   }
+
   process.setMaxListeners(Infinity);
 
   const window = new BrowserWindow({
@@ -323,36 +326,8 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 
   outputPath = outFol;
 };
-
-// function setDefaultValues(...args) {
-//   console.log('setDefaultValues \n');
-//   const { defaultValues } = args.config;
-//   console.log(args.mimeType);
-//   if (defaultValues) {
-//     let AcceptedType = args.fileFormats.map(format => {
-//       const type = format.identifiers.find(item => item.identifier === args.mimeType);
-//       if (type) {
-//         return {
-//           mime: type.identifier,
-//           name: format.id.name,
-//         };
-//       }
-//       return {};
-//     });
-
-//     AcceptedType = AcceptedType.find(e => e?.name);
-//     if (AcceptedType) {
-//       if (defaultValues
-//         && defaultValues[args.actionType]
-//         && defaultValues[args.actionType][AcceptedType.name]) {
-//         // const { defaultTool: tool, defaultAction: action } = defaultValues[args.actionType][AcceptedType.name];
-//       }
-//     }
-//     return true;
-//   }
-// }
-
-async function setMimeType(p) {
+// eslint-disable-next-line consistent-return
+async function setMT(p) {
   try {
     const MT = await FileType.fromFile(p);
     if (MT) {
@@ -361,27 +336,22 @@ async function setMimeType(p) {
     const newMT = mime.lookup(p);
     return newMT;
   } catch (err) {
-    return null;
+    console.log(err);
   }
 }
-
-function parseBatch(bpath, recur) {
-  const files = [];
+async function parseBatch(bpath, recur) {
   try {
-    readdirSync(bpath, 'utf8').map(async item => {
+    for (const item of readdirSync(bpath, 'utf8')) {
       const filePath = `${bpath}/${item}`;
-      const mimeType = await setMimeType(filePath);
+      const mimeType = await setMT(filePath);
       const file = {
-        filePath,
         mimeType,
+        path: filePath,
         name: item,
         isDir: lstatSync(filePath).isDirectory(),
       };
-      files.push(file);
-      console.log(file);
       recur && file.isDir ? parseBatch(file.path) : !file.isDir && files.push(file);
-    });
-    return files;
+    }
   } catch (error) {
     console.log(error);
   } finally {
@@ -389,11 +359,12 @@ function parseBatch(bpath, recur) {
   }
 }
 
-ipcMain.on('execute-file-action', (event, arg) => {
+ipcMain.on('execute-file-action', async (event, arg) => {
+  files = [];
+  console.log(arg.outputFolder);
   const dest = path.join(arg.outputFolder, `res.txt`);
   if (arg.fileOrigin === 'folder') {
-    const files = parseBatch(arg.batchPath, arg.recursive);
-    console.log(files);
+    console.log(await parseBatch(arg.batchPath, arg.recursive));
     fs.writeFile(dest, files.map(file => file.path), error => {
       if (error) {
         event.sender.send('receive-load', false);
