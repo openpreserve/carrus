@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-sequences */
@@ -5,8 +7,6 @@
 /* eslint-disable no-unsafe-finally */
 /* eslint-disable no-console */
 /* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable quotes */
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
@@ -326,6 +326,36 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 
   outputPath = outFol;
 };
+
+function handleDefaultValues(arg, file) {
+  const { actionType, fileFormats } = arg;
+  const { defaultValues } = arg.config;
+  if (defaultValues) {
+    let AcceptedType = fileFormats.map(format => {
+      const type = format.identifiers.find(item => item.identifier === file.mimeType.mime);
+      if (type) {
+        return {
+          mime: type.identifier,
+          name: format.id.name,
+        };
+      }
+      return {};
+    });
+    AcceptedType = AcceptedType.find(e => e?.name);
+    if (AcceptedType) {
+      if (defaultValues
+          && defaultValues[actionType.id.name]
+          && defaultValues[actionType.id.name][AcceptedType.name]) {
+        defaultValues[actionType.id.name][AcceptedType.name];
+        const { defaultAction: action, defaultTool: tool } = defaultValues[actionType.id.name][AcceptedType.name];
+        file.action = action;
+        file.tool = tool;
+      }
+    }
+  }
+  console.log(file);
+  return file;
+}
 // eslint-disable-next-line consistent-return
 async function setMT(p) {
   try {
@@ -339,18 +369,20 @@ async function setMT(p) {
     console.log(err);
   }
 }
-async function parseBatch(bpath, recur) {
+async function parseBatch(bpath, recur, arg) {
   try {
     for (const item of readdirSync(bpath, 'utf8')) {
       const filePath = `${bpath}/${item}`;
-      const mimeType = await setMT(filePath);
       const file = {
-        mimeType,
-        path: filePath,
         name: item,
+        path: filePath,
         isDir: lstatSync(filePath).isDirectory(),
       };
-      recur && file.isDir ? parseBatch(file.path) : !file.isDir && files.push(file);
+      if (!file.isDir) {
+        file.mimeType = await setMT(filePath);
+        file.mimeType.ext && handleDefaultValues(arg, file);
+      }
+      recur && file.isDir ? parseBatch(file.path, recur, arg) : !file.isDir && files.push(file);
     }
   } catch (error) {
     console.log(error);
@@ -361,10 +393,9 @@ async function parseBatch(bpath, recur) {
 
 ipcMain.on('execute-file-action', async (event, arg) => {
   files = [];
-  console.log(arg.outputFolder);
   const dest = path.join(arg.outputFolder, `res.txt`);
   if (arg.fileOrigin === 'folder') {
-    console.log(await parseBatch(arg.batchPath, arg.recursive));
+    await parseBatch(arg.batchPath, arg.recursive, arg);
     fs.writeFile(dest, files.map(file => file.path), error => {
       if (error) {
         event.sender.send('receive-load', false);
