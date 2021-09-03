@@ -48,7 +48,7 @@ export async function setConfig(isDevelopment, runJobFailed) {
     } else {
       try {
         if (!fs.existsSync(tempDir)) {
-          console.log('Initializing config.json');
+          // console.log('Initializing config.json');
           configuration = {
             ...configuration,
             ...DEF_CONFIG,
@@ -56,7 +56,7 @@ export async function setConfig(isDevelopment, runJobFailed) {
           dirMaker(tempDir).then(() => {
             dirMaker(tempConfigDir).then(async () => {
               await writer(path.join(tempConfigDir, 'config.json'), JSON.stringify(DEF_CONFIG));
-              console.log('Config initialization complete');
+              // console.log('Config initialization complete');
             });
           });
         }

@@ -335,7 +335,7 @@ const runBatchScript = (tool, filePath, optionArr, outFol, event, config) => {
   shieldedPath = shieldedPath.join('');
   let reportData = '';
   let reportText = '';
-  const errorText = '';
+  let errorText = '';
   let dest = '';
   const configTool = Object.keys(config?.tools).find(e => e === tool.id.name);
   const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
@@ -500,7 +500,7 @@ ipcMain.on('execute-file-action', async (event, arg) => {
   files = [];
   const dest = path.join(arg.outputFolder, `res.txt`);
   if (arg.fileOrigin === 'folder') {
-    // await parseBatch(arg.batchPath, arg.recursive, arg);
+    await parseBatch(arg.batchPath, arg.recursive, arg);
     runBatchScript(files[1].tool, files[1].path, files[1].action.value, arg.outputFolder, event, arg.config);
     fs.writeFile(dest, files.map(file => file.path), error => {
       if (error) {
