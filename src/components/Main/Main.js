@@ -71,6 +71,8 @@ const Main = props => {
       config,
       recursive,
       batchPath,
+      tools,
+      acceptedActions,
     };
     ipcRenderer.send('execute-file-action', dataToSend);
     ipcRenderer.on('receive-load', (event, value) => {

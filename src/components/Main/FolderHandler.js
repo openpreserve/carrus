@@ -67,7 +67,7 @@ const FolderHandler = props => {
         </div>
       </FormGroup>
       <label>
-        <input type="checkbox" onChange={checkboxHandleChange} />
+        <input style={{ marginRight: '4px' }} type="checkbox" onChange={checkboxHandleChange} />
         Recursive
       </label>
     </div>

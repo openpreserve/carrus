@@ -348,8 +348,10 @@ function handleDefaultValues(arg, file) {
           && defaultValues[actionType.id.name][AcceptedType.name]) {
         defaultValues[actionType.id.name][AcceptedType.name];
         const { defaultAction: action, defaultTool: tool } = defaultValues[actionType.id.name][AcceptedType.name];
-        file.action = action;
-        file.tool = tool;
+        file.action = arg.acceptedActions
+          .find(act => act.id.name === action).inputToolArguments.map(i => i.value);
+        // eslint-disable-next-line prefer-destructuring
+        file.tool = arg.tools.filter(t => t.id.name === tool)[0];
       }
     }
   }
