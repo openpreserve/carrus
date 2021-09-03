@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-await-in-loop */
@@ -27,6 +28,8 @@ require('events').EventEmitter.defaultMaxListeners = Infinity;
 const request = require('request');
 
 let files = [];
+let reportText = '';
+let dest = '';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
@@ -115,6 +118,7 @@ app.on('activate', () => {
   }
 });
 
+// eslint-disable-next-line no-shadow
 const download = (url, dest) => new Promise((resolve, reject) => {
   const downloadDir = path.join(path.join(os.tmpdir(), APP_NAME, 'downloads'));
   try {
@@ -222,14 +226,14 @@ const getDateString = () => {
 };
 
 const runScript = (tool, filePath, optionArr, outFol, event, config) => {
+  reportText = '';
   let shieldedPath = filePath.split('');
   shieldedPath.unshift('"');
   shieldedPath.push('"');
   shieldedPath = shieldedPath.join('');
   let reportData = '';
-  let reportText = '';
   let errorText = '';
-  let dest = '';
+  dest = '';
 
   const configTool = Object.keys(config?.tools).find(e => e === tool.toolName);
   const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
@@ -328,15 +332,13 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 };
 
 const runBatchScript = (tool, filePath, optionArr, outFol, event, config) => {
-  console.log('wdfwfw');
+  console.log('running batch script');
   let shieldedPath = filePath.split('');
   shieldedPath.unshift('"');
   shieldedPath.push('"');
   shieldedPath = shieldedPath.join('');
   let reportData = '';
-  let reportText = '';
-  let errorText = '';
-  let dest = '';
+
   const configTool = Object.keys(config?.tools).find(e => e === tool.id.name);
   const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
   if (!OSconfigTool) {
@@ -367,6 +369,11 @@ const runBatchScript = (tool, filePath, optionArr, outFol, event, config) => {
     data ? reportText += data.toString() : null;
     dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
   });
+  return reportData;
+};
+
+function handleResultWindow(reportData, config, event) {
+  let errorText = '';
   reportData.stdout.on('end', () => {
     if (reportText) {
       const win = new BrowserWindow({
@@ -427,9 +434,7 @@ const runBatchScript = (tool, filePath, optionArr, outFol, event, config) => {
   reportData.on('error', (err) => {
     errorText += err.toString();
   });
-
-  outputPath = outFol;
-};
+}
 
 function handleDefaultValues(arg, file) {
   const { actionType, fileFormats } = arg;
@@ -498,17 +503,13 @@ async function parseBatch(bpath, recur, arg) {
 
 ipcMain.on('execute-file-action', async (event, arg) => {
   files = [];
-  const dest = path.join(arg.outputFolder, `res.txt`);
+  reportText = '';
   if (arg.fileOrigin === 'folder') {
     await parseBatch(arg.batchPath, arg.recursive, arg);
-    runBatchScript(files[1].tool, files[1].path, files[1].action.value, arg.outputFolder, event, arg.config);
-    fs.writeFile(dest, files.map(file => file.path), error => {
-      if (error) {
-        event.sender.send('receive-load', false);
-      }
-    });
-  } else
-  if (arg.fileOrigin === 'url') {
+    // eslint-disable-next-line max-len
+    const reportData = runBatchScript(files[1].tool, files[1].path, files[1].action.value, arg.outputFolder, event, arg.config);
+    handleResultWindow(reportData, arg.config, event);
+  } else if (arg.fileOrigin === 'url') {
     arg.filePath = path.join(os.tmpdir(), APP_NAME, 'downloads', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
