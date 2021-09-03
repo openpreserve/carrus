@@ -327,6 +327,110 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   outputPath = outFol;
 };
 
+const runBatchScript = (tool, filePath, optionArr, outFol, event, config) => {
+  console.log('wdfwfw');
+  let shieldedPath = filePath.split('');
+  shieldedPath.unshift('"');
+  shieldedPath.push('"');
+  shieldedPath = shieldedPath.join('');
+  let reportData = '';
+  let reportText = '';
+  const errorText = '';
+  let dest = '';
+  const configTool = Object.keys(config?.tools).find(e => e === tool.id.name);
+  const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
+  if (!OSconfigTool) {
+    event.sender.send('receive-load', false);
+    runJobFailed(`There is no ${tool.toolName} tool in config`);
+    return;
+  }
+
+  const scriptPath = isDevelopment
+    ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.scriptPath)
+    : path.join(__dirname, '..', 'libs', OSconfigTool.scriptPath);
+
+  const command = OSconfigTool.scriptType === 'shell' ? scriptPath : OSconfigTool.scriptType;
+  const optionObj = {};
+
+  if (OSconfigTool.workingDirectory) {
+    optionObj.cwd = isDevelopment
+      ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory)
+      : path.join(__dirname, '..', 'libs', OSconfigTool.workingDirectory);
+  }
+
+  reportData = spawn(command, [
+    ...OSconfigTool.scriptArguments,
+    optionArr,
+    filePath,
+  ], optionObj);
+  reportData.stdout.on('data', (data) => {
+    data ? reportText += data.toString() : null;
+    dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
+  });
+  reportData.stdout.on('end', () => {
+    if (reportText) {
+      const win = new BrowserWindow({
+        minWidth: 1037,
+        minHeight: 700,
+        title: APP_NAME,
+        frame: false,
+        titleBarStyle: 'hidden',
+        webPreferences: {
+          nodeIntegration: true,
+          enableRemoteModule: true,
+        },
+      });
+      win._id = 'report';
+
+      win.webContents.once('did-finish-load', async () => {
+        const translate = await setTranslate(isDevelopment);
+        win.webContents.send('translate', translate);
+        win.webContents.send('config', config);
+        win.webContents.send('receiver', { report: reportText, path: dest });
+        event.sender.send('receive-load', false);
+      });
+
+      if (isDevelopment) {
+        win.webContents.openDevTools();
+      }
+
+      if (isDevelopment) {
+        win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+      } else {
+        win.loadURL(
+          formatUrl({
+            pathname: path.join(__dirname, 'index.html'),
+            protocol: 'file',
+            slashes: true,
+          }),
+        );
+      }
+    }
+    fs.writeFile(dest, reportText, error => {
+      if (error) {
+        event.sender.send('receive-load', false);
+        error.message !== 'ENOENT: no such file or directory, open \'\''
+          ? runJobFailed(error.message)
+          : runJobFailed(errorText);
+      }
+    });
+  });
+  reportData.stderr.on('data', (data) => {
+    console.error(data.toString());
+    errorText += data.toString();
+  });
+
+  reportData.stderr.on('end', () => {
+    event.sender.send('receive-load', false);
+  });
+
+  reportData.on('error', (err) => {
+    errorText += err.toString();
+  });
+
+  outputPath = outFol;
+};
+
 function handleDefaultValues(arg, file) {
   const { actionType, fileFormats } = arg;
   const { defaultValues } = arg.config;
@@ -355,7 +459,6 @@ function handleDefaultValues(arg, file) {
       }
     }
   }
-  console.log(file);
   return file;
 }
 // eslint-disable-next-line consistent-return
@@ -397,7 +500,8 @@ ipcMain.on('execute-file-action', async (event, arg) => {
   files = [];
   const dest = path.join(arg.outputFolder, `res.txt`);
   if (arg.fileOrigin === 'folder') {
-    await parseBatch(arg.batchPath, arg.recursive, arg);
+    // await parseBatch(arg.batchPath, arg.recursive, arg);
+    runBatchScript(files[1].tool, files[1].path, files[1].action.value, arg.outputFolder, event, arg.config);
     fs.writeFile(dest, files.map(file => file.path), error => {
       if (error) {
         event.sender.send('receive-load', false);
