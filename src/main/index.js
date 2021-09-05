@@ -30,6 +30,7 @@ const request = require('request');
 let files = [];
 let reportText = '';
 let dest = '';
+let errorText = '';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
@@ -232,6 +233,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   shieldedPath.push('"');
   shieldedPath = shieldedPath.join('');
   let reportData = '';
+  // eslint-disable-next-line no-shadow
   let errorText = '';
   dest = '';
 
@@ -332,7 +334,9 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 };
 
 const runBatchScript = (tool, filePath, optionArr, outFol, event, config) => {
+  dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
   console.log('running batch script');
+  // eslint-disable-next-line no-unused-vars
   let shieldedPath = filePath.split('');
   shieldedPath.unshift('"');
   shieldedPath.push('"');
@@ -367,60 +371,8 @@ const runBatchScript = (tool, filePath, optionArr, outFol, event, config) => {
   ], optionObj);
   reportData.stdout.on('data', (data) => {
     data ? reportText += data.toString() : null;
-    dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
-  });
-  return reportData;
-};
-
-function handleResultWindow(reportData, config, event) {
-  let errorText = '';
-  reportData.stdout.on('end', () => {
-    if (reportText) {
-      const win = new BrowserWindow({
-        minWidth: 1037,
-        minHeight: 700,
-        title: APP_NAME,
-        frame: false,
-        titleBarStyle: 'hidden',
-        webPreferences: {
-          nodeIntegration: true,
-          enableRemoteModule: true,
-        },
-      });
-      win._id = 'report';
-
-      win.webContents.once('did-finish-load', async () => {
-        const translate = await setTranslate(isDevelopment);
-        win.webContents.send('translate', translate);
-        win.webContents.send('config', config);
-        win.webContents.send('receiver', { report: reportText, path: dest });
-        event.sender.send('receive-load', false);
-      });
-
-      if (isDevelopment) {
-        win.webContents.openDevTools();
-      }
-
-      if (isDevelopment) {
-        win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
-      } else {
-        win.loadURL(
-          formatUrl({
-            pathname: path.join(__dirname, 'index.html'),
-            protocol: 'file',
-            slashes: true,
-          }),
-        );
-      }
-    }
-    fs.writeFile(dest, reportText, error => {
-      if (error) {
-        event.sender.send('receive-load', false);
-        error.message !== 'ENOENT: no such file or directory, open \'\''
-          ? runJobFailed(error.message)
-          : runJobFailed(errorText);
-      }
-    });
+    console.log(dest);
+    console.log(reportText);
   });
   reportData.stderr.on('data', (data) => {
     console.error(data.toString());
@@ -433,6 +385,56 @@ function handleResultWindow(reportData, config, event) {
 
   reportData.on('error', (err) => {
     errorText += err.toString();
+  });
+  reportData.stdout.on('end', () => { true; });
+};
+
+function handleResultWindow(reportData, config, event) {
+  if (reportText) {
+    const win = new BrowserWindow({
+      minWidth: 1037,
+      minHeight: 700,
+      title: APP_NAME,
+      frame: false,
+      titleBarStyle: 'hidden',
+      webPreferences: {
+        nodeIntegration: true,
+        enableRemoteModule: true,
+      },
+    });
+    win._id = 'report';
+
+    win.webContents.once('did-finish-load', async () => {
+      const translate = await setTranslate(isDevelopment);
+      win.webContents.send('translate', translate);
+      win.webContents.send('config', config);
+      win.webContents.send('receiver', { report: reportText, path: dest });
+      event.sender.send('receive-load', false);
+    });
+
+    if (isDevelopment) {
+      win.webContents.openDevTools();
+    }
+
+    if (isDevelopment) {
+      win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+    } else {
+      win.loadURL(
+        formatUrl({
+          pathname: path.join(__dirname, 'index.html'),
+          protocol: 'file',
+          slashes: true,
+        }),
+      );
+    }
+  }
+  fs.writeFile(dest, reportText, error => {
+    if (error) {
+      event.sender.send('receive-load', false);
+      error.message !== 'ENOENT: no such file or directory, open \'\''
+        ? runJobFailed(error.message)
+        : runJobFailed(errorText);
+    }
   });
 }
 
