@@ -334,7 +334,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   outputPath = outFol;
 };
 
-const runBatchScript = (tool, filePath, optionArr, fileName, outFol, event, config, batchPath) => {
+async function runBatchScript(tool, filePath, optionArr, fileName, outFol, event, config, batchPath) {
   if (tool && optionArr) {
     dest = path.join(outFol, `${path.basename(batchPath)}-${tool.id.name}_${getDateString()}.txt`);
     console.log('running batch script');
@@ -371,9 +371,8 @@ const runBatchScript = (tool, filePath, optionArr, fileName, outFol, event, conf
       optionArr.value,
       filePath,
     ], optionObj);
-    reportData.stdout.on('data', (data) => {
+    reportData.stdout.on('data', data => {
       data ? reportText += `${fileName} - ${data.toString()}` : null;
-      console.log(reportText);
     });
     reportData.stderr.on('data', (data) => {
       console.error(data.toString());
@@ -392,7 +391,7 @@ const runBatchScript = (tool, filePath, optionArr, fileName, outFol, event, conf
     reportText += `${fileName} - Cannot be processed: No tool or action \n`;
   }
   return reportText;
-};
+}
 
 function handleResultWindow(config, event) {
   if (reportText) {
@@ -415,6 +414,14 @@ function handleResultWindow(config, event) {
       win.webContents.send('config', config);
       win.webContents.send('receiver', { report: reportText, path: dest });
       event.sender.send('receive-load', false);
+      fs.writeFile(dest, reportText, error => {
+        if (error) {
+          event.sender.send('receive-load', false);
+          error.message !== 'ENOENT: no such file or directory, open \'\''
+            ? runJobFailed(error.message)
+            : runJobFailed(errorText);
+        }
+      });
     });
 
     if (isDevelopment) {
@@ -433,14 +440,6 @@ function handleResultWindow(config, event) {
       );
     }
   }
-  fs.writeFile(dest, reportText, error => {
-    if (error) {
-      event.sender.send('receive-load', false);
-      error.message !== 'ENOENT: no such file or directory, open \'\''
-        ? runJobFailed(error.message)
-        : runJobFailed(errorText);
-    }
-  });
 }
 
 function handleDefaultValues(arg, file) {
@@ -516,9 +515,8 @@ ipcMain.on('execute-file-action', async (event, arg) => {
   reportText = '';
   if (arg.fileOrigin === 'folder') {
     await parseBatch(arg.batchPath, arg.recursive, arg);
-    console.log(files);
     for (const file of files) {
-      reportText = runBatchScript(
+      reportText = await runBatchScript(
         file.tool,
         file.path,
         file.action,
@@ -562,6 +560,7 @@ ipcMain.on('execute-file-action', async (event, arg) => {
   } catch (err) {
     runJobFailed(err.message);
   }
+  console.log(reportText);
 });
 
 ipcMain.on('update-default-values', (event, defaultValues) => {
