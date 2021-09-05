@@ -28,7 +28,7 @@ require('events').EventEmitter.defaultMaxListeners = Infinity;
 const request = require('request');
 
 let files = [];
-let reportText = '';
+let reportText = 'd';
 let dest = '';
 let errorText = '';
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -227,7 +227,8 @@ const getDateString = () => {
 };
 
 const runScript = (tool, filePath, optionArr, outFol, event, config) => {
-  reportText = '';
+  // eslint-disable-next-line no-shadow
+  let reportText = '';
   let shieldedPath = filePath.split('');
   shieldedPath.unshift('"');
   shieldedPath.push('"');
@@ -333,63 +334,67 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   outputPath = outFol;
 };
 
-const runBatchScript = (tool, filePath, optionArr, outFol, event, config) => {
-  dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
-  console.log('running batch script');
-  // eslint-disable-next-line no-unused-vars
-  let shieldedPath = filePath.split('');
-  shieldedPath.unshift('"');
-  shieldedPath.push('"');
-  shieldedPath = shieldedPath.join('');
-  let reportData = '';
+const runBatchScript = (tool, filePath, optionArr, fileName, outFol, event, config) => {
+  if (tool && optionArr) {
+    dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
+    console.log('running batch script');
+    // eslint-disable-next-line no-unused-vars
+    let shieldedPath = filePath.split('');
+    shieldedPath.unshift('"');
+    shieldedPath.push('"');
+    shieldedPath = shieldedPath.join('');
+    let reportData = '';
 
-  const configTool = Object.keys(config?.tools).find(e => e === tool.id.name);
-  const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
-  if (!OSconfigTool) {
-    event.sender.send('receive-load', false);
-    runJobFailed(`There is no ${tool.toolName} tool in config`);
-    return;
+    const configTool = Object.keys(config?.tools).find(e => e === tool.id.name);
+    const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
+    if (!OSconfigTool) {
+      event.sender.send('receive-load', false);
+      runJobFailed(`There is no ${tool.toolName} tool in config`);
+      return;
+    }
+
+    const scriptPath = isDevelopment
+      ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.scriptPath)
+      : path.join(__dirname, '..', 'libs', OSconfigTool.scriptPath);
+
+    const command = OSconfigTool.scriptType === 'shell' ? scriptPath : OSconfigTool.scriptType;
+    const optionObj = {};
+
+    if (OSconfigTool.workingDirectory) {
+      optionObj.cwd = isDevelopment
+        ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory)
+        : path.join(__dirname, '..', 'libs', OSconfigTool.workingDirectory);
+    }
+
+    reportData = spawn(command, [
+      ...OSconfigTool.scriptArguments,
+      optionArr.value,
+      filePath,
+    ], optionObj);
+    reportData.stdout.on('data', (data) => {
+      data ? reportText += `${fileName} - ${data.toString()}` : null;
+      console.log(reportText);
+    });
+    reportData.stderr.on('data', (data) => {
+      console.error(data.toString());
+      errorText += data.toString();
+    });
+
+    reportData.stderr.on('end', () => {
+      event.sender.send('receive-load', false);
+    });
+
+    reportData.on('error', (err) => {
+      errorText += err.toString();
+    });
+    reportData.stdout.on('end', () => { true; });
+  } else {
+    reportText += `${fileName} - Cannot be processed: No tool or action \n`;
   }
-
-  const scriptPath = isDevelopment
-    ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.scriptPath)
-    : path.join(__dirname, '..', 'libs', OSconfigTool.scriptPath);
-
-  const command = OSconfigTool.scriptType === 'shell' ? scriptPath : OSconfigTool.scriptType;
-  const optionObj = {};
-
-  if (OSconfigTool.workingDirectory) {
-    optionObj.cwd = isDevelopment
-      ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory)
-      : path.join(__dirname, '..', 'libs', OSconfigTool.workingDirectory);
-  }
-
-  reportData = spawn(command, [
-    ...OSconfigTool.scriptArguments,
-    optionArr,
-    filePath,
-  ], optionObj);
-  reportData.stdout.on('data', (data) => {
-    data ? reportText += data.toString() : null;
-    console.log(dest);
-    console.log(reportText);
-  });
-  reportData.stderr.on('data', (data) => {
-    console.error(data.toString());
-    errorText += data.toString();
-  });
-
-  reportData.stderr.on('end', () => {
-    event.sender.send('receive-load', false);
-  });
-
-  reportData.on('error', (err) => {
-    errorText += err.toString();
-  });
-  reportData.stdout.on('end', () => { true; });
+  return reportText;
 };
 
-function handleResultWindow(reportData, config, event) {
+function handleResultWindow(config, event) {
   if (reportText) {
     const win = new BrowserWindow({
       minWidth: 1037,
@@ -489,6 +494,8 @@ async function parseBatch(bpath, recur, arg) {
         name: item,
         path: filePath,
         isDir: lstatSync(filePath).isDirectory(),
+        action: null,
+        tool: null,
       };
       if (!file.isDir) {
         file.mimeType = await setMT(filePath);
@@ -499,6 +506,7 @@ async function parseBatch(bpath, recur, arg) {
   } catch (error) {
     console.log(error);
   } finally {
+    console.log(files);
     return files;
   }
 }
@@ -508,9 +516,11 @@ ipcMain.on('execute-file-action', async (event, arg) => {
   reportText = '';
   if (arg.fileOrigin === 'folder') {
     await parseBatch(arg.batchPath, arg.recursive, arg);
+    for (const file of files) {
     // eslint-disable-next-line max-len
-    const reportData = runBatchScript(files[1].tool, files[1].path, files[1].action.value, arg.outputFolder, event, arg.config);
-    handleResultWindow(reportData, arg.config, event);
+      reportText = runBatchScript(file.tool, file.path, file.action, file.name, arg.outputFolder, event, arg.config);
+    }
+    handleResultWindow(arg.config, event);
   } else if (arg.fileOrigin === 'url') {
     arg.filePath = path.join(os.tmpdir(), APP_NAME, 'downloads', `${getDateString()}-${arg.fileName}`);
     try {
