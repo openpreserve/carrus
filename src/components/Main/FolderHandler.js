@@ -6,8 +6,8 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef } from 'react';
-import { connect, useSelector } from 'react-redux';
+import React, { useRef } from 'react';
+import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FormGroup, Label, Input, Button } from 'reactstrap';
 import { readdirSync, lstatSync } from 'fs';
@@ -17,26 +17,6 @@ const FolderHandler = props => {
   const BatchDirRef = useRef();
   const { t } = useTranslation();
   const { batchPath, recursive } = props;
-  const store = useSelector(state => state);
-  const files = [];
-  // TODO: delete completely this function here
-  function parseBatch(path, recur) {
-    try {
-      readdirSync(path, 'utf8').map(item => {
-        const file = {
-          path: `${path}/${item}`,
-          name: item,
-          isDir: lstatSync(`${path}/${item}`).isDirectory(),
-        };
-        recur && file.isDir ? parseBatch(file.path) : !file.isDir && files.push(file);
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      return files;
-    }
-  }
-
   async function setPath() {
     props.setBatchPath(BatchDirRef.current.files[0].path);
   }
@@ -67,7 +47,12 @@ const FolderHandler = props => {
         </div>
       </FormGroup>
       <label>
-        <input style={{ marginRight: '4px' }} type="checkbox" onChange={checkboxHandleChange} />
+        <input
+          style={{ marginRight: '4px' }}
+          type="checkbox"
+          onChange={checkboxHandleChange}
+          checked={recursive}
+        />
         Recursive
       </label>
     </div>

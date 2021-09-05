@@ -306,6 +306,7 @@ const Main = props => {
           (fileOrigin === 'file' && !filePath.length)
           || (fileOrigin === 'url' && !isURL(url)
           || (fileOrigin === 'folder' && !batchPath.length)
+          || (fileOrigin === 'folder' && !activeActionTypes)
           || (!activeTool && fileOrigin === 'file')
           || (!activeOption && fileOrigin === 'file'))
         }

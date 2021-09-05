@@ -501,12 +501,11 @@ async function parseBatch(bpath, recur, arg) {
         file.mimeType = await setMT(filePath);
         file.mimeType.ext && handleDefaultValues(arg, file);
       }
-      recur && file.isDir ? parseBatch(file.path, recur, arg) : !file.isDir && files.push(file);
+      recur && file.isDir ? await parseBatch(file.path, recur, arg) : !file.isDir && files.push(file);
     }
   } catch (error) {
     console.log(error);
   } finally {
-    console.log(files);
     return files;
   }
 }
@@ -516,9 +515,17 @@ ipcMain.on('execute-file-action', async (event, arg) => {
   reportText = '';
   if (arg.fileOrigin === 'folder') {
     await parseBatch(arg.batchPath, arg.recursive, arg);
+    console.log(files);
     for (const file of files) {
-    // eslint-disable-next-line max-len
-      reportText = runBatchScript(file.tool, file.path, file.action, file.name, arg.outputFolder, event, arg.config);
+      reportText = runBatchScript(
+        file.tool,
+        file.path,
+        file.action,
+        file.name,
+        arg.outputFolder,
+        event,
+        arg.config,
+      );
     }
     handleResultWindow(arg.config, event);
   } else if (arg.fileOrigin === 'url') {
