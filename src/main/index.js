@@ -334,9 +334,9 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   outputPath = outFol;
 };
 
-const runBatchScript = (tool, filePath, optionArr, fileName, outFol, event, config) => {
+const runBatchScript = (tool, filePath, optionArr, fileName, outFol, event, config, batchPath) => {
   if (tool && optionArr) {
-    dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
+    dest = path.join(outFol, `${path.basename(batchPath)}-${tool.id.name}_${getDateString()}.txt`);
     console.log('running batch script');
     // eslint-disable-next-line no-unused-vars
     let shieldedPath = filePath.split('');
@@ -448,7 +448,7 @@ function handleDefaultValues(arg, file) {
   const { defaultValues } = arg.config;
   if (defaultValues) {
     let AcceptedType = fileFormats.map(format => {
-      const type = format.identifiers.find(item => item.identifier === file.mimeType.mime);
+      const type = format.identifiers.find(item => item.identifier === file.mimeType);
       if (type) {
         return {
           mime: type.identifier,
@@ -475,15 +475,16 @@ function handleDefaultValues(arg, file) {
 }
 // eslint-disable-next-line consistent-return
 async function setMT(p) {
+  let MT = null;
   try {
-    const MT = await FileType.fromFile(p);
-    if (MT) {
-      return MT;
+    MT = await FileType.fromFile(p).mime;
+    if (!MT) {
+      MT = mime.lookup(p);
     }
-    const newMT = mime.lookup(p);
-    return newMT;
   } catch (err) {
     console.log(err);
+  } finally {
+    return MT;
   }
 }
 async function parseBatch(bpath, recur, arg) {
@@ -499,7 +500,7 @@ async function parseBatch(bpath, recur, arg) {
       };
       if (!file.isDir) {
         file.mimeType = await setMT(filePath);
-        file.mimeType.ext && handleDefaultValues(arg, file);
+        handleDefaultValues(arg, file);
       }
       recur && file.isDir ? await parseBatch(file.path, recur, arg) : !file.isDir && files.push(file);
     }
@@ -525,6 +526,7 @@ ipcMain.on('execute-file-action', async (event, arg) => {
         arg.outputFolder,
         event,
         arg.config,
+        arg.batchPath,
       );
     }
     handleResultWindow(arg.config, event);
@@ -532,7 +534,14 @@ ipcMain.on('execute-file-action', async (event, arg) => {
     arg.filePath = path.join(os.tmpdir(), APP_NAME, 'downloads', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
-        .then(() => runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event, arg.config))
+        .then(() => runScript(
+          arg.tool,
+          arg.filePath,
+          arg.option.value,
+          arg.outputFolder,
+          event,
+          arg.config,
+        ))
         .catch(err => {
           event.sender.send('receive-load', false);
           runJobFailed(err);
@@ -545,6 +554,7 @@ ipcMain.on('execute-file-action', async (event, arg) => {
     }
   } else {
     arg.filePath = arg.path;
+    console.log(arg);
     runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event, arg.config);
   }
   try {

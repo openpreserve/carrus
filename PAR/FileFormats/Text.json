@@ -27,6 +27,33 @@
     }, {
       "identifier": "text/csv",
       "identifierType": "MIME"
+    }, {
+      "identifier": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/vnd.ms-excel",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/vnd.ms-excel.sheet.macroEnabled.12",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/msword",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/vnd.ms-word.document.macroEnabled.12",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/vnd.ms-word.document.macroEnabled.12",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+      "identifierType": "MIME"
+    }, {
+      "identifier": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "identifierType": "MIME"
     }
 	
   ]
