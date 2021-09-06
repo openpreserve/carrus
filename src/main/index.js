@@ -30,6 +30,7 @@ const request = require('request');
 let files = [];
 let reportText = 'd';
 let dest = '';
+// eslint-disable-next-line no-unused-vars
 let errorText = '';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -334,7 +335,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   outputPath = outFol;
 };
 
-async function runBatchScript(tool, filePath, optionArr, fileName, outFol, event, config, batchPath) {
+async function runBatchScript(tool, filePath, optionArr, fileName, outFol, event, config, batchPath, processStage) {
   if (tool && optionArr) {
     dest = path.join(outFol, `${path.basename(batchPath)}-${tool.id.name}_${getDateString()}.txt`);
     console.log('running batch script');
@@ -390,6 +391,7 @@ async function runBatchScript(tool, filePath, optionArr, fileName, outFol, event
   } else {
     reportText += `${fileName} - Cannot be processed: No tool or action \n`;
   }
+  processStage.stage += 1;
   return reportText;
 }
 
@@ -398,6 +400,7 @@ function handleResultWindow(config, event) {
     const win = new BrowserWindow({
       minWidth: 1037,
       minHeight: 700,
+      show: false,
       title: APP_NAME,
       frame: false,
       titleBarStyle: 'hidden',
@@ -413,6 +416,7 @@ function handleResultWindow(config, event) {
       win.webContents.send('translate', translate);
       win.webContents.send('config', config);
       win.webContents.send('receiver', { report: reportText, path: dest });
+      win.show();
       event.sender.send('receive-load', false);
       fs.writeFile(dest, reportText, error => {
         if (error) {
@@ -423,10 +427,6 @@ function handleResultWindow(config, event) {
         }
       });
     });
-
-    if (isDevelopment) {
-      win.webContents.openDevTools();
-    }
 
     if (isDevelopment) {
       win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
@@ -511,10 +511,18 @@ async function parseBatch(bpath, recur, arg) {
 }
 
 ipcMain.on('execute-file-action', async (event, arg) => {
+  const processStage = {
+    stage: 0,
+    stages: 0,
+    currentFile: null,
+  };
   files = [];
   reportText = '';
   if (arg.fileOrigin === 'folder') {
+    event.sender.send('receive-load', true);
     await parseBatch(arg.batchPath, arg.recursive, arg);
+    processStage.stages = files.length;
+    console.log(processStage.stages);
     for (const file of files) {
       reportText = await runBatchScript(
         file.tool,
@@ -525,9 +533,12 @@ ipcMain.on('execute-file-action', async (event, arg) => {
         event,
         arg.config,
         arg.batchPath,
+        processStage,
       );
     }
-    handleResultWindow(arg.config, event);
+    if (processStage.stage === processStage.stages) {
+      handleResultWindow(arg.config, event);
+    }
   } else if (arg.fileOrigin === 'url') {
     arg.filePath = path.join(os.tmpdir(), APP_NAME, 'downloads', `${getDateString()}-${arg.fileName}`);
     try {
