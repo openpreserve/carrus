@@ -336,6 +336,8 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
 };
 
 async function runBatchScript(tool, filePath, optionArr, fileName, outFol, event, config, batchPath, processStage) {
+  processStage.stage += 1;
+  processStage.currentFile = fileName;
   if (tool && optionArr) {
     dest = path.join(outFol, `${path.basename(batchPath)}-${tool.id.name}_${getDateString()}.txt`);
     console.log('running batch script');
@@ -391,7 +393,6 @@ async function runBatchScript(tool, filePath, optionArr, fileName, outFol, event
   } else {
     reportText += `${fileName} - Cannot be processed: No tool or action \n`;
   }
-  processStage.stage += 1;
   return reportText;
 }
 
@@ -524,6 +525,7 @@ ipcMain.on('execute-file-action', async (event, arg) => {
     processStage.stages = files.length;
     console.log(processStage.stages);
     for (const file of files) {
+      await event.sender.send('stage', processStage);
       reportText = await runBatchScript(
         file.tool,
         file.path,
