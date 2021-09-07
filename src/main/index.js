@@ -520,12 +520,12 @@ ipcMain.on('execute-file-action', async (event, arg) => {
   files = [];
   reportText = '';
   if (arg.fileOrigin === 'folder') {
-    event.sender.send('receive-load', true);
     await parseBatch(arg.batchPath, arg.recursive, arg);
+    event.sender.send('receive-load', true);
     processStage.stages = files.length;
-    console.log(processStage.stages);
     for (const file of files) {
       await event.sender.send('stage', processStage);
+      console.log(processStage.stage);
       reportText = await runBatchScript(
         file.tool,
         file.path,

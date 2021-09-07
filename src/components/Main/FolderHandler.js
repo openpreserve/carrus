@@ -28,7 +28,7 @@ const FolderHandler = props => {
   return (
     <div className="mt-3">
       <FormGroup className="mt-3 w-100 d-flex flex-row align-items-center">
-        <Label for="customFile" className="mr-1 my-auto w-25">
+        <Label for="customFile" className="mr-1 my-auto w-25" style={{ whiteSpace: 'nowrap' }}>
           Batch directory:
         </Label>
         <Input className="dir_path w-50" readOnly placeholder={batchPath} />

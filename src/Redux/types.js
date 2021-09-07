@@ -19,6 +19,7 @@ const actionTypes = {
   SET_CONFIG: 'SET_CONFIG',
   SET_LOAD: 'SET_LOAD',
   SET_RECURSIVE: 'SET_RECURSIVE',
+  SET_STAGE: 'SET_STAGE',
 };
 
 export default actionTypes;

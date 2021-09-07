@@ -18,6 +18,7 @@ const initialState = {
   load: false,
   config: {},
   recursive: false,
+  stage: {},
 };
 
 export const preproccessReducer = (state = initialState, action) => {
@@ -181,6 +182,12 @@ export const preproccessReducer = (state = initialState, action) => {
         recursive: action.payload,
       };
     }
+    case actionTypes.SET_STAGE: {
+      return {
+        ...state,
+        stage: action.payload,
+      };
+    }
 
     default: {
       return state;
@@ -208,3 +215,4 @@ export const setParData = value => ({ type: actionTypes.SET_PAR_DATA, payload: v
 export const setConfig = value => ({ type: actionTypes.SET_CONFIG, payload: value });
 export const setLoad = value => ({ type: actionTypes.SET_LOAD, payload: value });
 export const setRecursive = value => ({ type: actionTypes.SET_RECURSIVE, payload: value });
+export const setStage = value => ({ type: actionTypes.SET_STAGE, payload: value });
