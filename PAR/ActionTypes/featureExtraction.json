@@ -1,11 +1,11 @@
 {
     "id": {
       "guid": "4e4fee39-faf8-4901-88f3-862754f24c85",
-      "name": "Characterize",
+      "name": "Feature extraction",
       "namespace": "https://openpreservation.org"
     },
     "familyType": {
-      "type": "Characterize"
+      "type": "Feature extraction"
     },
-    "label": "Characterize"
+    "label": "Feature extraction"
   }

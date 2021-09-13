@@ -80,7 +80,7 @@ const Main = props => {
     });
   };
   useEffect(() => {
-    config.outFolder ? props.setDirPath(config.outFolder) : null;
+    config.outFolder ? props.setDirPath(config.outFolder) : config.defaultPath;
   }, [config]);
 
   useEffect(() => {
@@ -304,7 +304,7 @@ const Main = props => {
         value="Execute"
         disabled={
           (fileOrigin === 'file' && !filePath.length)
-          || (fileOrigin === 'url' && !isURL(url)
+          || ((fileOrigin === 'url' && !isURL(url))
           || (fileOrigin === 'folder' && !batchPath.length)
           || (fileOrigin === 'folder' && !activeActionTypes)
           || (!activeTool && fileOrigin === 'file')
