@@ -1,16 +1,23 @@
-/* eslint-disable no-console */
-/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-sequences */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-unsafe-finally */
+/* eslint-disable no-console */
+/* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable quotes */
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
-import fs from 'fs';
+import fs, { readdirSync, lstatSync } from 'fs';
 import os from 'os';
 import mime from 'mime-types';
 import { spawn } from 'child_process';
+import FileType from 'file-type';
 import { setConfig, updateConfig, updateDefaultValues } from '../utils/setConfig';
 import setTranslate from '../utils/setTranslate';
 import setPAR from '../utils/setPAR';
@@ -20,6 +27,11 @@ require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 const request = require('request');
 
+let files = [];
+let reportText = 'd';
+let dest = '';
+// eslint-disable-next-line no-unused-vars
+let errorText = '';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
@@ -108,6 +120,7 @@ app.on('activate', () => {
   }
 });
 
+// eslint-disable-next-line no-shadow
 const download = (url, dest) => new Promise((resolve, reject) => {
   const downloadDir = path.join(path.join(os.tmpdir(), APP_NAME, 'downloads'));
   try {
@@ -215,14 +228,16 @@ const getDateString = () => {
 };
 
 const runScript = (tool, filePath, optionArr, outFol, event, config) => {
+  // eslint-disable-next-line no-shadow
+  let reportText = '';
   let shieldedPath = filePath.split('');
   shieldedPath.unshift('"');
   shieldedPath.push('"');
   shieldedPath = shieldedPath.join('');
   let reportData = '';
-  let reportText = '';
+  // eslint-disable-next-line no-shadow
   let errorText = '';
-  let dest = '';
+  dest = '';
 
   const configTool = Object.keys(config?.tools).find(e => e === tool.toolName);
   const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
@@ -320,12 +335,224 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   outputPath = outFol;
 };
 
-ipcMain.on('execute-file-action', (event, arg) => {
-  if (arg.fileOrigin === 'url') {
+async function runBatchScript(tool, filePath, optionArr, fileName, outFol, event, config, batchPath, processStage) {
+  processStage.stage += 1;
+  processStage.currentFile = fileName;
+  if (tool && optionArr) {
+    dest = path.join(outFol, `${path.basename(batchPath)}-${tool.id.name}_${getDateString()}.txt`);
+    console.log('running batch script');
+    // eslint-disable-next-line no-unused-vars
+    let shieldedPath = filePath.split('');
+    shieldedPath.unshift('"');
+    shieldedPath.push('"');
+    shieldedPath = shieldedPath.join('');
+    let reportData = '';
+
+    const configTool = Object.keys(config?.tools).find(e => e === tool.id.name);
+    const OSconfigTool = configTool ? config.tools[configTool].find(e => e.OS === os.platform()) : null;
+    if (!OSconfigTool) {
+      event.sender.send('receive-load', false);
+      runJobFailed(`There is no ${tool.toolName} tool in config`);
+      return;
+    }
+
+    const scriptPath = isDevelopment
+      ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.scriptPath)
+      : path.join(__dirname, '..', 'libs', OSconfigTool.scriptPath);
+
+    const command = OSconfigTool.scriptType === 'shell' ? scriptPath : OSconfigTool.scriptType;
+    const optionObj = {};
+
+    if (OSconfigTool.workingDirectory) {
+      optionObj.cwd = isDevelopment
+        ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.workingDirectory)
+        : path.join(__dirname, '..', 'libs', OSconfigTool.workingDirectory);
+    }
+
+    reportData = spawn(command, [
+      ...OSconfigTool.scriptArguments,
+      optionArr.value,
+      filePath,
+    ], optionObj);
+    reportData.stdout.on('data', data => {
+      data ? reportText += `${fileName} - ${data.toString()}` : null;
+    });
+    reportData.stderr.on('data', (data) => {
+      console.error(data.toString());
+      errorText += data.toString();
+    });
+
+    reportData.stderr.on('end', () => {
+      event.sender.send('receive-load', false);
+    });
+
+    reportData.on('error', (err) => {
+      errorText += err.toString();
+    });
+    reportData.stdout.on('end', () => { true; });
+  } else {
+    reportText += `${fileName} - Cannot be processed: No tool or action \n`;
+  }
+  return reportText;
+}
+
+function handleResultWindow(config, event) {
+  if (reportText) {
+    const win = new BrowserWindow({
+      minWidth: 1037,
+      minHeight: 700,
+      show: false,
+      title: APP_NAME,
+      frame: false,
+      titleBarStyle: 'hidden',
+      webPreferences: {
+        nodeIntegration: true,
+        enableRemoteModule: true,
+      },
+    });
+    win._id = 'report';
+
+    win.webContents.once('did-finish-load', async () => {
+      const translate = await setTranslate(isDevelopment);
+      win.webContents.send('translate', translate);
+      win.webContents.send('config', config);
+      win.webContents.send('receiver', { report: reportText, path: dest });
+      win.show();
+      event.sender.send('receive-load', false);
+      fs.writeFile(dest, reportText, error => {
+        if (error) {
+          event.sender.send('receive-load', false);
+          error.message !== 'ENOENT: no such file or directory, open \'\''
+            ? runJobFailed(error.message)
+            : runJobFailed(errorText);
+        }
+      });
+    });
+
+    if (isDevelopment) {
+      win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+    } else {
+      win.loadURL(
+        formatUrl({
+          pathname: path.join(__dirname, 'index.html'),
+          protocol: 'file',
+          slashes: true,
+        }),
+      );
+    }
+  }
+}
+
+function handleDefaultValues(arg, file) {
+  const { actionType, fileFormats } = arg;
+  const { defaultValues } = arg.config;
+  if (defaultValues) {
+    let AcceptedType = fileFormats.map(format => {
+      const type = format.identifiers.find(item => item.identifier === file.mimeType);
+      if (type) {
+        return {
+          mime: type.identifier,
+          name: format.id.name,
+        };
+      }
+      return {};
+    });
+    AcceptedType = AcceptedType.find(e => e?.name);
+    if (AcceptedType) {
+      if (defaultValues
+          && defaultValues[actionType.id.name]
+          && defaultValues[actionType.id.name][AcceptedType.name]) {
+        defaultValues[actionType.id.name][AcceptedType.name];
+        const { defaultAction: action, defaultTool: tool } = defaultValues[actionType.id.name][AcceptedType.name];
+        file.action = arg.acceptedActions
+          .find(act => act.id.name === action).inputToolArguments.map(i => i.value);
+        // eslint-disable-next-line prefer-destructuring
+        file.tool = arg.tools.filter(t => t.id.name === tool)[0];
+      }
+    }
+  }
+  return file;
+}
+// eslint-disable-next-line consistent-return
+async function setMT(p) {
+  let MT = null;
+  try {
+    MT = await FileType.fromFile(p).mime;
+    if (!MT) {
+      MT = mime.lookup(p);
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return MT;
+  }
+}
+async function parseBatch(bpath, recur, arg) {
+  try {
+    for (const item of readdirSync(bpath, 'utf8')) {
+      const filePath = `${bpath}/${item}`;
+      const file = {
+        name: item,
+        path: filePath,
+        isDir: lstatSync(filePath).isDirectory(),
+        action: null,
+        tool: null,
+      };
+      if (!file.isDir) {
+        file.mimeType = await setMT(filePath);
+        handleDefaultValues(arg, file);
+      }
+      recur && file.isDir ? await parseBatch(file.path, recur, arg) : !file.isDir && files.push(file);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return files;
+  }
+}
+
+ipcMain.on('execute-file-action', async (event, arg) => {
+  const processStage = {
+    stage: 0,
+    stages: 0,
+    currentFile: null,
+  };
+  files = [];
+  reportText = '';
+  if (arg.fileOrigin === 'folder') {
+    await parseBatch(arg.batchPath, arg.recursive, arg);
+    event.sender.send('receive-load', true);
+    processStage.stages = files.length;
+    for (const file of files) {
+      await event.sender.send('stage', processStage);
+      console.log(processStage.stage);
+      reportText = await runBatchScript(
+        file.tool,
+        file.path,
+        file.action,
+        file.name,
+        arg.outputFolder,
+        event,
+        arg.config,
+        arg.batchPath,
+        processStage,
+      );
+    }
+    if (processStage.stage === processStage.stages) {
+      handleResultWindow(arg.config, event);
+    }
+  } else if (arg.fileOrigin === 'url') {
     arg.filePath = path.join(os.tmpdir(), APP_NAME, 'downloads', `${getDateString()}-${arg.fileName}`);
     try {
       download(arg.path, arg.filePath)
-        .then(() => runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event, arg.config))
+        .then(() => runScript(
+          arg.tool,
+          arg.filePath,
+          arg.option.value,
+          arg.outputFolder,
+          event,
+          arg.config,
+        ))
         .catch(err => {
           event.sender.send('receive-load', false);
           runJobFailed(err);
@@ -338,6 +565,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
     }
   } else {
     arg.filePath = arg.path;
+    console.log(arg);
     runScript(arg.tool, arg.filePath, arg.option.value, arg.outputFolder, event, arg.config);
   }
   try {
@@ -345,6 +573,7 @@ ipcMain.on('execute-file-action', (event, arg) => {
   } catch (err) {
     runJobFailed(err.message);
   }
+  console.log(reportText);
 });
 
 ipcMain.on('update-default-values', (event, defaultValues) => {

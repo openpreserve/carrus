@@ -5,6 +5,7 @@
             "ActionType": "Action Type",
             "Tool": "Tool",
             "YourFile": "Your File",
+            "YourFolder": "Batch",
             "FileFormat": "File Format",
             "chooseFileFormat": "Сhoose file format",
             "FromUrl": "From Url",

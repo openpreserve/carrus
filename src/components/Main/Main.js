@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
@@ -11,6 +12,7 @@ import setAcceptedActions from '../../utils/setAcceptedActions';
 import checkScriptAvailability from '../../utils/checkScriptAvailability';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
+import FolderHandler from './FolderHandler';
 import UrlHandler from './UrlHandler';
 import SemiHeader from '../Header/SemiHeader';
 import {
@@ -45,6 +47,8 @@ const Main = props => {
     fileFormats,
     config,
     load,
+    batchPath,
+    recursive,
   } = props;
   const { t } = useTranslation();
   const InputActionTypeRef = useRef();
@@ -56,6 +60,7 @@ const Main = props => {
     const dataToSend = {
       fileName,
       mimeType,
+      fileFormats,
       fileOrigin,
       path: fileOrigin === 'url' ? url : filePath,
       actionType: activeActionTypes,
@@ -64,6 +69,10 @@ const Main = props => {
       tool: activeTool,
       option: activeOption,
       config,
+      recursive,
+      batchPath,
+      tools,
+      acceptedActions,
     };
     ipcRenderer.send('execute-file-action', dataToSend);
     ipcRenderer.on('receive-load', (event, value) => {
@@ -115,7 +124,6 @@ const Main = props => {
       });
 
       AcceptedType = AcceptedType.find(e => e?.name);
-
       if (AcceptedType) {
         if (config.defaultValues
           && config.defaultValues[actionType]
@@ -146,6 +154,16 @@ const Main = props => {
             {t('YourFile')}
           </NavLink>
         </NavItem>
+        <NavItem className="mr-1">
+          <NavLink
+            className={fileOrigin === 'folder' ? 'active text-success font-weight-bold' : 'bg-light text-dark'}
+            onClick={() => {
+              props.setFileOrigin('folder');
+            }}
+          >
+            {t('YourFolder')}
+          </NavLink>
+        </NavItem>
         <NavItem>
           <NavLink
             className={fileOrigin === 'url' ? 'active text-success font-weight-bold' : 'bg-light text-dark '}
@@ -158,6 +176,13 @@ const Main = props => {
       <TabContent activeTab={fileOrigin}>
         <TabPane tabId="file">
           <FileHandler InputActionTypeRef={InputActionTypeRef} />
+        </TabPane>
+        <TabPane tabId="folder">
+          <FolderHandler
+            InputActionTypeRef={InputActionTypeRef}
+            InputToolRef={InputToolRef}
+            InputOptionRef={InputOptionRef}
+          />
         </TabPane>
         <TabPane tabId="url">
           <UrlHandler isValid={!error.length} isEmpty={!url.length} feedback={error} />
@@ -179,8 +204,8 @@ const Main = props => {
           }}
           value={activeActionTypes ? activeActionTypes.id.name : t('chooseAllowedActionTypes')}
         >
-          {mimeType.length ? (
-            acceptedActions.length ? (
+          {mimeType.length || fileOrigin.length && fileOrigin === 'folder' ? (
+            acceptedActions.length || fileOrigin.length ? (
               <>
                 <option hidden>{t('chooseAllowedActionTypes')}</option>
                 {unique(acceptedActions).map(e => (
@@ -202,63 +227,70 @@ const Main = props => {
         </Input>
       </FormGroup>
       <FormGroup className="mt-3 w-100 d-flex flex-row">
-        <Label for="tool" className="mr-1 my-auto w-25">
-          <span>{t('Tool')}: </span>
-        </Label>
-        <Input
-          className="w-50"
-          type="select"
-          onChange={e => {
-            props.setTool(e.target.value);
-            InputToolRef.current = e;
-            InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
-          }}
-          /* defaultValue={activeTool ? activeTool.id.name : 'Choose Tool'} */
-          value={activeTool ? activeTool.id.name : 'Choose Tool'}
-        >
-          <option hidden>{t('ChooseTool')}</option>
-          {activeActionTypes && mimeType.length ? (
-            checkScriptAvailability(activeActionTypes, tools, acceptedActions, config)
-          ) : (
-            <>
+        { fileOrigin !== 'folder' && (
+          <>
+            <Label for="tool" className="mr-1 my-auto w-25">
+              <span>{t('Tool')}: </span>
+            </Label>
+            <Input
+              className="w-50"
+              type="select"
+              onChange={e => {
+                props.setTool(e.target.value);
+                InputToolRef.current = e;
+                InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
+              }}
+              value={activeTool ? activeTool.id.name : 'Choose Tool'}
+            >
               <option hidden>{t('ChooseTool')}</option>
-              <option disabled>No actions are chosen</option>
-            </>
-          )}
-        </Input>
+              {activeActionTypes && mimeType.length ? (
+                checkScriptAvailability(activeActionTypes, tools, acceptedActions, config)
+              ) : (
+                <>
+                  <option hidden>{t('ChooseTool')}</option>
+                  <option disabled>No actions are chosen</option>
+                </>
+              )}
+            </Input>
+          </>
+        )}
       </FormGroup>
       <FormGroup className="mt-3 w-100 d-flex flex-row">
-        <Label for="action" className="mr-1 my-auto w-25">
-          <span>{t('Action')}: </span>
-        </Label>
-        <Input
-          className="w-50"
-          type="select"
-          /* defaultValue={activeOption ? activeOption.name : 'Choose Option'} */
-          value={activeOption ? activeOption.name : 'Choose Option'}
-          onChange={e => {
-            InputOptionRef.current = e;
-            props.setOptions([{
-              value: acceptedActions
-                .find(action => action.id.name === e.target.value)?.inputToolArguments.map(i => i.value),
-              name: e.target.value,
-            }]);
-          }}
-        >
-          <option hidden>{t('ChooseOption')}</option>
-          {activeTool ? (
-            acceptedActions
-              .filter(a => (a.type.id.guid === activeActionTypes.id.guid && a.tool.id.guid === activeTool.id.guid))
-              .map(avaliableOption => (
-                <option key={avaliableOption.id.guid}>{avaliableOption.id.name}</option>
-              ))
-          ) : (
-            <>
-              <option hidden>{t('ChooseOption')}</option>
-              <option disabled>No Tools are chosen</option>
-            </>
-          )}
-        </Input>
+        { fileOrigin !== 'folder'
+        && (
+        <>
+          <Label for="action" className="mr-1 my-auto w-25">
+            <span>{t('Action')}: </span>
+          </Label>
+          <Input
+            className="w-50"
+            type="select"
+            value={activeOption ? activeOption.name : 'Choose Option'}
+            onChange={e => {
+              InputOptionRef.current = e;
+              props.setOptions([{
+                value: acceptedActions
+                  .find(action => action.id.name === e.target.value)?.inputToolArguments.map(i => i.value),
+                name: e.target.value,
+              }]);
+            }}
+          >
+            <option hidden>{t('ChooseOption')}</option>
+            {activeTool ? (
+              acceptedActions
+                .filter(a => (a.type.id.guid === activeActionTypes.id.guid && a.tool.id.guid === activeTool.id.guid))
+                .map(avaliableOption => (
+                  <option key={avaliableOption.id.guid}>{avaliableOption.id.name}</option>
+                ))
+            ) : (
+              <>
+                <option hidden>{t('ChooseOption')}</option>
+                <option disabled>No Tools are chosen</option>
+              </>
+            )}
+          </Input>
+        </>
+        )}
       </FormGroup>
       <FormGroup className="mt-3 w-100 d-flex flex-row align-items-center">
         <Label for="customFile" className="mr-1 my-auto w-25">
@@ -272,9 +304,11 @@ const Main = props => {
         value="Execute"
         disabled={
           (fileOrigin === 'file' && !filePath.length)
-          || (fileOrigin === 'url' && !isURL(url))
-          || !activeTool
-          || !activeOption
+          || ((fileOrigin === 'url' && !isURL(url))
+          || (fileOrigin === 'folder' && !batchPath.length)
+          || (fileOrigin === 'folder' && !activeActionTypes)
+          || (!activeTool && fileOrigin === 'file')
+          || (!activeOption && fileOrigin === 'file'))
         }
         className="mt-3 align-self-center"
         onClick={handleExecute}
@@ -306,6 +340,8 @@ const mapStateToProps = state => ({
   activeOption: state.options[0],
   config: state.config,
   load: state.load,
+  batchPath: state.batchPath,
+  recursive: state.recursive,
 });
 
 export default connect(mapStateToProps, {
