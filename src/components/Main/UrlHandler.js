@@ -19,7 +19,7 @@ const UrlHandler = props => {
             type="url"
             name="url"
             id="exampleUrl"
-            placeholder="Your url"
+            placeholder={t('YourUrl')}
             onChange={e => {
               document.querySelectorAll('select')[0].value = t('chooseAllowedActionTypes');
               props.setURL(e.target.value);
