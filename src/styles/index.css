@@ -89,6 +89,14 @@ a:hover {
   align-items: center;
 }
 
+.align-content-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+}
+
 .dir_path.dir_path {
   background-color: white;
 }

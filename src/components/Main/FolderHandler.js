@@ -29,7 +29,7 @@ const FolderHandler = props => {
     <div className="mt-3">
       <FormGroup className="mt-3 w-100 d-flex flex-row align-items-center">
         <Label for="customFile" className="mr-1 my-auto w-25" style={{ whiteSpace: 'nowrap' }}>
-          Batch directory:
+          {t('BatchDirectory')}:
         </Label>
         <Input className="dir_path w-50" readOnly placeholder={batchPath} />
         <div className="w-25 d-flex flex-row">
@@ -53,7 +53,7 @@ const FolderHandler = props => {
           onChange={checkboxHandleChange}
           checked={recursive}
         />
-        Recursive
+        {t('Recursive')}
       </label>
     </div>
   );
