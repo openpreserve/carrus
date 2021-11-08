@@ -9,7 +9,7 @@ import { Nav, NavItem, NavLink, TabContent, TabPane, FormGroup, Label, Input, Bu
 import { ipcRenderer } from 'electron';
 import isURL from 'validator/lib/isURL';
 import setAcceptedActions from '../../utils/setAcceptedActions';
-import checkScriptAvailability from '../../utils/checkScriptAvailability';
+import checkScriptAvailability, { checkToolAvailability } from '../../utils/checkScriptAvailability';
 import ProgressBar from '../Loading/ProgressBar';
 import FileHandler from './FileHandler';
 import FolderHandler from './FolderHandler';
@@ -130,13 +130,13 @@ const Main = props => {
           && config.defaultValues[actionType][AcceptedType.name]) {
           const { defaultTool: tool, defaultAction: action } = config.defaultValues[actionType][AcceptedType.name];
           props.setTool(tool);
-          ToolRef = tool;
+          ToolRef.current = tool;
           props.setOptions([{
             value: acceptedActions
               .find(act => act.id.name === action)?.inputToolArguments.map(i => i.value),
             name: action,
           }]);
-          OptionRef = action;
+          OptionRef.current = action;
         }
       }
     }
@@ -200,7 +200,7 @@ const Main = props => {
             InputActionTypeRef.current = e;
             InputToolRef.current ? document.querySelectorAll('select')[1].value = 'Choose Tool' : null;
             InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
-            handleDefaultValues(InputToolRef.current, InputOptionRef.current, e.target.value);
+            handleDefaultValues(InputToolRef, InputOptionRef, e.target.value);
           }}
           value={activeActionTypes ? activeActionTypes.id.name : t('chooseAllowedActionTypes')}
         >
@@ -240,15 +240,17 @@ const Main = props => {
                 InputToolRef.current = e;
                 InputOptionRef.current ? document.querySelectorAll('select')[2].value = 'Choose Option' : null;
               }}
-              value={activeTool ? activeTool.id.name : 'Choose Tool'}
+              value={activeTool && checkToolAvailability(activeActionTypes, activeTool, tools,
+                acceptedActions, config, true) ? activeTool.id.name : 'Choose Tool'}
             >
               <option hidden>{t('ChooseTool')}</option>
               {activeActionTypes && mimeType.length ? (
                 checkScriptAvailability(activeActionTypes, tools, acceptedActions, config)
+                ?? <option disabled>{t('NoAcceptedTools')}</option>
               ) : (
                 <>
                   <option hidden>{t('ChooseTool')}</option>
-                  <option disabled>No actions are chosen</option>
+                  <option disabled>{t('NoActionsAreChosen')}</option>
                 </>
               )}
             </Input>
@@ -265,7 +267,8 @@ const Main = props => {
           <Input
             className="w-50"
             type="select"
-            value={activeOption ? activeOption.name : 'Choose Option'}
+            value={activeOption && activeTool && checkToolAvailability(activeActionTypes, activeTool, tools,
+              acceptedActions, config, false) ? activeOption.name : 'Choose Option'}
             onChange={e => {
               InputOptionRef.current = e;
               props.setOptions([{
@@ -276,18 +279,19 @@ const Main = props => {
             }}
           >
             <option hidden>{t('ChooseOption')}</option>
-            {activeTool ? (
-              acceptedActions
-                .filter(a => (a.type.id.guid === activeActionTypes.id.guid && a.tool.id.guid === activeTool.id.guid))
-                .map(avaliableOption => (
-                  <option key={avaliableOption.id.guid}>{avaliableOption.id.name}</option>
-                ))
-            ) : (
-              <>
-                <option hidden>{t('ChooseOption')}</option>
-                <option disabled>No Tools are chosen</option>
-              </>
-            )}
+            {activeTool && checkToolAvailability(activeActionTypes, activeTool, tools,
+              acceptedActions, config, false) ? (
+                acceptedActions
+                  .filter(a => (a.type.id.guid === activeActionTypes.id.guid && a.tool.id.guid === activeTool.id.guid))
+                  .map(avaliableOption => (
+                    <option key={avaliableOption.id.guid}>{avaliableOption.id.name}</option>
+                  ))
+              ) : (
+                <>
+                  <option hidden>{t('ChooseOption')}</option>
+                  <option disabled>{t('NoToolsAreChosen')}</option>
+                </>
+              )}
           </Input>
         </>
         )}
@@ -307,7 +311,8 @@ const Main = props => {
           || ((fileOrigin === 'url' && !isURL(url))
           || (fileOrigin === 'folder' && !batchPath.length)
           || (fileOrigin === 'folder' && !activeActionTypes)
-          || (!activeTool && fileOrigin === 'file')
+          || ((!activeTool || !checkToolAvailability(activeActionTypes, activeTool, tools,
+            acceptedActions, config, false)) && fileOrigin === 'file')
           || (!activeOption && fileOrigin === 'file'))
         }
         className="mt-3 align-self-center"

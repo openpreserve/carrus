@@ -9,6 +9,9 @@ import logo from '../assets/big_logo.png';
 
 const About = () => {
   const { t } = useTranslation();
+  const version = process.env.npm_package_version;
+  let date = new Date(process.env.npm_package_buildDate * 1);
+  date = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
   return (
     <Container>
       <div className="d-flex w-50 flex-row align-items-center mb-5">
@@ -29,7 +32,7 @@ const About = () => {
         </Jumbotron>
         <Jumbotron className="container m-0 p-3 bg-white w-50 d-flex flex-column align-items-center">
           <div className="m-auto">
-            <p className="mb-1">{t('Release', { date: '1.24.1 2020-03-16' })}</p>
+            <p className="mb-1">{t('Release', { version, date })}</p>
             <p className="mb-1">{t('outOfDate')}</p>
             <p className="mb-1">
               <span style={{ color: green[500] }}>

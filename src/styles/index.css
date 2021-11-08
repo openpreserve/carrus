@@ -1,10 +1,46 @@
 .titlebar {
   -webkit-user-select: none;
+  user-select: none;
   -webkit-app-region: drag;
-  background-color: white;
+  background-color: #f8f9fa;
   width: 100%;
   position: fixed;
   top: 0;
+  left: 0;
+  border-bottom: var(--borderWidth) solid var(--borderColor);
+}
+
+.left_frame{
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-right: var(--borderWidth) solid var(--borderColor);
+  z-index: 1000;
+}
+.right_frame{
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  border-left: var(--borderWidth) solid var(--borderColor);
+  z-index: 1000;
+}
+.top_frame{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: var(--borderWidth) solid var(--borderColor);
+  z-index: 1000;
+}
+.bottom_frame{
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-top: var(--borderWidth) solid var(--borderColor);
+  z-index: 1000;
 }
 
 button,
@@ -23,6 +59,8 @@ svg {
 html {
   --scrollbarBG: #cfd8dc;
   --thumbBG: #90a4ae;
+  --borderColor: #eee;
+  --borderWidth: 4px;
 }
 
 body::-webkit-scrollbar {
@@ -87,6 +125,14 @@ a:hover {
 
 .align-center {
   align-items: center;
+}
+
+.align-content-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
 }
 
 .dir_path.dir_path {

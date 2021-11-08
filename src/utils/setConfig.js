@@ -24,8 +24,8 @@ export async function setConfig(isDevelopment, runJobFailed) {
   if (isDevelopment) {
     configDir = path.join(__dirname, '..', '..', 'config');
   }
-  const tempDir = path.join(path.join(os.tmpdir(), APP_NAME));
-  const tempConfigDir = path.join(path.join(os.tmpdir(), APP_NAME, 'config'));
+  const tempDir = path.join(path.join(os.homedir(), APP_NAME));
+  const tempConfigDir = path.join(path.join(os.homedir(), APP_NAME, 'config'));
   let configuration = {};
 
   try {
@@ -64,8 +64,8 @@ export async function setConfig(isDevelopment, runJobFailed) {
     }
     if (configuration.language === 'default') {
       configuration.language = await getOsLang();
-      configuration.isDevelopment = isDevelopment;
     }
+    configuration.isDevelopment = isDevelopment;
     return configuration;
   } catch (error) {
     // in case of some errors we default configuration
@@ -75,7 +75,7 @@ export async function setConfig(isDevelopment, runJobFailed) {
 }
 
 export async function updateConfig(outFolder, runJobFailed) {
-  const configDir = path.join(path.join(os.tmpdir(), APP_NAME, 'config'));
+  const configDir = path.join(path.join(os.homedir(), APP_NAME, 'config'));
   if (await isExists(path.join(configDir, 'config.json'))) {
     try {
       let config = await reader(path.join(configDir, 'config.json'), 'utf8');
@@ -98,7 +98,7 @@ export async function updateConfig(outFolder, runJobFailed) {
 }
 
 export async function updateDefaultValues(defaultValues, runJobFailed) {
-  const configDir = path.join(path.join(os.tmpdir(), APP_NAME, 'config'));
+  const configDir = path.join(path.join(os.homedir(), APP_NAME, 'config'));
   if (await isExists(path.join(configDir, 'config.json'))) {
     try {
       let config = await reader(path.join(configDir, 'config.json'), 'utf8');

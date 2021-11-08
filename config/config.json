@@ -6,7 +6,7 @@
         "",
         "Valid \"OS\" values are \"aix\", \"darwin\" (for MacOS), \"freebsd\", \"linux\", \"openbsd\", \"sunos\", and \"win32\"",
         "The \"scriptPath\" property is local to the libs subfolder in the application folder",
-        "The \"scriptType\" property is either \"shell\", in which case an OS-specific way of running scripts will be used\"", 
+        "The \"interpreterPath\" property is either \"shell\", in which case an OS-specific way of running scripts will be used\"", 
         "or an interpreter CLI that will be run to execute the script."
     ],
     "language": "default",
@@ -15,8 +15,8 @@
             {
                 "OS": "win32",
                 "scriptPath": "fido/fido/fido.py",
-                "scriptType": "python",
-                "scriptArguments": [
+                "interpreterPath": "python",
+                "interpreterArguments": [
                     "-m",
                     "fido.fido"
                 ],
@@ -25,8 +25,8 @@
             {
                 "OS": "linux",
                 "scriptPath": "fido/fido/fido.py",
-                "scriptType": "python3",
-                "scriptArguments": [
+                "interpreterPath": "python3",
+                "interpreterArguments": [
                     "-m",
                     "fido.fido"
                 ],
@@ -35,8 +35,8 @@
             {
                 "OS": "darwin",
                 "scriptPath": "fido/fido/fido.py",
-                "scriptType": "/usr/local/bin/python3",
-                "scriptArguments": [
+                "interpreterPath": "/usr/local/bin/python3",
+                "interpreterArguments": [
                     "-m",
                     "fido.fido"
                 ],
@@ -47,48 +47,48 @@
             {
                 "OS": "win32",
                 "scriptPath": "jhove/jhove.bat",
-                "scriptType": "shell",
-                "scriptArguments": []
+                "interpreterPath": "shell",
+                "interpreterArguments": []
             },
             {
                 "OS": "linux",
                 "scriptPath": "jhove/jhove",
-                "scriptType": "shell",
-                "scriptArguments": []
+                "interpreterPath": "shell",
+                "interpreterArguments": []
             },
             {
                 "OS": "darwin",
                 "scriptPath": "jhove/jhove",
-                "scriptType": "shell",
-                "scriptArguments": []
+                "interpreterPath": "shell",
+                "interpreterArguments": []
             }
         ],
         "veraPDF": [
             {
                 "OS": "win32",
                 "scriptPath": "veraPDF/verapdf.bat",
-                "scriptType": "shell",
-                "scriptArguments": []
+                "interpreterPath": "shell",
+                "interpreterArguments": []
             },
             {
                 "OS": "linux",
                 "scriptPath": "veraPDF/verapdf",
-                "scriptType": "shell",
-                "scriptArguments": []
+                "interpreterPath": "shell",
+                "interpreterArguments": []
             },
             {
                 "OS": "darwin",
                 "scriptPath": "veraPDF/verapdf",
-                "scriptType": "shell",
-                "scriptArguments": []
+                "interpreterPath": "shell",
+                "interpreterArguments": []
             }
         ],
         "Jpylyzer": [
             {
                 "OS": "win32",
                 "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
-                "scriptType": "python",
-                "scriptArguments": [
+                "interpreterPath": "python",
+                "interpreterArguments": [
                     "-m",
                     "jpylyzer.jpylyzer"
                 ],
@@ -97,8 +97,8 @@
             {
                 "OS": "linux",
                 "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
-                "scriptType": "python3",
-                "scriptArguments": [
+                "interpreterPath": "python3",
+                "interpreterArguments": [
                     "-m",
                     "jpylyzer.jpylyzer"
                 ],
@@ -107,8 +107,8 @@
             {
                 "OS": "darwin",
                 "scriptPath": "jpylyzer/jpylyzer/jpylyzer.py",
-                "scriptType": "/usr/local/bin/python3",
-                "scriptArguments": [
+                "interpreterPath": "/usr/local/bin/python3",
+                "interpreterArguments": [
                     "-m",
                     "jpylyzer.jpylyzer"
                 ],

@@ -29,9 +29,13 @@ const App = props => {
   }, []);
 
   return (
-    <div className="mb-3">
+    <div>
+      <div className="left_frame" />
+      <div className="right_frame" />
+      <div className="top_frame" />
+      <div className="bottom_frame" />
       <Header />
-      <div className="main-content">
+      <div className="mb-3 main-content">
         <Switch>
           <Route exact path="/">
             {currentWindow === 'main' ? <Main /> : null}
