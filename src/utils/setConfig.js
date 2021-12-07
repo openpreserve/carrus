@@ -64,8 +64,8 @@ export async function setConfig(isDevelopment, runJobFailed) {
     }
     if (configuration.language === 'default') {
       configuration.language = await getOsLang();
-      configuration.isDevelopment = isDevelopment;
     }
+    configuration.isDevelopment = isDevelopment;
     return configuration;
   } catch (error) {
     // in case of some errors we default configuration

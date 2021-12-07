@@ -128,6 +128,7 @@ export const preproccessReducer = (state = initialState, action) => {
     }
 
     case actionTypes.SET_FILE_INFO: {
+      const sameMimeType = state.mimeType === action.payload.type;
       return {
         ...state,
         mimeType: action.payload.type,
@@ -135,16 +136,17 @@ export const preproccessReducer = (state = initialState, action) => {
         filePath: action.payload.path,
         actionTypes: state.actionTypes.map(e => ({
           ...e,
+          active: sameMimeType ? e.active : false,
         })),
         actions: state.actions.map(e => ({
           ...e,
-          active: state.mimeType === action.payload.type,
+          active: sameMimeType ? e.active : false,
         })),
         tools: state.tools.map(e => ({
           ...e,
-          active: state.mimeType === action.payload.type,
+          active: sameMimeType ? e.active : false,
         })),
-        options: [],
+        options: sameMimeType ? state.options : [],
       };
     }
 

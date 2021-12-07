@@ -28,7 +28,6 @@ require('events').EventEmitter.defaultMaxListeners = Infinity;
 const request = require('request');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
-
 let mainWindow;
 
 let cancelBatchProcessing = false;
@@ -43,27 +42,29 @@ const processStage = {
 let files = [];
 let processThreads = [];
 const N = os.cpus().length * 2;
+let width = 1080;
+let height = 680;
 
 async function createMainWindow() {
   const factor = screen.getPrimaryDisplay().scaleFactor;
-  let minWidth = 1080;
-  let minHeight = 680;
   if (factor === 1) {
-    minWidth = 1080;
-    minHeight = 800;
+    width = 1080;
+    height = 800;
   } else if (factor >= 1.25 && factor < 1.5) {
-    minWidth = 865;
-    minHeight = 700;
+    width = 865;
+    height = 700;
   } else if (factor >= 1.5) {
-    minWidth = 740;
-    minHeight = 650;
+    width = 740;
+    height = 600;
   }
 
   process.setMaxListeners(Infinity);
 
   const window = new BrowserWindow({
-    minWidth,
-    minHeight,
+    width,
+    height,
+    minWidth: width,
+    minHeight: height,
     title: APP_NAME,
     frame: false,
     titleBarStyle: 'hidden',
@@ -186,8 +187,10 @@ app.on('ready', () => {
 
 const runJobFailed = (error) => {
   const win = new BrowserWindow({
-    minWidth: 1037,
-    minHeight: 500,
+    width,
+    height,
+    minWidth: width,
+    minHeight: height,
     title: APP_NAME,
     frame: false,
     titleBarStyle: 'hidden',
@@ -259,7 +262,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
     ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.scriptPath)
     : path.join(__dirname, '..', 'libs', OSconfigTool.scriptPath);
 
-  const command = OSconfigTool.scriptType === 'shell' ? scriptPath : OSconfigTool.scriptType;
+  const command = OSconfigTool.interpreterPath === 'shell' ? scriptPath : OSconfigTool.interpreterPath;
   const optionObj = {};
 
   if (OSconfigTool.workingDirectory) {
@@ -269,7 +272,7 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
   }
 
   reportData = spawn(command, [
-    ...OSconfigTool.scriptArguments,
+    ...OSconfigTool.interpreterArguments,
     ...optionArr,
     filePath,
   ], optionObj);
@@ -279,50 +282,13 @@ const runScript = (tool, filePath, optionArr, outFol, event, config) => {
     dest = path.join(outFol, `${path.basename(filePath)}-${tool.id.name}_${getDateString()}.txt`);
   });
   reportData.stdout.on('end', () => {
-    if (reportText) {
-      const win = new BrowserWindow({
-        minWidth: 1037,
-        minHeight: 700,
-        title: APP_NAME,
-        frame: false,
-        titleBarStyle: 'hidden',
-        webPreferences: {
-          nodeIntegration: true,
-          enableRemoteModule: true,
-        },
-      });
-      win._id = 'report';
-
-      win.webContents.once('did-finish-load', async () => {
-        const translate = await setTranslate(isDevelopment);
-        win.webContents.send('translate', translate);
-        win.webContents.send('config', config);
-        win.webContents.send('receiver', { report: reportText, path: dest });
-        event.sender.send('receive-load', false);
-      });
-
-      if (isDevelopment) {
-        win.webContents.openDevTools();
-      }
-
-      if (isDevelopment) {
-        win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
-      } else {
-        win.loadURL(
-          formatUrl({
-            pathname: path.join(__dirname, 'index.html'),
-            protocol: 'file',
-            slashes: true,
-          }),
-        );
-      }
-    }
+    handleResultWindow(reportText, dest, config, event);
     fs.writeFile(dest, reportText, error => {
       if (error) {
         event.sender.send('receive-load', false);
         error.message !== `ENOENT: no such file or directory, open ''`
           ? runJobFailed(error.message)
-          : runJobFailed(errorText);
+          : runJobFailed(`${errorText}`);
       }
     });
   });
@@ -345,6 +311,7 @@ async function runBatchScript(tool, filePath, optionArr, fileName, mimeType, out
   let errorText = '';
   const batchDest = path.join(outFol, `${path.basename(batchPath)}_${timestamp}.log`);
   const baseFolder = path.join(outFol, `${path.basename(batchPath)}_${timestamp}`);
+  const folders = path.relative(batchPath, filePath);
 
   if (!fs.existsSync(baseFolder)) {
     fs.mkdirSync(baseFolder);
@@ -374,7 +341,7 @@ async function runBatchScript(tool, filePath, optionArr, fileName, mimeType, out
       ? path.join(__dirname, '..', '..', 'libs', OSconfigTool.scriptPath)
       : path.join(__dirname, '..', 'libs', OSconfigTool.scriptPath);
 
-    const command = OSconfigTool.scriptType === 'shell' ? scriptPath : OSconfigTool.scriptType;
+    const command = OSconfigTool.interpreterPath === 'shell' ? scriptPath : OSconfigTool.interpreterPath;
     const optionObj = {};
 
     if (OSconfigTool.workingDirectory) {
@@ -384,7 +351,7 @@ async function runBatchScript(tool, filePath, optionArr, fileName, mimeType, out
     }
 
     reportData = spawn(command, [
-      ...OSconfigTool.scriptArguments,
+      ...OSconfigTool.interpreterArguments,
       optionArr,
       filePath,
     ], optionObj);
@@ -396,12 +363,11 @@ async function runBatchScript(tool, filePath, optionArr, fileName, mimeType, out
 
     reportData.stdout.on('end', () => {
       if (reportText.length > 0) {
-        let folders = path.relative(batchPath, filePath);
         batchReportText += `${folders} - ${mimeType} - ${tool.toolName}${optionArr} \n`;
-        folders = folders.split(path.sep);
+        const splFolders = folders.split(path.sep);
         let relFolder = baseFolder;
-        for (let i = 0; i < folders.length - 1; i += 1) {
-          relFolder = path.join(relFolder, folders[i]);
+        for (let i = 0; i < splFolders.length - 1; i += 1) {
+          relFolder = path.join(relFolder, splFolders[i]);
           if (!fs.existsSync(relFolder)) {
             fs.mkdirSync(relFolder);
           }
@@ -412,14 +378,16 @@ async function runBatchScript(tool, filePath, optionArr, fileName, mimeType, out
 
         fs.writeFile(dest, reportText, error => {
           if (error) {
-            error.message !== `ENOENT: no such file or directory, open ''`
-              ? runJobFailed(error.message)
-              : runJobFailed(errorText);
+            runJobFailed(error.message);
           }
         });
       } else {
         processStage.canceled += 1;
-        batchReportText += `${fileName} - (CANCELED) - ${mimeType} - ${tool.toolName}${optionArr} \n`;
+        if (errorText.length > 0) {
+          batchReportText += `${folders} - (${errorText}) - ${mimeType} - ${tool.toolName}${optionArr} \n`;
+        } else {
+          batchReportText += `${folders} - (CANCELED) - ${mimeType} - ${tool.toolName}${optionArr} \n`;
+        }
       }
 
       const exit = changeProgressState(fileName, batchDest, config, event);
@@ -436,13 +404,15 @@ async function runBatchScript(tool, filePath, optionArr, fileName, mimeType, out
       errorText += err.toString();
     });
   } else if (!mimeType) {
-    batchReportText += `${fileName} - Cannot be processed: Mime type was not detected \n`;
+    processStage.canceled += 1;
+    batchReportText += `${folders} - Cannot be processed: Mime type was not detected \n`;
     const exit = changeProgressState(fileName, batchDest, config, event);
     if (exit && callback && !cancelBatchProcessing) {
       callback(outFol, event, config, batchPath, timestamp);
     }
   } else {
-    batchReportText += `${fileName} - ${mimeType} - Cannot be processed: No tool or action \n`;
+    processStage.canceled += 1;
+    batchReportText += `${folders} - ${mimeType} - Cannot be processed: No tool or action \n`;
     const exit = changeProgressState(fileName, batchDest, config, event);
     if (exit && callback && !cancelBatchProcessing) {
       callback(outFol, event, config, batchPath, timestamp);
@@ -454,8 +424,10 @@ async function runBatchScript(tool, filePath, optionArr, fileName, mimeType, out
 function handleResultWindow(reportText, dest, config, event) {
   if (reportText) {
     const win = new BrowserWindow({
-      minWidth: 1037,
-      minHeight: 700,
+      width,
+      height,
+      minWidth: width,
+      minHeight: height,
       title: APP_NAME,
       frame: false,
       titleBarStyle: 'hidden',
