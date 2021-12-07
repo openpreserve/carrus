@@ -73,8 +73,8 @@
     "veraPDF-unzip:linux": "cd ./libs && unzip verapdf-installer.zip && rm -rf verapdf-installer.zip",
     "veraPDF-unzip:mac": "cd ./libs && unzip verapdf-installer.zip",
     "veraPDF": "cd ./libs/veraPDF && java -DINSTALL_PATH=%cd%/libs/veraPDF -jar verapdf-greenfield-1.18.6/verapdf-izpack-installer-1.18.6.jar -options-system && rd /s /q verapdf-greenfield-1.18.6",
-    "veraPDF:linux": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.16.1/verapdf-izpack-installer-1.16.1.jar -options-system && rm -rf verapdf-greenfield-1.16.1",
-    "veraPDF:mac": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.16.1/verapdf-izpack-installer-1.16.1.jar -options-system && rm -rf verapdf-greenfield-1.16.1",
+    "veraPDF:linux": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.18.6/verapdf-izpack-installer-1.18.6.jar -options-system && rm -rf verapdf-greenfield-1.18.6",
+    "veraPDF:mac": "cd ./libs && java -DINSTALL_PATH=$(pwd)/veraPDF -jar verapdf-greenfield-1.18.6/verapdf-izpack-installer-1.18.6.jar -options-system && rm -rf verapdf-greenfield-1.18.6",
     "jpylyzer": "git clone https://github.com/openpreserve/jpylyzer.git ./libs/jpylyzer && cd ./libs/jpylyzer && rm -rf .git"
   },
   "dependencies": {
